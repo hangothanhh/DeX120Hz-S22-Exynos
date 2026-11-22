@@ -10,7 +10,7 @@
 
 Module **LSPosed** và ứng dụng điều khiển đi kèm giúp mở khóa tần số quét cao (trên 60Hz, tối đa 120Hz tùy màn hình và cáp) cho **Samsung DeX** — áp dụng riêng cho **Samsung Galaxy S22 Exynos (`SM-S901B` / `s5e9925`) chạy Android 12 / One UI 4.1 đã root**.
 
-- **Phiên bản hiện tại:** `v1.0.1-s22-a12` (**Pre-release / Experimental**)
+- **Phiên bản hiện tại:** `v1.0.2-s22-a12` (**Pre-release / Experimental**)
 - **Gói ứng dụng:** `com.dex120.s22` (`minSdk 31`, `targetSdk 31` — Android 12)
 - **Công nghệ sử dụng:** Java 11, Xposed/LSPosed Hooks (`system_server` + `com.sec.android.sdhms`), Android SDK thuần (`aapt2` + `d8` + `apksigner`, không phụ thuộc Gradle nặng)
 - **Giấy phép & Tuân thủ:** [GNU GPL v3.0](LICENSE) · [NOTICE](NOTICE) · [Minh bạch AI](docs/vi/AI_CONTRIBUTIONS.md) · [Bên thứ ba](docs/vi/THIRD_PARTY_NOTICES.md)
@@ -22,7 +22,7 @@ Module **LSPosed** và ứng dụng điều khiển đi kèm giúp mở khóa t�
 
 > [!CAUTION]
 > **Minh bạch về đóng góp của AI & cảnh báo AI Slop:**
-> Phần lớn mã nguồn Java, script build/kiểm thử và bộ tài liệu này **được tạo hoặc hỗ trợ viết bởi Google Antigravity** (chi tiết phạm vi & tình trạng kiểm thử tại [AI_CONTRIBUTIONS.md](docs/vi/AI_CONTRIBUTIONS.md)), và mới được con người kiểm thử thực tế trước đây trên **duy nhất 1 thiết bị Samsung Galaxy S22 Exynos (`SM-S901B`) chạy Android 12 / One UI 4.1 với màn hình ngoài VSP 75Hz (`V2203H`)** (thiết bị test đã được bán; bản `v1.0.1-s22-a12` chỉ mới kiểm chứng build/unit test trên host & CI).
+> Phần lớn mã nguồn Java, script build/kiểm thử và bộ tài liệu này **được tạo hoặc hỗ trợ viết bởi Google Antigravity** (chi tiết phạm vi & tình trạng kiểm thử tại [AI_CONTRIBUTIONS.md](docs/vi/AI_CONTRIBUTIONS.md)), và mới được con người kiểm thử thực tế trước đây trên **duy nhất 1 thiết bị Samsung Galaxy S22 Exynos (`SM-S901B`) chạy Android 12 / One UI 4.1 với màn hình ngoài VSP 75Hz (`V2203H`)** (thiết bị test đã được bán; bản `v1.0.2-s22-a12` chỉ mới kiểm chứng build/unit test trên host & CI).
 > Người duy trì không thể kiểm toán thủ công toàn bộ từng nhánh mã nguồn cho mọi cấu hình ROM/màn hình khác nhau. Nếu bạn muốn đóng góp code, hãy đọc kỹ [quy định chống AI Slop](docs/vi/CONTRIBUTING.md#quy-định-về-ai-và-chống-ai-slop) trước khi gửi Pull Request.
 
 > [!WARNING]

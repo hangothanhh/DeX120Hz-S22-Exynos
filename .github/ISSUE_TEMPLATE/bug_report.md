@@ -11,7 +11,7 @@ assignees: ''
 > Before pasting logs, use **Chạy chẩn đoán (Run Diagnostics) → Copy Log** inside the app and **inspect manually** to guarantee zero Serial, IMEI, MAC, private IP, or Token leakage.
 
 ## 1. Environment Details
-- **`DeX 120Hz S22` version:** (e.g., `v1.0.1-s22-a12`)
+- **`DeX 120Hz S22` version:** (e.g., `v1.0.2-s22-a12`)
 - **Device model:** (e.g., `SM-S901B`)
 - **Android / One UI version:** (e.g., `Android 12 / One UI 4.1`)
 - **Root / Zygisk / LSPosed stack:** (e.g., `KernelSU temproot + ReZygisk + LSPosed ...`)

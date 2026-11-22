@@ -8,6 +8,13 @@ All notable changes to **DeX 120Hz S22** (`com.dex120.s22`) are documented in th
 
 ## [Unreleased]
 
+---
+
+## [v1.0.2-s22-a12] - 2026-11-23 (Pre-release)
+
+First release signed with the dedicated off-repo `dex120-release` key and shipped with SLSA build provenance. No change to Xposed hook logic.
+
+
 ### Added
 - Added `SPDX-License-Identifier: GPL-3.0-only` copyright headers across all Java source files (`app/`, `stubs/`, `tests/`) and build/verification scripts (`build.ps1`, `build.sh`, `scripts/verify_apk.py`), enforced automatically in CI.
 - Added pure-Java unit test suite `tests/HookLogicTest.java` (covering `DpSysfsHook.maskDexWriteValue`, `DpSysfsHook.isPassthroughDpCommand`, `DpSysfsHook.parseIntSafe`, `Config.sanitizeTargetHz`, reflection helpers, and `ModuleStatus`) and expanded `tests/SanitizerTest.java`, wired into `scripts/verify_apk.py`.
@@ -20,9 +27,12 @@ All notable changes to **DeX 120Hz S22** (`com.dex120.s22`) are documented in th
 - Promoted **English** to the primary default language across `README.md`, all root governance/audit documents, all 7 guides under `docs/`, all 4 `.github/` issue/PR templates, and release notes; relocated Vietnamese mirrors cleanly to `README.vi.md` and `docs/vi/`.
 - Removed redundant `README.en.md` after promoting it to `README.md`.
 - Set GitHub repository topics, `delete_branch_on_merge: true`, and added a `SUPERSEDED HISTORICAL SNAPSHOT` banner to the legacy `v1.0.0-s22-a12` release notes.
+- Bumped `versionCode` to `3` and `versionName` to `1.0.2-s22-a12`.
+- Release APK is signed by `.github/workflows/release.yml` with the dedicated release keystore; users upgrading from debug-signed `v1.0.1-s22-a12` must uninstall it first.
 
 ### Security
 - Enabled GitHub **Private Vulnerability Reporting**, **Secret Scanning**, **Secret Scanning Push Protection**, **Dependabot Alerts & Security Updates**, Actions **`sha_pinning_required: true`**, and active Repository Ruleset **`Protect main branch`** (`#27848863`: blocks deletion and non-fast-forward pushes, requires PR + `build-and-verify` status check, with `RepositoryRole` admin bypass).
+- Release assets carry SLSA build provenance (verify with `gh attestation verify`).
 
 ---
 

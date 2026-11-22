@@ -17,6 +17,7 @@ Because of `system` (`UID 1000`) and `root` execution privileges, any defect in 
 
 | Version | License | Support Status | Verification Notes |
 | :--- | :--- | :--- | :--- |
+| `v1.0.2-s22-a12` (`Pre-release`) | `GNU GPL v3.0` | Active (`Experimental`) | First build signed with the dedicated `dex120-release` key via `release.yml`, with SLSA provenance. Host + CI verified only; not re-tested on device (test phone sold). |
 | `v1.0.1-s22-a12` (`Pre-release`) | `GNU GPL v3.0` | Active (`Experimental`) | Built & unit-tested on Windows host + Ubuntu CI; prior 75Hz runtime verified on `SM-S901B`, but physical test device has been sold so `v1.0.1` has not been re-tested on device. |
 | `v1.0.0-s22-a12` (`b10d6e9`) | `MIT` (legacy snapshot) | Unsupported / Superseded | Historical pre-GPL-3.0 tag retained intact for Git history integrity. |
 

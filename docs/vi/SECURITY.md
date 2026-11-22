@@ -17,6 +17,7 @@ Do đặc quyền `system` (UID `1000`) và `root`, mọi lỗ hổng trong code
 
 | Phiên bản | Giấy phép | Trạng thái hỗ trợ | Ghi chú kiểm chứng |
 | :--- | :--- | :--- | :--- |
+| `v1.0.2-s22-a12` (`Pre-release`) | `GNU GPL v3.0` | Đang duy trì (Experimental) | Bản đầu tiên ký bằng khóa `dex120-release` qua `release.yml`, kèm chứng thực SLSA. Chỉ xác minh host + CI; chưa test lại trên máy thật (máy test đã bán). |
 | `v1.0.1-s22-a12` (`Pre-release`) | `GNU GPL v3.0` | Đang duy trì (Experimental) | Build & unit test đã xác minh trên host Windows + Ubuntu CI; máy test `SM-S901B` đã bán nên chưa test lại trực tiếp trên máy thật. |
 | `v1.0.0-s22-a12` (`b10d6e9`) | `MIT` (snapshot cũ) | Ngừng hỗ trợ / Đã thay thế | Snapshot lịch sử trước khi chuyển giấy phép sang `GPL-3.0`; giữ nguyên tag để bảo toàn lịch sử Git. |
 
