@@ -96,3 +96,10 @@ Sử dụng chuẩn [Conventional Commits](https://www.conventionalcommits.org/)
 
 ### 7. Tạo Pull Request
 Điền đầy đủ tất cả các mục trong `.github/PULL_REQUEST_TEMPLATE.md`, bao gồm thiết bị test thật (model, phiên bản Android/One UI, kernel, LSPosed/Root stack), log đã ẩn danh và đánh giá khả năng rollback.
+
+---
+
+## Quy tắc ứng xử & Cấp phép đóng góp (Contributor Licensing)
+
+- Mọi hoạt động trao đổi tuân theo [Code of Conduct](../../CODE_OF_CONDUCT.md).
+- **Nguyên tắc Inbound = Outbound (`GPL-3.0-only`):** Khi gửi Pull Request hoặc bản vá tới repository này, bạn xác nhận mình có quyền hợp pháp đối với mã nguồn đóng góp và đồng ý cấp phép đóng góp đó cho dự án cùng người dùng theo giấy phép **`GNU GPL v3.0`** ([LICENSE](../../LICENSE)). Mọi tệp `.java` hoặc script build/kiểm thử mới thêm vào phải có header `SPDX-License-Identifier: GPL-3.0-only`.

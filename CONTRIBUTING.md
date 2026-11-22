@@ -96,3 +96,10 @@ Use concise [Conventional Commits](https://www.conventionalcommits.org/):
 
 ### 7. Open a Pull Request
 Complete every section of `.github/PULL_REQUEST_TEMPLATE.md`, including physical test hardware details (device model, Android/One UI build, kernel, LSPosed/Root stack), sanitized logs, and rollback instructions.
+
+---
+
+## Code of Conduct & Contributor Licensing
+
+- Participation is governed by our [Code of Conduct](CODE_OF_CONDUCT.md).
+- **Inbound = Outbound Licensing (`GPL-3.0-only`):** By submitting a Pull Request or patch to this repository, you confirm that you have the right to contribute the work and agree that your contribution is licensed to the project and all downstream users under **`GNU GPL v3.0`** ([LICENSE](LICENSE)). Any new `.java` source file or build/test script must carry the `SPDX-License-Identifier: GPL-3.0-only` header.

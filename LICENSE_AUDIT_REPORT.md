@@ -31,9 +31,10 @@ Technical compliance audit covering source provenance (Phase 2) and open-source 
    - At owner direction, the repository switched cleanly to `GNU GPL v3.0` (`ba065a0`, originally `8509725`), eliminating copyleft compatibility ambiguity.
 3. **Historical Tag `v1.0.0-s22-a12` (`b10d6e9`):**
    - Created before the `MIT` → `GPL-3.0` transition.
-   - To preserve Git history integrity without deleting published release tags, `v1.0.0-s22-a12` remains untouched as an archived pre-GPL snapshot and is explicitly marked `Superseded` in `SECURITY.md` and `CHANGELOG.md`, superseded by `v1.0.1-s22-a12` (`GPL-3.0`).
-4. **Bundled APK Dependencies:** **0 third-party libraries** (`dependencies: []` in `SBOM.cdx.json`). No static or dynamic linking conflicts with proprietary or incompatible open-source code exist.
-5. **DEX & Packaging Verification:** `scripts/verify_apk.py` confirms that `out/DeX120Hz-S22.apk` contains only `com/dex120/s22/` classes (`59 class_defs`, `0` Xposed stubs) alongside `AndroidManifest.xml`, `assets/xposed_init`, `resources.arsc`, and `META-INF/*`.
+   - To preserve Git history integrity without deleting published release tags, `v1.0.0-s22-a12` remains untouched as an archived pre-GPL snapshot, now carries an explicit `SUPERSEDED HISTORICAL SNAPSHOT` banner at the top of its release notes redirecting users to `v1.0.1-s22-a12` (`GPL-3.0`), and is marked `Superseded` in `SECURITY.md` and `CHANGELOG.md`.
+4. **Source File SPDX Headers & Contributor Terms:** All 18 `.java` files (`app/`, `stubs/`, `tests/`) and all 3 build/verify scripts (`build.ps1`, `build.sh`, `scripts/verify_apk.py`) carry explicit `SPDX-License-Identifier: GPL-3.0-only` headers (enforced automatically by CI), and `CONTRIBUTING.md` specifies **Inbound = Outbound (`GPL-3.0-only`)** licensing for contributions.
+5. **Bundled APK Dependencies:** **0 third-party libraries** (`dependencies: []` in `SBOM.cdx.json`). No static or dynamic linking conflicts with proprietary or incompatible open-source code exist.
+6. **DEX & Packaging Verification:** `scripts/verify_apk.py` confirms that `out/DeX120Hz-S22.apk` contains only `com/dex120/s22/` classes (`59 class_defs`, `0` Xposed stubs) alongside `AndroidManifest.xml`, `assets/xposed_init`, `resources.arsc`, and `META-INF/*`.
 
 ---
 

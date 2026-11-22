@@ -8,13 +8,19 @@ All notable changes to **DeX 120Hz S22** (`com.dex120.s22`) are documented in th
 
 ## [Unreleased]
 
+### Added
+- Added `SPDX-License-Identifier: GPL-3.0-only` copyright headers across all Java source files (`app/`, `stubs/`, `tests/`) and build/verification scripts (`build.ps1`, `build.sh`, `scripts/verify_apk.py`), enforced automatically in CI.
+- Added pure-Java unit test suite `tests/HookLogicTest.java` (covering `DpSysfsHook.maskDexWriteValue`, `DpSysfsHook.isPassthroughDpCommand`, `DpSysfsHook.parseIntSafe`, `Config.sanitizeTargetHz`, reflection helpers, and `ModuleStatus`) and expanded `tests/SanitizerTest.java`, wired into `scripts/verify_apk.py`.
+- Added community health and governance files: `CODE_OF_CONDUCT.md`, `.github/CODEOWNERS`, `.github/ISSUE_TEMPLATE/config.yml`, `.github/dependabot.yml`, repository status badges in `README*.md`, and an Inbound = Outbound `GPL-3.0-only` contributor clause in `CONTRIBUTING.md`.
+- Added `.github/workflows/codeql.yml` (CodeQL SAST scanning for `java-kotlin` and `actions` using SHA-pinned `github/codeql-action` v4).
+
 ### Changed
 - Promoted **English** to the primary default language across `README.md`, all root governance/audit documents, all 7 guides under `docs/`, all 4 `.github/` issue/PR templates, and release notes; relocated Vietnamese mirrors cleanly to `README.vi.md` and `docs/vi/`.
 - Removed redundant `README.en.md` after promoting it to `README.md`.
+- Set GitHub repository topics, `delete_branch_on_merge: true`, and added a `SUPERSEDED HISTORICAL SNAPSHOT` banner to the legacy `v1.0.0-s22-a12` release notes.
 
 ### Security
-- Enabled GitHub Actions **`sha_pinning_required: true`** at the repository settings level (`hangothanhh/DeX120Hz-S22-Exynos`).
-- Activated GitHub Repository Ruleset **`Protect main branch`** (`#27848863`: blocks branch deletion and non-fast-forward force-pushes, requires Pull Request reviews/workflow and passing `build-and-verify` status check, with `RepositoryRole` admin bypass).
+- Enabled GitHub **Private Vulnerability Reporting**, **Secret Scanning**, **Secret Scanning Push Protection**, **Dependabot Alerts & Security Updates**, Actions **`sha_pinning_required: true`**, and active Repository Ruleset **`Protect main branch`** (`#27848863`: blocks deletion and non-fast-forward pushes, requires PR + `build-and-verify` status check, with `RepositoryRole` admin bypass).
 
 ---
 

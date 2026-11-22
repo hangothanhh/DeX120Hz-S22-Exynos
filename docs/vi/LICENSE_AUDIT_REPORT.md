@@ -31,9 +31,10 @@ Báo cáo kiểm toán kỹ thuật về nguồn gốc mã nguồn (Phase 2) và
    - Chủ sở hữu (`hangothanhh`) đã chủ động quyết định chuyển toàn bộ repository sang `GNU GPL v3.0` (commit `ba065a0`, nguyên gốc `8509725`), loại bỏ nguy cơ bất tương thích giấy phép về sau.
 3. **Mốc lịch sử `v1.0.0-s22-a12` (`b10d6e9`):**
    - Tag/Pre-release `v1.0.0-s22-a12` được tạo tại commit `b10d6e9` khi repository còn đang mang file `LICENSE` bản `MIT`.
-   - Theo quyết định của chủ sở hữu và nguyên tắc bảo toàn lịch sử Git (không xóa tag hay viết lại commit phát hành đã công bố), tag `v1.0.0-s22-a12` được giữ nguyên như một snapshot lịch sử và được đánh dấu `Superseded` trong `SECURITY.md`, nhường chỗ cho bản phát hành `v1.0.1-s22-a12` chuẩn `GPL-3.0`.
-4. **Dependency đóng gói bên trong APK:** **0 thư viện bên thứ ba** (`dependencies: []` trong `SBOM.cdx.json`). Không có vấn đề static/dynamic linking với mã độc quyền hay thư viện trái phép.
-5. **Thử nghiệm & Xác minh biên dịch:** `scripts/verify_apk.py` xác nhận APK đầu ra chỉ chứa `com/dex120/s22/` trong `classes.dex` và chứa đầy đủ `AndroidManifest.xml`, `assets/xposed_init`, `resources.arsc`, `META-INF/*`.
+   - Theo quyết định của chủ sở hữu và nguyên tắc bảo toàn lịch sử Git (không xóa tag hay viết lại commit phát hành đã công bố), tag `v1.0.0-s22-a12` được giữ nguyên như một snapshot lịch sử, đã bổ sung banner **`SUPERSEDED HISTORICAL SNAPSHOT`** ngay đầu trang Release hướng dẫn người dùng tải `v1.0.1-s22-a12` (`GPL-3.0`), và được đánh dấu `Superseded` trong `SECURITY.md`.
+4. **Header SPDX trong mã nguồn & Điều khoản đóng góp:** Toàn bộ `18` tệp `.java` (`app/`, `stubs/`, `tests/`) và `3` script (`build.ps1`, `build.sh`, `scripts/verify_apk.py`) đều đã gắn header `SPDX-License-Identifier: GPL-3.0-only` (được CI kiểm tra tự động), và `CONTRIBUTING.md` quy định rõ nguyên tắc **Inbound = Outbound (`GPL-3.0-only`)**.
+5. **Dependency đóng gói bên trong APK:** **0 thư viện bên thứ ba** (`dependencies: []` trong `SBOM.cdx.json`). Không có vấn đề static/dynamic linking với mã độc quyền hay thư viện trái phép.
+6. **Thử nghiệm & Xác minh biên dịch:** `scripts/verify_apk.py` xác nhận APK đầu ra chỉ chứa `com/dex120/s22/` trong `classes.dex` và chứa đầy đủ `AndroidManifest.xml`, `assets/xposed_init`, `resources.arsc`, `META-INF/*`.
 
 ---
 

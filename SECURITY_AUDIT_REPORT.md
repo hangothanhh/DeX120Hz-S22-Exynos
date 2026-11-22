@@ -27,7 +27,8 @@ Security, privacy, software supply-chain audit (Phase 4), GitHub ownership/acces
 | :--- | :--- | :--- | :--- |
 | Workflow `GITHUB_TOKEN` permissions | Implicit default (`read`) without workflow declaration | Explicit top-level `permissions: contents: read` (least privilege) | **PASS** |
 | GitHub Actions pinning | Mutable version tags (`@v4`, `@v5`) | All actions pinned to immutable **Commit SHAs** (`actions/checkout` v7.0.1, `setup-java` v6.3.0, `setup-python` v7.1.0, `upload-artifact` v7.0.2) + repo-level **`sha_pinning_required: true`** | **PASS** |
-| Automated compliance checks | Keystore check + `bash -n build.sh` | Added `LICENSE` GPL-3.0 check, `SBOM.cdx.json` JSON validation, and static token literal rejection | **PASS** |
+| Automated compliance checks | Keystore check + `bash -n build.sh` | Added `LICENSE` GPL-3.0 check, `SBOM.cdx.json` JSON validation, static token literal rejection, and `SPDX-License-Identifier: GPL-3.0-only` header verification across all `.java` & build/test scripts | **PASS** |
+| SAST & Dependency Automation | None | Added `CodeQL` workflow (`java-kotlin` + `actions`) & `.github/dependabot.yml` (`github-actions` monthly) | **PASS** |
 | Line endings & file modes | `build.sh` & `scripts/verify_apk.py` tracked as `100644` without `.gitattributes` | Added `.gitattributes` (`LF` default, `CRLF` for `*.ps1`) and set executable mode `100755` on `build.sh` & `scripts/verify_apk.py` | **PASS** |
 | Third-party SBOM | None | Added CycloneDX `1.5` `SBOM.cdx.json` (`0` bundled runtime dependencies; build/CI tools recorded as `excluded`) | **PASS** |
 
@@ -35,9 +36,13 @@ Security, privacy, software supply-chain audit (Phase 4), GitHub ownership/acces
 
 ## 3. GitHub Ownership & Repository Access Controls (Phase 5)
 
-- **Owner:** `hangothanhh` (`admin: true`), outside collaborators: **0**.
+- **Owner:** `hangothanhh` (`admin: true`), outside collaborators: **0** (`.github/CODEOWNERS`: `* @hangothanhh`).
 - **Deploy keys / Webhooks:** **0**.
-- **GitHub Actions repository settings:** `enabled: true`, `allowed_actions: all`, **`sha_pinning_required: true`**, `default_workflow_permissions: read`.
+- **GitHub Security & Analysis features enabled:**
+  - **Private Vulnerability Reporting:** Enabled (`enabled: true`).
+  - **Secret Scanning & Push Protection:** Both `enabled` at repository level.
+  - **Dependabot Alerts & Automated Security Updates:** Both `enabled` (`status: enabled`) + `.github/dependabot.yml`.
+  - **GitHub Actions repository settings:** `enabled: true`, `allowed_actions: all`, **`sha_pinning_required: true`**, `default_workflow_permissions: read`, `delete_branch_on_merge: true`.
 - **Active Branch Protection / Ruleset (`Protect main branch` — Ruleset `#27848863`):**
   - Target: `~DEFAULT_BRANCH` (`main`), `enforcement: active`.
   - Rules enforced: `deletion` blocked, `non_fast_forward` (force-push) blocked, `pull_request` required, and status check **`build-and-verify`** required (`RepositoryRole` admin `actor_id: 5` allowed `always` bypass for owner maintenance).
@@ -49,7 +54,7 @@ Security, privacy, software supply-chain audit (Phase 4), GitHub ownership/acces
 | Severity | Item | Honest Assessment & Mitigation |
 | :--- | :--- | :--- |
 | **MEDIUM** | APK signed with `debug.keystore` | Appropriate for open-source `Pre-release / Experimental` builds; users should verify the published `SHA-256` checksum or build from source. If later promoted to a broad `Stable` release, the owner should generate a dedicated offline release keystore outside the repo. |
-| **INFO** | `v1.0.1-s22-a12` not re-tested on device | The `SM-S901B` test phone has been sold. Runtime Xposed hooks are identical to the previously live-verified 75Hz build; `v1.0.1-s22-a12` is verified via host build, `apksigner`, `verify_apk.py`, `SanitizerTest`, and Ubuntu CI only. |
+| **INFO** | `v1.0.1-s22-a12` not re-tested on device | The `SM-S901B` test phone has been sold. Runtime Xposed hooks are identical to the previously live-verified 75Hz build; `v1.0.1-s22-a12` and later pure-Java helper tests (`HookLogicTest`) are verified via host build, `apksigner`, `verify_apk.py`, `SanitizerTest`, and Ubuntu CI only. |
 | **INFO** | Privileged `Root` + `system_server` architecture | Inherent to LSPosed display-mode hooking; prominently warned in `README.md`, `SECURITY.md`, and `docs/recovery.md`. |
 
 ---
@@ -60,18 +65,18 @@ Security, privacy, software supply-chain audit (Phase 4), GitHub ownership/acces
 | :---: | :--- | :--- |
 | 1 | Clean Git status & commit history | **PASS** (`Co-authored-by` misattribution to `antigravity-google-bot` removed cleanly; zero untracked secrets) |
 | 2 | Verified source code provenance | **PASS** (0 `SOURCE_UNKNOWN`) |
-| 3 | Ownership & contributor clarity | **PASS** (`hangothanhh` sole commit author; AI scope separated into `AI_CONTRIBUTIONS.md`) |
-| 4 | Open-source license compatibility | **PASS** (`GNU GPL v3.0` aligned with `OnigiriDeX`, `LSPosed`, `KernelSU`) |
+| 3 | Ownership & contributor clarity | **PASS** (`hangothanhh` sole commit author; `.github/CODEOWNERS`; AI scope separated into `AI_CONTRIBUTIONS.md`) |
+| 4 | Open-source license compatibility | **PASS** (`GNU GPL v3.0`, 100% SPDX headers on `.java` & scripts, Inbound=Outbound clause) |
 | 5 | Dependency audit & SBOM | **PASS** (0 bundled runtime deps; `THIRD_PARTY_NOTICES.md` & `SBOM.cdx.json`) |
 | 6 | Non-code asset rights | **PASS** (0 third-party media/binaries) |
 | 7 | Trademark disclaimers | **PASS** (`NOTICE`, `THIRD_PARTY_NOTICES.md`, `README.md`, `README.vi.md`) |
-| 8 | Secret & history scan | **PASS** (0 leaks in working tree or commit history) |
-| 9 | Privacy & PII protection | **PASS** (`RootShell.sanitizeDiagnostics` verified via `SanitizerTest`) |
-| 10 | CI/CD & GitHub Ruleset security | **PASS** (`permissions: contents: read`, repo `sha_pinning_required: true`, active Ruleset `#27848863`) |
+| 8 | Secret & history scan | **PASS** (0 leaks in history + GitHub Secret Scanning & Push Protection enabled) |
+| 9 | Privacy & PII protection | **PASS** (`RootShell.sanitizeDiagnostics` verified via `SanitizerTest` + Private Vulnerability Reporting enabled) |
+| 10 | CI/CD & GitHub Ruleset security | **PASS** (`permissions: contents: read`, repo `sha_pinning_required: true`, active Ruleset `#27848863`, `CodeQL`, Dependabot) |
 | 11 | Authentic AI attribution (Phase 6) | **PASS** (`ANTIGRAVITY_IDENTITY_UNVERIFIED` recorded transparently; no unverified bot attribution) |
 | 12 | Conventional Commits & `.gitattributes` | **PASS** (atomic commits, `100755` executable bits on `build.sh` & `verify_apk.py`) |
-| 13 | Bilingual repository documentation | **PASS** (English-first primary docs + complete `README.vi.md` & `docs/vi/` Vietnamese mirrors) |
-| 14 | Build & test verification | **PASS (HOST & CI)** / **NOT_VERIFIED_ON_DEVICE** (test device `SM-S901B` sold) |
+| 13 | Bilingual repository & Community Profile | **PASS** (`CODE_OF_CONDUCT.md`, `.github/ISSUE_TEMPLATE/config.yml`, English-first docs + `README.vi.md` & `docs/vi/`) |
+| 14 | Build & test verification | **PASS (HOST & CI)** / **NOT_VERIFIED_ON_DEVICE** (`SanitizerTest` + `HookLogicTest` passing on host & CI; test device `SM-S901B` sold) |
 | 15 | Changelog, SBOM & Pre-release tags | **PASS** (`v1.0.1-s22-a12` with APK, `.sha256`, `SBOM.cdx.json`) |
 
 ### Overall Verdict: **`CONDITIONAL GO`**

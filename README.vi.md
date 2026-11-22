@@ -1,5 +1,11 @@
 # DeX 120Hz S22
 
+[![Build and Verify APK](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/actions/workflows/ci.yml/badge.svg)](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/actions/workflows/codeql.yml/badge.svg)](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/actions/workflows/codeql.yml)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+![Release: Pre-release](https://img.shields.io/badge/Release-Pre--release-orange.svg)
+![Target: S22 Exynos A12](https://img.shields.io/badge/Target-S22%20Exynos%20Android%2012-brightgreen.svg)
+
 **Ngôn ngữ / Language:** [English](README.md) | **Tiếng Việt**
 
 Module **LSPosed** và ứng dụng điều khiển đi kèm giúp mở khóa tần số quét cao (trên 60Hz, tối đa 120Hz tùy màn hình và cáp) cho **Samsung DeX** — áp dụng riêng cho **Samsung Galaxy S22 Exynos (`SM-S901B` / `s5e9925`) chạy Android 12 / One UI 4.1 đã root**.
@@ -221,7 +227,7 @@ Script ký bằng khóa debug nội bộ (`debug.keystore` tự sinh nếu chưa
 ## Hỗ trợ, Đóng góp & Giấy phép
 
 - Gặp lỗi? Vui lòng bấm **Chạy chẩn đoán → Copy Log** trong app (log đã tự ẩn Serial, IMEI, MAC, IP nội bộ và Token — nhưng bạn vẫn nên đọc lướt lại trước khi dán) và mở Issue tại [GitHub Issues](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/issues/new/choose).
-- Muốn đóng góp? Đọc [CONTRIBUTING.md](docs/vi/CONTRIBUTING.md) và [SECURITY.md](docs/vi/SECURITY.md) trước khi tạo Pull Request.
+- Muốn đóng góp? Đọc [CONTRIBUTING.md](docs/vi/CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) và [SECURITY.md](docs/vi/SECURITY.md) trước khi tạo Pull Request.
 - Minh bạch AI & hồ sơ tuân thủ: [AI_CONTRIBUTIONS.md](docs/vi/AI_CONTRIBUTIONS.md) · [THIRD_PARTY_NOTICES.md](docs/vi/THIRD_PARTY_NOTICES.md) · [LICENSE_AUDIT_REPORT.md](docs/vi/LICENSE_AUDIT_REPORT.md) · [SECURITY_AUDIT_REPORT.md](docs/vi/SECURITY_AUDIT_REPORT.md) · [SBOM (CycloneDX)](SBOM.cdx.json).
 - Giấy phép mã nguồn mở: [GNU GPL v3.0](LICENSE) · Ghi công & lưu ý bên thứ ba: [NOTICE](NOTICE).
 - **Tuyên bố nhãn hiệu:** Samsung, Galaxy S22, Samsung DeX, One UI, Exynos là nhãn hiệu của Samsung Electronics Co., Ltd.; Android, Google, Antigravity là nhãn hiệu của Google LLC. Dự án này độc lập và không liên kết hay được bảo trợ bởi các đơn vị trên.

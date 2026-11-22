@@ -8,12 +8,19 @@ Mọi thay đổi đáng chú ý của dự án **DeX 120Hz S22** (`com.dex120.s
 
 ## [Unreleased]
 
+### Added
+- Thêm header bản quyền `SPDX-License-Identifier: GPL-3.0-only` vào toàn bộ tệp `.java` (`app/`, `stubs/`, `tests/`) và các script (`build.ps1`, `build.sh`, `scripts/verify_apk.py`), kèm bước kiểm tra tự động trong CI.
+- Thêm bộ unit test thuần Java `tests/HookLogicTest.java` (kiểm tra `DpSysfsHook.maskDexWriteValue`, `isPassthroughDpCommand`, `parseIntSafe`, `Config.sanitizeTargetHz`, reflection helpers và `ModuleStatus`) cùng các case mở rộng trong `tests/SanitizerTest.java`, tích hợp trực tiếp vào `scripts/verify_apk.py`.
+- Bổ sung `CODE_OF_CONDUCT.md`, `.github/CODEOWNERS`, `.github/ISSUE_TEMPLATE/config.yml`, `.github/dependabot.yml`, thanh badges trên `README*.md`, và điều khoản Inbound = Outbound (`GPL-3.0-only`) trong `CONTRIBUTING.md`.
+- Thêm workflow `.github/workflows/codeql.yml` (quét CodeQL SAST cho `java-kotlin` và `actions`, ghim commit SHA `github/codeql-action` v4).
+
 ### Changed
 - Chuyển ngôn ngữ mặc định (primary language) sang **tiếng Anh** cho `README.md`, toàn bộ tài liệu gốc, 7 hướng dẫn trong `docs/`, 4 mẫu `.github/` và ghi chú phát hành; lưu bản dịch tiếng Việt đầy đủ tại `README.vi.md` và `docs/vi/`.
 - Chuyển `README.en.md` thành `README.md` chính.
+- Thiết lập GitHub Topics, bật `delete_branch_on_merge: true`, và gắn banner **`SUPERSEDED HISTORICAL SNAPSHOT`** lên bản release lịch sử `v1.0.0-s22-a12`.
 
 ### Security
-- Bật **`sha_pinning_required: true`** trên GitHub Actions của repository và kích hoạt Repository Ruleset **`Protect main branch`** (`#27848863`: chặn xóa nhánh/force-push, yêu cầu PR + status check `build-and-verify`).
+- Bật đồng bộ các tính năng bảo mật của GitHub: **Private Vulnerability Reporting**, **Secret Scanning**, **Secret Scanning Push Protection**, **Dependabot Alerts & Automated Security Fixes**, **`sha_pinning_required: true`** cho Actions và Repository Ruleset **`Protect main branch`** (`#27848863`: chặn xóa nhánh/force-push, yêu cầu PR + status check `build-and-verify`).
 
 ---
 

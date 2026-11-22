@@ -1,5 +1,11 @@
 # DeX 120Hz S22
 
+[![Build and Verify APK](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/actions/workflows/ci.yml/badge.svg)](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/actions/workflows/codeql.yml/badge.svg)](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/actions/workflows/codeql.yml)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+![Release: Pre-release](https://img.shields.io/badge/Release-Pre--release-orange.svg)
+![Target: S22 Exynos A12](https://img.shields.io/badge/Target-S22%20Exynos%20Android%2012-brightgreen.svg)
+
 **Language:** **English** | [Tiếng Việt](README.vi.md)
 
 An **LSPosed** module and companion control app that unlocks high-refresh-rate (>60Hz, up to 120Hz depending on monitor and cable) output for **Samsung DeX** — specifically built for a rooted **Samsung Galaxy S22 Exynos (`SM-S901B` / `s5e9925`) running Android 12 / One UI 4.1**.
@@ -209,7 +215,7 @@ By default, builds sign with a local ephemeral/debug keystore (`debug.keystore`,
 ## Support, Contributing & License
 
 - **Found a bug?** Run **Chạy chẩn đoán → Copy Log** in the app (Serial, IMEI, MAC, private IPs, and Tokens are auto-redacted — still review manually before sharing) and open a [GitHub Issue](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/issues/new/choose).
-- **Want to contribute?** Read [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md) before opening a Pull Request.
+- **Want to contribute?** Read [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), and [SECURITY.md](SECURITY.md) before opening a Pull Request.
 - **AI Transparency & Compliance:** [AI_CONTRIBUTIONS.md](AI_CONTRIBUTIONS.md) · [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) · [LICENSE_AUDIT_REPORT.md](LICENSE_AUDIT_REPORT.md) · [SECURITY_AUDIT_REPORT.md](SECURITY_AUDIT_REPORT.md) · [SBOM (CycloneDX)](SBOM.cdx.json).
 - **License:** [GNU GPL v3.0](LICENSE) · Third-party credits & notices: [NOTICE](NOTICE).
 - **Trademark Disclaimer:** Samsung, Galaxy S22, Samsung DeX, One UI, and Exynos are trademarks of Samsung Electronics Co., Ltd.; Android, Google, and Antigravity are trademarks of Google LLC. This project is independent and not affiliated with or endorsed by either company.

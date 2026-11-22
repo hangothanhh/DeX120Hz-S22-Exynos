@@ -50,6 +50,7 @@ Tài liệu này liệt kê toàn bộ dự án tham khảo, giao diện API, c�
 | `actions/setup-java` | `v6.3.0` | `d1374f8ac74474200d16ef8ecee22c7ae7a51880` | `MIT` |
 | `actions/setup-python` | `v7.1.0` | `6d4fd22b20465ccc0f7354476588e8df7c9ca0e0` | `MIT` |
 | `actions/upload-artifact` | `v7.0.2` | `cf430e030ddbb5b0abf93d22962f4752f3646cd9` | `MIT` |
+| `github/codeql-action` | `v4` | `1bd86f2fdb4b86187fa4059f16f31a3202acc9ea` | `MIT` |
 
 ---
 

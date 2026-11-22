@@ -180,6 +180,23 @@
         }
       ],
       "purl": "pkg:github/actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9"
+    },
+    {
+      "type": "application",
+      "bom-ref": "github/codeql-action@1bd86f2fdb4b86187fa4059f16f31a3202acc9ea",
+      "group": "github",
+      "name": "codeql-action",
+      "version": "v4",
+      "scope": "excluded",
+      "description": "GitHub CodeQL SAST workflow action for Java and Actions analysis pinned by commit SHA.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:github/github/codeql-action@1bd86f2fdb4b86187fa4059f16f31a3202acc9ea"
     }
   ],
   "dependencies": [
