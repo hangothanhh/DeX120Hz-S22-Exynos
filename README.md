@@ -14,7 +14,7 @@ Module **LSPosed** và ứng dụng điều khiển đi kèm giúp mở khóa t�
 
 > [!CAUTION]
 > **Minh bạch về đóng góp của AI & cảnh báo AI Slop:**
-> Phần lớn mã nguồn Java, script build/kiểm thử và bộ tài liệu này **được tạo hoặc hỗ trợ viết bởi AI**, và mới được con người kiểm thử thực tế một phần trên **duy nhất 1 thiết bị Samsung Galaxy S22 Exynos (`SM-S901B`) chạy Android 12 / One UI 4.1 với màn hình ngoài VSP 75Hz (`V2203H`)**.
+> Phần lớn mã nguồn Java, script build/kiểm thử và bộ tài liệu này **được tạo hoặc hỗ trợ viết bởi AI** (`Co-authored-by: Antigravity <antigravity@google.com>`), và mới được con người kiểm thử thực tế một phần trên **duy nhất 1 thiết bị Samsung Galaxy S22 Exynos (`SM-S901B`) chạy Android 12 / One UI 4.1 với màn hình ngoài VSP 75Hz (`V2203H`)**.
 > Người duy trì không thể kiểm toán thủ công toàn bộ từng nhánh mã nguồn cho mọi cấu hình ROM/màn hình khác nhau. Nếu bạn muốn đóng góp code, hãy đọc kỹ [quy định chống AI Slop](CONTRIBUTING.md#quy-định-về-ai-và-chống-ai-slop) trước khi gửi Pull Request.
 
 > [!WARNING]
@@ -220,4 +220,5 @@ Script ký bằng khóa debug nội bộ (`debug.keystore` tự sinh nếu chưa
 
 - Gặp lỗi? Vui lòng bấm **Chạy chẩn đoán → Copy Log** trong app (log đã tự ẩn Serial, IMEI, MAC, IP nội bộ và Token — nhưng bạn vẫn nên đọc lướt lại trước khi dán) và mở Issue tại [GitHub Issues](https://github.com/hangothanhh/DeX120Hz-S22/issues/new/choose).
 - Muốn đóng góp? Đọc [CONTRIBUTING.md](CONTRIBUTING.md) và [SECURITY.md](SECURITY.md) trước khi tạo Pull Request.
+- Đồng tác giả hỗ trợ AI (AI Co-author): `Co-authored-by: Antigravity <antigravity@google.com>` (chi tiết tại [NOTICE](NOTICE)).
 - Giấy phép mã nguồn mở: [MIT License](LICENSE) · Ghi công & lưu ý bên thứ ba: [NOTICE](NOTICE).

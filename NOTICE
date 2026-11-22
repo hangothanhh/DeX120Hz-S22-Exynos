@@ -8,6 +8,7 @@ License: MIT License (see LICENSE)
 --------------------------------------
 Most of the Java code, shell/PowerShell/Python scripts, CI workflows, and
 documentation in this repository were written or refactored with AI assistance.
+Co-authored-by: Antigravity <antigravity@google.com>
 Human verification so far has only been performed on a single Samsung Galaxy S22
 Exynos (SM-S901B, Android 12 / One UI 4.1) device with a 75Hz external monitor
 (VSP V2203H). Do NOT treat any part of this codebase as audited for arbitrary
