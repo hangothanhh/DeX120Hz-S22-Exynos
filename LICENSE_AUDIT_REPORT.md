@@ -1,49 +1,51 @@
 # License, Copyright & Provenance Audit Report
 
-Báo cáo kiểm toán kỹ thuật về nguồn gốc mã nguồn (Phase 2) và tuân thủ giấy phép mã nguồn mở (Phase 3) cho repository **DeX120Hz-S22-Exynos** (`com.dex120.s22`).
+**Language:** **English** | [Tiếng Việt](docs/vi/LICENSE_AUDIT_REPORT.md)
+
+Technical compliance audit covering source provenance (Phase 2) and open-source license compatibility (Phase 3) for **DeX120Hz-S22-Exynos** (`com.dex120.s22`).
 
 > [!IMPORTANT]
-> **Tuyên bố miễn trừ pháp lý (Legal Disclaimer):** Báo cáo này là kết quả kiểm toán kỹ thuật phục vụ quản trị dự án mã nguồn mở, **không phải tư vấn pháp lý chính thức (not formal legal counsel)**. Nếu dự án được sử dụng trong bối cảnh thương mại hoặc phân phối rộng rãi, chủ sở hữu nên tham vấn luật sư chuyên về sở hữu trí tuệ / mã nguồn mở.
+> **Legal Disclaimer:** This report summarizes a technical software-compliance audit conducted for open-source repository governance and **does not constitute formal legal counsel**. If you plan commercial distribution or derivative licensing beyond standard open-source reuse, consult qualified intellectual property counsel.
 
 ---
 
-## 1. Phân loại nguồn gốc mã nguồn (Phase 2 — Source Provenance)
+## 1. Source Origin & Provenance Inventory (Phase 2)
 
-| Đường dẫn / Thành phần | Phân loại | Tác giả / Nguồn gốc | Giấy phép | Tình trạng xác minh |
+| Repository Path / Component | Origin Classification | Author / Source | License | Verification Notes |
 | :--- | :--- | :--- | :--- | :--- |
-| `app/src/main/java/com/dex120/s22/*.java` & `xposed/*.java` | Original + AI-assisted | `hangothanhh` với hỗ trợ của Google Antigravity | `GPL-3.0-only` | Đã kiểm tra: chỉ dùng Java chuẩn + Android API công khai; khái niệm kỹ thuật lấy cảm hứng từ phân tích hành vi `SM-S901B` và kiến trúc patch của `Kinue72/OnigiriDeX` (không sao chép file nguồn) |
-| `stubs/de/robv/android/xposed/*.java` | Clean-room API signature stubs | Viết tối giản theo chữ ký API công khai của Xposed/LSPosed | `GPL-3.0-only` (tương thích runtime LSPosed) | Loại trừ hoàn toàn khỏi `classes.dex` khi build; được `scripts/verify_apk.py` xác nhận 0 lớp `de/robv/android/xposed/*` trong APK |
-| `app/src/main/AndroidManifest.xml`, `res/`, `assets/xposed_init` | Original | `hangothanhh` | `GPL-3.0-only` | Tự viết cho gói `com.dex120.s22` |
-| `build.ps1`, `build.sh`, `scripts/verify_apk.py`, `tests/SanitizerTest.java` | Original + AI-assisted | `hangothanhh` + Google Antigravity | `GPL-3.0-only` | Không nhúng nhị phân bên thứ ba; gọi công cụ Android SDK & JDK từ môi trường host/CI |
-| `README*.md`, `docs/*.md`, `CONTRIBUTING.md`, `SECURITY.md`, `CHANGELOG.md`, `NOTICE`, báo cáo tuân thủ | Original + AI-assisted | `hangothanhh` + Google Antigravity | `GPL-3.0-only` | Minh bạch vai trò AI và thiết bị test thật tại `AI_CONTRIBUTIONS.md` |
-| `LICENSE` | Verbatim upstream license text | Free Software Foundation (`GNU GPL v3.0`, 35.149 bytes) | `GPL-3.0-only` | Toàn văn nguyên bản GPL-3.0 |
-| `.github/workflows/ci.yml` | Original + GitHub Actions | `hangothanhh` / `actions/*` (`MIT`) | `GPL-3.0-only` (workflow file); Actions dùng `MIT` | Tất cả 4 official actions đều đã ghim commit SHA |
+| `app/src/main/java/com/dex120/s22/*.java` & `xposed/*.java` | Original + AI-assisted | `hangothanhh` with Google Antigravity assistance | `GPL-3.0-only` | Uses standard Java + public Android APIs only; design informed by `SM-S901B` firmware analysis and `Kinue72/OnigiriDeX` patch concepts without copying upstream files verbatim |
+| `stubs/de/robv/android/xposed/*.java` | Clean-room API signature stubs | Minimal method signatures matching public Xposed/LSPosed API | `GPL-3.0-only` (LSPosed runtime compatibility) | Excluded from `classes.dex` during packaging; verified by `scripts/verify_apk.py` (`0` Xposed stub classes in APK) |
+| `app/src/main/AndroidManifest.xml`, `res/`, `assets/xposed_init` | Original | `hangothanhh` | `GPL-3.0-only` | Authored specifically for `com.dex120.s22` |
+| `build.ps1`, `build.sh`, `scripts/verify_apk.py`, `tests/SanitizerTest.java` | Original + AI-assisted | `hangothanhh` + Google Antigravity | `GPL-3.0-only` | No bundled third-party binaries; invokes local/CI Android SDK & JDK toolchain |
+| `README*.md`, `docs/**/*.md`, `CONTRIBUTING.md`, `SECURITY.md`, `CHANGELOG.md`, `NOTICE`, compliance reports | Original + AI-assisted | `hangothanhh` + Google Antigravity | `GPL-3.0-only` | AI scope & physical verification limits documented in `AI_CONTRIBUTIONS.md` |
+| `LICENSE` | Verbatim upstream text | Free Software Foundation (`GNU GPL v3.0`, 35,149 bytes) | `GPL-3.0-only` | Exact verbatim GNU GPL v3.0 license text |
+| `.github/workflows/ci.yml` | Original + GitHub Actions | `hangothanhh` / `actions/*` (`MIT`) | `GPL-3.0-only` (workflow file); Actions are `MIT` | All 4 official GitHub Actions pinned to exact commit SHAs |
 
 ---
 
-## 2. Xác minh tương thích giấy phép (Phase 3 — License Compatibility)
+## 2. Open-Source License Compatibility Analysis (Phase 3)
 
-1. **Giấy phép dự án:** **`GNU General Public License v3.0` (`GPL-3.0-only`)**, khớp với metadata trên GitHub (`licenseInfo: gpl-3.0`).
-2. **Xung đột lịch sử trước đó (ĐÃ XỬ LÝ):**
-   - Bản nháp đầu dùng giấy phép `MIT` trong khi thiết kế tham khảo `Kinue72/OnigiriDeX` (`GPL-3.0`) và chạy trong hệ sinh thái Xposed/LSPosed (`GPL-3.0`) + KernelSU (`GPL-3.0`).
-   - Chủ sở hữu (`hangothanhh`) đã chủ động quyết định chuyển toàn bộ repository sang `GNU GPL v3.0` (commit `ba065a0`, nguyên gốc `8509725`), loại bỏ nguy cơ bất tương thích giấy phép về sau.
-3. **Mốc lịch sử `v1.0.0-s22-a12` (`b10d6e9`):**
-   - Tag/Pre-release `v1.0.0-s22-a12` được tạo tại commit `b10d6e9` khi repository còn đang mang file `LICENSE` bản `MIT`.
-   - Theo quyết định của chủ sở hữu và nguyên tắc bảo toàn lịch sử Git (không xóa tag hay viết lại commit phát hành đã công bố), tag `v1.0.0-s22-a12` được giữ nguyên như một snapshot lịch sử và được đánh dấu `Superseded` trong `SECURITY.md`, nhường chỗ cho bản phát hành `v1.0.1-s22-a12` chuẩn `GPL-3.0`.
-4. **Dependency đóng gói bên trong APK:** **0 thư viện bên thứ ba** (`dependencies: []` trong `SBOM.cdx.json`). Không có vấn đề static/dynamic linking với mã độc quyền hay thư viện trái phép.
-5. **Thử nghiệm & Xác minh biên dịch:** `scripts/verify_apk.py` xác nhận APK đầu ra chỉ chứa `com/dex120/s22/` trong `classes.dex` và chứa đầy đủ `AndroidManifest.xml`, `assets/xposed_init`, `resources.arsc`, `META-INF/*`.
-
----
-
-## 3. Kiểm tra tài sản phi mã nguồn & Nhãn hiệu
-
-- **Non-code assets:** **0** ảnh, icon ngoài, font thương mại, video, audio, dataset hay nhị phân trích xuất từ ROM/firmware Samsung được lưu trong repository.
-- **Trademarks:** Tên sản phẩm `Samsung`, `Galaxy S22`, `Samsung DeX`, `One UI`, `Exynos`, `Android`, `Google`, `Antigravity` chỉ xuất hiện nhằm mô tả phạm vi kỹ thuật; đã có tuyên bố miễn trừ liên kết (Trademark Disclaimer) tại `NOTICE`, `THIRD_PARTY_NOTICES.md`, `README.md` và `README.en.md`.
+1. **Primary Project License:** **`GNU General Public License v3.0` (`GPL-3.0-only`)**, matching GitHub repository metadata (`licenseInfo: gpl-3.0`).
+2. **Historical Conflict Resolution (RESOLVED):**
+   - Initial commits started under `MIT`, while the module shares architectural design concepts with `Kinue72/OnigiriDeX` (`GPL-3.0`) and runs inside the `LSPosed` (`GPL-3.0`) + `KernelSU` (`GPL-3.0`) ecosystem.
+   - At owner direction, the repository switched cleanly to `GNU GPL v3.0` (`ba065a0`, originally `8509725`), eliminating copyleft compatibility ambiguity.
+3. **Historical Tag `v1.0.0-s22-a12` (`b10d6e9`):**
+   - Created before the `MIT` → `GPL-3.0` transition.
+   - To preserve Git history integrity without deleting published release tags, `v1.0.0-s22-a12` remains untouched as an archived pre-GPL snapshot and is explicitly marked `Superseded` in `SECURITY.md` and `CHANGELOG.md`, superseded by `v1.0.1-s22-a12` (`GPL-3.0`).
+4. **Bundled APK Dependencies:** **0 third-party libraries** (`dependencies: []` in `SBOM.cdx.json`). No static or dynamic linking conflicts with proprietary or incompatible open-source code exist.
+5. **DEX & Packaging Verification:** `scripts/verify_apk.py` confirms that `out/DeX120Hz-S22.apk` contains only `com/dex120/s22/` classes (`59 class_defs`, `0` Xposed stubs) alongside `AndroidManifest.xml`, `assets/xposed_init`, `resources.arsc`, and `META-INF/*`.
 
 ---
 
-## 4. Kết luận Phase 2–3
+## 3. Non-Code Assets & Trademarks
 
-- `SOURCE_UNKNOWN`: **Không có (0 thành phần)**.
-- `OWNERSHIP_UNVERIFIED`: **Không có thành phần mã nguồn bên thứ ba chưa rõ quyền**; riêng định danh Git của AI mang nhãn **`ANTIGRAVITY_IDENTITY_UNVERIFIED`** và đã được xử lý minh bạch bằng cách không dùng `Co-authored-by` trên Git mà ghi nhận tại `AI_CONTRIBUTIONS.md`.
-- `LICENSE_COMPATIBILITY`: **PASS** dưới `GNU GPL v3.0` (`GPL-3.0-only`).
+- **Non-code assets:** **0** third-party images, icons, commercial fonts, audio, video, datasets, or extracted Samsung firmware/vendor binaries are stored in this repository.
+- **Trademarks:** Product names (`Samsung`, `Galaxy S22`, `Samsung DeX`, `One UI`, `Exynos`, `Android`, `Google`, `Antigravity`) are used solely for technical compatibility reference and carry explicit non-affiliation disclaimers in `NOTICE`, `THIRD_PARTY_NOTICES.md`, `README.md`, and `README.vi.md`.
+
+---
+
+## 4. Phase 2–3 Summary Verdict
+
+- `SOURCE_UNKNOWN`: **0 components**.
+- `OWNERSHIP_UNVERIFIED`: **0 third-party code ownership gaps**; AI Git identity is explicitly classified `ANTIGRAVITY_IDENTITY_UNVERIFIED` and excluded from `Co-authored-by` commit trailers (documented transparently in `AI_CONTRIBUTIONS.md`).
+- `LICENSE_COMPATIBILITY`: **PASS** under `GNU GPL v3.0` (`GPL-3.0-only`).

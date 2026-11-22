@@ -1,96 +1,98 @@
-# Hướng dẫn Đóng góp (Contributing to DeX 120Hz S22)
+# Contributing to DeX 120Hz S22
 
-Cảm ơn bạn đã quan tâm tới **DeX 120Hz S22**! Vì dự án can thiệp sâu vào `system_server` và `com.sec.android.sdhms` bằng quyền Root + LSPosed, mọi đóng góp đều cần sự cẩn trọng và trung thực cao.
+**Language:** **English** | [Tiếng Việt](docs/vi/CONTRIBUTING.md)
+
+Thank you for your interest in **DeX 120Hz S22**! Because this project injects hooks into privileged Android processes (`system_server` and `com.sec.android.sdhms`) using Root + LSPosed, every contribution requires strict accuracy and engineering discipline.
 
 ---
 
-## Quy định về AI và Chống "AI Slop"
+## AI Contribution and Anti-AI-Slop Policy
 
 > [!WARNING]
-> **Chính sách BẮT BUỘC đối với mọi Pull Request:**
-> Bản thân dự án này có **phần lớn code và tài liệu ban đầu do AI hỗ trợ tạo ra**, nên người duy trì hiểu rất rõ điểm mạnh và rủi ro của code do AI sinh ra. Chính vì vậy, dự án áp dụng quy tắc nghiêm ngặt chống **"AI slop"** (mã rác/bịa đặt do AI tạo ra mà người gửi không kiểm tra):
+> **MANDATORY policy for every Pull Request:**
+> Because a large portion of the initial codebase and documentation in this repository was **created with AI assistance**, the maintainer is acutely aware of both the strengths and failure modes of AI-generated code. Therefore, this project enforces a strict **anti-"AI slop"** rule:
 
-1. **Bắt buộc khai báo trung thực:** Nếu bạn dùng AI hỗ trợ viết code, phân tích disassembly hay soạn tài liệu, phải tick rõ và mô tả mức độ kiểm tra trong Pull Request template.
-2. **Không được gửi code chưa tự đọc và hiểu:** Bạn phải giải thích được *vì sao* hook/sửa đổi đó hoạt động trên One UI 4.1 / Android 12, tác động tới phương thức nào, và kịch bản nào khiến nó lỗi.
-3. **Không bịa đặt thông tin kỹ thuật hoặc tương thích:**
-   - Cấm thêm model máy khác (S22 Snapdragon, S22+, S23...) hay Android 13/14/15 vào danh sách "VERIFIED" nếu bạn chưa chạy thực tế trên máy đó kèm bằng chứng log (`dmesg` / `dumpsys display` / `dumpsys SurfaceFlinger` / OSD).
-   - Cấm bịa kết quả benchmark, mã SHA-256 hoặc tên class/method không tồn tại trong firmware thật.
-4. **Cấm gửi tweak phản tác dụng / "placebo":** Không thêm prop rác, không tắt bảo vệ nhiệt silicon/CPU/GPU hay giả lập tính năng không có thật.
-5. **Bắt buộc chạy build + kiểm thử cục bộ trước khi mở PR.**
+1. **Honest AI disclosure is mandatory:** If you use AI tools for coding, disassembly analysis, or documentation, declare it accurately in the Pull Request template and describe how you verified each change.
+2. **Do NOT submit code you have not read and understood:** You must be able to explain *why* a hook or patch works on One UI 4.1 / Android 12, which exact Android methods/signatures it targets, and what edge cases could trigger regressions.
+3. **Zero fabricated compatibility or benchmark claims:**
+   - Do NOT add untested devices (S22 Snapdragon, S22+, S23, etc.) or Android 13/14/15 to "VERIFIED" tables without real-device hardware execution backed by logs (`dmesg` / `dumpsys display` / `dumpsys SurfaceFlinger` / monitor OSD).
+   - Never fabricate benchmark numbers, SHA-256 hashes, or class/method names that do not exist in actual Samsung firmware.
+4. **No placebo or unsafe tweaks:** Never add meaningless `build.prop` props, disable SoC/CPU/GPU thermal safety protections, or fake unsupported features.
+5. **Local build and verification are mandatory before opening any PR.**
 
-Các PR có dấu hiệu copy-paste từ AI hàng loạt, sai tên API thật trên Android 12, chứa code thừa/lặp hoặc chưa build/test sẽ bị đóng thẳng.
-
----
-
-## Quy tắc an toàn bắt buộc
-
-- **KHÔNG** commit khóa ký APK (`*.keystore`, `*.jks`, `*.pk8`, `*.pem`).
-- **KHÔNG** commit thông tin nhạy cảm hoặc log chưa ẩn danh (Serial, IMEI, MAC, IP cá nhân, Token, dữ liệu Play Integrity).
-- **KHÔNG** thêm thư viện/file nhị phân bên thứ ba không rõ nguồn gốc hoặc không ghi nhận bản quyền trong [NOTICE](NOTICE).
-- **KHÔNG** sửa trực tiếp file build sinh ra (`build/`, `out/`); hãy sửa nguồn trong `app/`, `stubs/`, `scripts/`, `build.ps1`, `build.sh`.
-- **KHÔNG** xóa copyright notice hay ghi nhận nguồn tham khảo sẵn có.
-- Giữ phạm vi sửa đổi gọn gàng, không phá cấu trúc build hiện tại (`aapt2` + `d8` + `apksigner`, `minSdk 31`).
+Pull Requests exhibiting unreviewed AI copy-paste, invalid Android 12 API signatures, bloated boilerplate, or missing build/test verification will be closed immediately.
 
 ---
 
-## Quy trình đóng góp từng bước
+## Mandatory Safety Rules
 
-### 1. Fork và Clone
-1. Nhấn **Fork** repository `hangothanhh/DeX120Hz-S22-Exynos` về tài khoản GitHub của bạn (nếu bạn có quyền truy cập).
-2. Clone bản fork về máy:
+- **NEVER** commit APK signing keys (`*.keystore`, `*.jks`, `*.pk8`, `*.pem`).
+- **NEVER** commit sensitive data or unsanitized logs (Serial numbers, IMEIs, MAC addresses, private/local IPs, Tokens, Play Integrity hardware attestation artifacts).
+- **NEVER** bundle third-party libraries or binaries of unknown origin or without proper license attribution in [NOTICE](NOTICE) / [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+- **NEVER** hand-edit generated artifacts (`build/`, `out/`); modify sources under `app/`, `stubs/`, `scripts/`, `build.ps1`, or `build.sh`.
+- **NEVER** remove existing copyright notices or upstream attributions.
+- Keep edits focused and preserve the standalone build toolchain (`aapt2` + `d8` + `apksigner`, `minSdk 31`).
+
+---
+
+## Step-by-Step Contribution Workflow
+
+### 1. Fork and Clone
+1. Click **Fork** on `hangothanhh/DeX120Hz-S22-Exynos` to your GitHub account.
+2. Clone your fork locally:
    ```bash
    git clone https://github.com/<your-username>/DeX120Hz-S22-Exynos.git
    cd DeX120Hz-S22-Exynos
    ```
 
-### 2. Cài đặt môi trường Build
-Xem chi tiết yêu cầu (JDK 17, Android SDK Platform `>= 31`, Build-Tools, Python 3) tại [docs/development.md](docs/development.md).
+### 2. Set Up Build Environment
+See [docs/development.md](docs/development.md) for exact requirements (JDK 17, Android SDK Platform `>= 31`, Build-Tools, Python 3).
 
-### 3. Tạo nhánh (Branch) mới
-Không commit trực tiếp lên `main`. Hãy tạo nhánh riêng cho từng việc:
+### 3. Create a Dedicated Branch
+Never commit directly to `main` (which is protected by Repository Ruleset `#27848863`). Create a topic branch per change:
 ```bash
 git checkout -b fix/dp-disconnect-delay
 ```
 
-### 4. Sửa code & kiểm tra chuẩn code
-- Tuân thủ `.editorconfig` (UTF-8, 4 khoảng trắng cho Java/Python/XML, LF cho các file không phải `.ps1`).
-- Nếu sửa hook trong `app/src/main/java/com/dex120/s22/xposed/`, nhớ kiểm tra:
-  - Không làm leak các class stub trong `stubs/de/robv/android/xposed/` vào `classes.dex`.
-  - Không để lỗi reflection làm crash `system_server` (luôn bọc `try/catch (Throwable)` hợp lý và log bằng `Config.logError`).
-  - Bảo toàn nút bật/tắt runtime qua `Config` (`Settings.Global` `dex120_*`) để người dùng có thể vô hiệu hóa nhanh từng lớp hook nếu cần.
+### 4. Code Standards & Hook Guidelines
+- Follow `.editorconfig` and `.gitattributes` (UTF-8, 4-space indentation for Java/Python/XML, LF line endings for non-`.ps1` files).
+- When editing hooks under `app/src/main/java/com/dex120/s22/xposed/`:
+  - Ensure compile-only stubs in `stubs/de/robv/android/xposed/` never leak into `classes.dex`.
+  - Guard against reflection failures crashing `system_server` (wrap safely with `try/catch (Throwable)` and log via `Config.logError`).
+  - Preserve runtime toggle control via `Config` (`Settings.Global` `dex120_*` keys) so users can disable individual hooks immediately.
 
-### 5. Build và Chạy Kiểm thử bắt buộc
+### 5. Mandatory Build & Verification
 
-Trên **Windows (PowerShell)**:
+On **Windows (PowerShell)**:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\build.ps1
 python .\scripts\verify_apk.py
 ```
 
-Trên **Linux / macOS**:
+On **Linux / macOS**:
 ```bash
 bash -n ./build.sh
 ./build.sh
 python3 ./scripts/verify_apk.py
 ```
 
-Nếu thay đổi ảnh hưởng hành vi runtime (hook DeX, UI, RootShell), bạn **phải** thử cài lên máy thật (hoặc nói rõ phần nào mới kiểm thử ở host JVM và phần nào chưa test trên thiết bị thật).
+If your change affects runtime behavior (DeX hooks, UI, `RootShell`), test it on an actual device (or state explicitly which checks only ran on host/CI JVM and what remains untested on physical hardware).
 
-### 6. Quy ước Commit Message
+### 6. Commit Message Convention
 
-Sử dụng chuẩn [Conventional Commits](https://www.conventionalcommits.org/) ngắn gọn, rõ nghĩa:
+Use concise [Conventional Commits](https://www.conventionalcommits.org/):
 
-- `feat: add refresh rate toggle for <scenario>` — thêm tính năng mới
-- `fix: prevent DFS 30Hz cap when Display 0 sleeps` — sửa lỗi
-- `docs: clarify temproot soft reboot steps` — cập nhật tài liệu
-- `refactor: extract mode selection helper` — tái cấu trúc không đổi hành vi
-- `perf: reduce polling overhead in Config` — tối ưu hiệu năng
-- `test: add sanitization test case for serial format` — thêm hoặc sửa unit test
-- `ci: validate shell syntax in workflow` — thay đổi GitHub Actions CI
-- `chore: update gitignore patterns` — việc bảo trì repo, build script
+- `feat: add refresh rate toggle for <scenario>` — new feature
+- `fix: prevent DFS 30Hz cap when Display 0 sleeps` — bug fix
+- `docs: clarify temproot soft reboot steps` — documentation update
+- `refactor: extract mode selection helper` — non-behavioral refactor
+- `perf: reduce polling overhead in Config` — performance improvement
+- `test: add sanitization test case for serial format` — unit test additions/fixes
+- `ci: validate shell syntax in workflow` — GitHub Actions CI changes
+- `chore: update gitignore patterns` — repository maintenance and build scripts
 
 > [!NOTE]
-> **Quy định ghi nhận AI trong commit:** KHÔNG gắn trailer `Co-authored-by` với email chưa được xác minh hoặc trỏ nhầm tới tài khoản/bot không liên quan (như `antigravity-google-bot` hoặc `gemini-code-assist[bot]`). Hãy khai báo trung thực sự hỗ trợ của AI trong mẫu Pull Request và cập nhật [AI_CONTRIBUTIONS.md](AI_CONTRIBUTIONS.md) / [NOTICE](NOTICE) khi cần.
+> **AI Commit Attribution Policy:** Do **NOT** attach `Co-authored-by` trailers with unverified emails or unrelated GitHub accounts/bots (such as `antigravity-google-bot` or `gemini-code-assist[bot]`). Disclose AI assistance honestly in the Pull Request template and update [AI_CONTRIBUTIONS.md](AI_CONTRIBUTIONS.md) / [NOTICE](NOTICE) instead.
 
-### 7. Tạo Pull Request
-Điền đầy đủ tất cả các mục trong `.github/PULL_REQUEST_TEMPLATE.md`, bao gồm thiết bị test thật (model, phiên bản Android/One UI, kernel, LSPosed/Root stack), log đã ẩn danh và đánh giá khả năng rollback.
+### 7. Open a Pull Request
+Complete every section of `.github/PULL_REQUEST_TEMPLATE.md`, including physical test hardware details (device model, Android/One UI build, kernel, LSPosed/Root stack), sanitized logs, and rollback instructions.

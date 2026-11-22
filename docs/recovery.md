@@ -1,53 +1,55 @@
-# Cập nhật, Rollback, Gỡ cài đặt & Khôi phục (Recovery)
+# Update, Rollback, Uninstall & Recovery Guide
+
+**Language:** **English** | [Tiếng Việt](vi/recovery.md)
 
 > [!IMPORTANT]
-> Hãy đọc kỹ phần **Khôi phục theo từng mức độ lỗi** bên dưới trước khi thử nghiệm bất kỳ thay đổi nào liên quan tới `system_server` hoặc LSPosed.
+> Read the **Tiered Incident Recovery** section below carefully before experimenting with `system_server` or LSPosed modifications.
 
 ---
 
-## 1. Cập nhật (Update) lên phiên bản mới
+## 1. Updating to a Newer Version
 
-**Cập nhật có giữ cấu hình không?**
-Các công tắc hook của `DeX 120Hz S22` được lưu trong hệ thống Android (`Settings.Global` khóa `dex120_*`), **không** nằm trong bộ nhớ nội bộ bị xóa của app. Do đó khi cài đè APK bản mới (cùng chữ ký), các công tắc thường giữ nguyên; tuy nhiên do đây là bản Pre-release đang phát triển, bạn **vẫn nên ghi/chụp lại cấu hình hiện tại** trước khi cập nhật.
+**Does updating preserve my settings?**
+All hook toggles are stored in Android system settings (`Settings.Global` `dex120_*` keys), **not** inside app-private storage. Installing an updated APK signed with the same key usually preserves your settings, though due to Pre-release status you should **still back up your settings before updating**.
 
-**Các bước cập nhật:**
-1. Mở app `DeX 120Hz S22`, xem lại hoặc chụp ảnh các công tắc hiện tại (và nếu cần sao lưu qua ADB: `adb shell "settings list global | grep '^dex120_'"`).
-2. Tải `DeX120Hz-S22.apk` và `.sha256` bản mới từ [Releases](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/releases) và đọc [CHANGELOG.md](../CHANGELOG.md).
-3. Kiểm tra lại **SHA-256** (xem [docs/installation.md](installation.md#bước-2-kiểm-tra-sha-256-bắt-buộc-để-tránh-file-hỏnggiả-mạo)).
-4. Cài đè APK (`adb install -r DeX120Hz-S22.apk` hoặc bấm cài trực tiếp).
-5. Mở **LSPosed Manager** → kiểm tra xem bản mới có thêm scope mới không (tối thiểu tick đủ 3 mục: `Hệ thống Android (android)`, `com.sec.android.sdhms`, `DeX 120Hz S22`).
-6. **Soft Reboot** 1 lần *(không Reboot thường nếu dùng Temproot)*.
-7. Mở lại app, kiểm tra 2 thẻ xanh lá và test DeX như lần đầu.
-
----
-
-## 2. Rollback (Quay lại phiên bản cũ)
-
-Thực hiện khi bản mới bị lỗi app, rớt hook, sập `system_server` hoặc nóng máy bất thường:
-
-1. Mở **LSPosed Manager** → tắt công tắc module **DeX 120Hz S22** → **Soft Reboot**.
-2. Gỡ cài đặt app `DeX 120Hz S22` hiện tại (Android không cho cài đè phiên bản `versionCode` thấp hơn trực tiếp, trừ khi gỡ trước).
-3. Tải phiên bản cũ ổn định từ Releases và xác minh **SHA-256**.
-4. Cài lại APK cũ → vào LSPosed bật lại module + chọn đủ scope của bản cũ → **Soft Reboot**.
+**Update procedure:**
+1. Open `DeX 120Hz S22`, review or screenshot your toggles (or back up via ADB: `adb shell "settings list global | grep '^dex120_'"`).
+2. Download the new `DeX120Hz-S22.apk` and `.sha256` from [Releases](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/releases) and read [CHANGELOG.md](../CHANGELOG.md).
+3. Verify **SHA-256** ([docs/installation.md](installation.md#step-2-verify-sha-256-required-to-avoid-corrupted-or-tampered-files)).
+4. Install over the existing app (`adb install -r DeX120Hz-S22.apk` or tap to install).
+5. Open **LSPosed Manager** → confirm any updated/required scopes (`android`, `com.sec.android.sdhms`, `DeX 120Hz S22`).
+6. **Soft Reboot** once *(avoid normal Reboot if on Temproot)*.
+7. Re-open the app, confirm both green status cards, and test DeX.
 
 ---
 
-## 3. Gỡ cài đặt hoàn toàn (Uninstall)
+## 2. Rolling Back to an Older Version
 
-Thực hiện theo đúng thứ tự dưới đây để không để lại thiết lập Hz bị khóa trong Android:
+Follow these steps if a new release triggers app crashes, broken hooks, `system_server` restarts, or thermal issues:
 
-1. Mở app **DeX 120Hz S22** → nhấn **Khôi phục Adaptive** *(để xóa `min_refresh_rate`, đưa `peak_refresh_rate=120.0` và `refresh_rate_mode=1`)*.
-2. Mở **LSPosed Manager** → tắt công tắc module **DeX 120Hz S22** → **Soft Reboot**.
-3. Gỡ ứng dụng **DeX 120Hz S22** như app bình thường (hoặc `adb uninstall com.dex120.s22`).
-4. **Kiểm tra không còn hook chạy:**
+1. Open **LSPosed Manager** → disable **DeX 120Hz S22** → **Soft Reboot**.
+2. Uninstall the current `DeX 120Hz S22` APK (Android blocks downgrading `versionCode` in place without uninstalling first).
+3. Download the older release from GitHub Releases and verify its **SHA-256**.
+4. Install the older APK → re-enable the module & required scopes in LSPosed → **Soft Reboot**.
+
+---
+
+## 3. Clean Uninstall
+
+Follow this order so Android does not retain any locked refresh-rate values:
+
+1. Open **DeX 120Hz S22** → tap **Khôi phục Adaptive** (Reset Adaptive) *(deletes `min_refresh_rate`, sets `peak_refresh_rate=120.0` and `refresh_rate_mode=1`)*.
+2. Open **LSPosed Manager** → disable **DeX 120Hz S22** → **Soft Reboot**.
+3. Uninstall **DeX 120Hz S22** normally (or `adb uninstall com.dex120.s22`).
+4. **Confirm no hooks remain loaded:**
    ```bash
    adb shell su -c "logcat -d -s DeX120Hz:I | tail -n 10"
    ```
-   Sau Soft Reboot mà không thấy log mới `[DeX120Hz] Initializing...` nữa là sạch hook hoàn toàn.
+   No new `[DeX120Hz] Initializing...` entries after Soft Reboot confirms hooks are completely unloaded.
 
-**File nào được giữ lại vs bị xóa sau khi gỡ?**
-- **Bị xóa:** APK và dữ liệu riêng của app `com.dex120.s22` tại `/data/app/...` và `/data/data/com.dex120.s22/`. Module không cài bất kỳ file nhị phân hay module `.zip` nào vào `/data/adb/modules/` và không sửa phân vùng `/system` / `/vendor`.
-- **Còn giữ lại (vô hại khi chưa cài app):** Các khóa cài đặt `dex120_*` trong `Settings.Global` và `min_refresh_rate` / `peak_refresh_rate` trong `Settings.System`. Nếu muốn dọn sạch 100% các khóa `dex120_*` qua ADB:
+**What gets removed vs kept after uninstall?**
+- **Removed:** The APK and private app data for `com.dex120.s22` under `/data/app/...` and `/data/data/com.dex120.s22/`. This module installs no Magisk/KernelSU `.zip` binaries under `/data/adb/modules/` and never modifies `/system` or `/vendor`.
+- **Retained harmlessly:** `dex120_*` keys in `Settings.Global` and refresh rate settings in `Settings.System`. To wipe all `dex120_*` settings cleanly via ADB:
   ```bash
   for k in dex120_enabled dex120_block_dp_dex dex120_block_token dex120_unlock_modes dex120_sync_virtual dex120_force_virtual_120 dex120_target_hz; do
     adb shell su -c "settings delete global $k"
@@ -56,43 +58,43 @@ Thực hiện theo đúng thứ tự dưới đây để không để lại thi�
   ```
 
 > [!WARNING]
-> **Không** tự ý xóa thủ công các file thuộc `/data/adb/lspd/`, `/data/adb/modules/` hoặc `/system/` nếu bạn không chắc — xóa nhầm sẽ hỏng LSPosed hoặc hệ điều hành.
+> Do **NOT** manually delete files under `/data/adb/lspd/`, `/data/adb/modules/`, or `/system/` unless you are certain — deleting shared runtime files can break LSPosed or Android itself.
 
 ---
 
-## 4. Khôi phục sự cố (Recovery) theo từng tình huống
+## 4. Tiered Incident Recovery
 
-### Tình huống A: Chỉ Màn đen AMOLED bị kẹt hoặc App `DeX 120Hz S22` bị crash
-- **Tác động tới dữ liệu:** **Không mất dữ liệu.**
-- **Cách xử lý:**
-  - Chạm nhanh **3 lần** hoặc bấm **Back 2 lần** để thoát Màn đen AMOLED; nếu vẫn kẹt, bấm nút nguồn hoặc rút cáp màn hình ngoài.
-  - Nếu app crash liên tục: vào *Cài đặt Android → Ứng dụng → DeX 120Hz S22 → Buộc dừng / Xóa dữ liệu* hoặc chạy `adb shell su -c "settings put global dex120_enabled 0"`.
+### Case A: AMOLED Black Screen Stuck or Companion App Crashes Only
+- **Data impact:** **Zero data loss.**
+- **Recovery:**
+  - **Triple-tap** quickly or press **Back twice** to close AMOLED Black Screen; if needed, press the power button or unplug the external display cable.
+  - If the control app crashes repeatedly: *Android Settings → Apps → DeX 120Hz S22 → Force stop / Clear data* or run `adb shell su -c "settings put global dex120_enabled 0"`.
 
-### Tình huống B: Hook không nạp (thẻ đỏ `LSPosed: CHƯA BẬT`)
-- **Tác động tới dữ liệu:** **Không mất dữ liệu.**
-- **Cách xử lý:** Kiểm tra đủ 3 scope trong LSPosed, đảm bảo ReZygisk hoạt động, rồi **Soft Reboot**. Nếu cần xem lỗi load, kiểm tra `/data/adb/lspd/log/modules_*.log`.
+### Case B: Hooks Not Loading (`LSPosed: CHƯA BẬT` Red Badge)
+- **Data impact:** **Zero data loss.**
+- **Recovery:** Confirm all 3 LSPosed scopes are checked, ReZygisk is active, and perform a **Soft Reboot**. Check `/data/adb/lspd/log/modules_*.log` for module load errors.
 
-### Tình huống C: Máy bị treo / bootloop ngay sau khi Soft Reboot
-- **Tác động tới dữ liệu:** **Không mất dữ liệu** nếu làm đúng cách bên dưới.
-- **Cách 1 (Với máy dùng KernelSU Temproot):**
-  1. Giữ nút **Nguồn + Giảm âm lượng** khoảng 7–10 giây để ép tắt và khởi động lại hoàn toàn (**Hard Reboot**).
-  2. Vì Temproot không bền qua Hard Reboot, máy sẽ khởi động thẳng vào Android 12 gốc sạch sẽ, **không** nạp LSPosed hay hook nào cả — dữ liệu của bạn vẫn còn nguyên.
-- **Cách 2 (Với máy Root vĩnh viễn — Bootloader đã mở khóa):**
-  1. Dùng tính năng Safe Mode của **KernelSU** *(giữ nút Giảm âm lượng liên tục lúc logo khởi động xuất hiện — tùy phiên bản KernelSU bạn đang cài hỗ trợ)* để tắt toàn bộ module khi boot, **hoặc**:
-  2. Trong lúc máy đang kẹt bootloop nhưng ADB đã kịp lên:
+### Case C: Freeze or Bootloop Immediately After Soft Reboot
+- **Data impact:** **Zero data loss** using the steps below.
+- **Method 1 (KernelSU Temproot devices):**
+  1. Hold **Power + Volume Down** for 7–10 seconds to force a **Hard Reboot**.
+  2. Because Temproot does not survive a Hard Reboot, the phone boots cleanly into stock unrooted Android 12 with zero LSPosed hooks loaded — all user data stays intact.
+- **Method 2 (Permanent Root / Unlocked Bootloader):**
+  1. Trigger **KernelSU Safe Mode** *(hold Volume Down continuously while the boot logo appears, if supported by your KernelSU version)* to disable modules on boot, **or**:
+  2. If ADB comes online during bootloop:
      ```bash
      adb wait-for-device shell su -c "settings put global dex120_enabled 0"
      ```
-     Hoặc tạm tắt module LSPosed bằng CLI của LSPosed (nếu bản LSPosed của bạn hỗ trợ) hoặc gỡ gói app qua ADB:
+     Or disable the module via LSPosed CLI (if supported) or uninstall the APK over ADB:
      ```bash
      adb wait-for-device uninstall com.dex120.s22
      ```
 
-### Tình huống D: Máy không thể vào Android (trường hợp rất hiếm, thường do sửa sai module hệ thống khác song song)
+### Case D: Unable to Boot Android (Rare; Typically Caused by Conflicting System Modifications)
 > [!CAUTION]
-> Các phương án khôi phục mức thấp dưới đây **có thể gây mất toàn bộ dữ liệu** nếu bạn phải Factory Reset / Wipe Data!
+> Low-level recovery options below **can erase user data** if a Factory Reset / Wipe Data becomes necessary!
 
-1. Nếu vào được **Android Recovery gốc** hoặc **ADB sideload / custom recovery** (nếu đã cài):
-   - Chỉ chọn **Wipe cache** trước nếu có — tuyệt đối chưa chọn *Wipe data/factory reset* vội.
-   - Nếu là root vĩnh viễn do boot image lỗi: flash lại đúng `boot.img` / firmware gốc đúng mã **SM-S901B** Android 12 của bạn qua Download Mode (`HOME_CSC` để thử giữ dữ liệu trước; dùng `CSC` thông thường sẽ **xóa sạch dữ liệu**).
-2. Không bao giờ flash firmware của model S22 khác hoặc phiên bản bootloader thấp hơn (rollback protection trên Samsung).
+1. If you can access **stock Android Recovery** or **ADB sideload / custom recovery** (if installed):
+   - Try **Wipe cache** first if available — never jump straight to *Wipe data/factory reset*.
+   - For permanent root boot-image corruption: flash the exact stock `boot.img` or stock **SM-S901B** Android 12 firmware via Download Mode (use `HOME_CSC` first to try preserving user data; regular `CSC` **erases all user data**).
+2. Never flash firmware for a different S22 variant or older bootloader binary revision (Samsung rollback protection).

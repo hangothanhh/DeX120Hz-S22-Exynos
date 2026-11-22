@@ -1,101 +1,103 @@
-# Kiến trúc kỹ thuật & Cơ chế Hoạt động (S22 Exynos · Android 12 / One UI 4.1)
+# Technical Architecture & How It Works (S22 Exynos · Android 12 / One UI 4.1)
+
+**Language:** **English** | [Tiếng Việt](vi/architecture.md)
 
 > [!NOTE]
-> Tài liệu này giải thích chi tiết từng nút thắt 60Hz / 30Hz đã được phân tích thực tế trên **Galaxy S22 Exynos (`SM-S901B` / `s5e9925`, Android 12 / One UI 4.1)** và cách 5 lớp hook của `DeX 120Hz S22` xử lý chúng.
+> This document explains each 60Hz / 30Hz bottleneck observed directly on **Samsung Galaxy S22 Exynos (`SM-S901B` / `s5e9925`, Android 12 / One UI 4.1)** and how the 5 hook layers in `DeX 120Hz S22` address them.
 
 ---
 
-## 1. Mục đích
-Giúp người đóng góp và người dùng nâng cao hiểu rõ **tại sao** Samsung DeX bị khóa ở 60Hz (và 30Hz khi nóng máy), từng file Java trong `app/src/main/java/com/dex120/s22/xposed/` móc vào đâu, và những giới hạn phần cứng/native nào không thể vượt qua chỉ bằng hook Java.
+## 1. Purpose
+Help contributors and power users understand **why** stock Samsung DeX is capped at 60Hz (and throttled down to 30Hz under heat), where each Java file in `app/src/main/java/com/dex120/s22/xposed/` hooks into Android / Samsung frameworks, and which hardware/native limits cannot be bypassed via Java hooks alone.
 
 ---
 
-## 2. Đường đi của một khung hình trong Samsung DeX (Pipeline)
+## 2. Samsung DeX Frame Pipeline
 
-Trên Samsung DeX (Android 12), giao diện desktop không vẽ trực tiếp lên cổng HDMI mà đi qua chuỗi 4 tầng:
+On Samsung DeX (Android 12), the desktop UI does not render straight to the HDMI output; it flows through 4 stacked layers:
 
 ```text
-[App / Trình duyệt / Game trong DeX]
-        │  (VSync từ SurfaceFlinger / DisplayModeDirector + SDHMS)
+[App / Browser / Game inside DeX]
+        │  (VSync from SurfaceFlinger / DisplayModeDirector + SDHMS)
         ▼
-[VirtualDisplay "Desktop"]          ◄── Hook 4: VirtualDisplaySyncHook
-        │  (mMode / renderFrameRate đồng bộ Hz thật)
+[VirtualDisplay "Desktop"]             ◄── Hook 4: VirtualDisplaySyncHook
+        │  (mMode / renderFrameRate synced to real external Hz)
         ▼
-[DisplayModeDirector & DMS Tokens]  ◄── Hook 2 & 3: LowRefreshTokenHook + DisplayModeHook
-        │  (baseModeId, RefreshRateRange, chặn HardwareManager & SiopLimiterHrr)
+[DisplayModeDirector & DMS Tokens]     ◄── Hook 2 & 3: LowRefreshTokenHook + DisplayModeHook
+        │  (baseModeId, RefreshRateRange, blocks HardwareManager & SiopLimiterHrr)
         ▼
 [Kernel DisplayPort (dp_sec / decon2)] ◄── Hook 1: DpSysfsHook
-        │  (sysfs /sys/class/dp_sec/dex giữ Mirror mode, không lọc 60Hz)
+        │  (sysfs /sys/class/dp_sec/dex stays in Mirror mode, skipping 60Hz filtering)
         ▼
-[Cáp / Hub USB-C → HDMI/DP] → [Màn hình ngoài (75Hz / 120Hz)]
+[USB-C → HDMI/DP Cable or Hub] → [External Monitor (75Hz / 120Hz)]
 
-Nhánh song song gây bóp FPS khi nóng máy:
+Parallel thermal throttling path:
 [com.sec.android.sdhms (SIOP)] ──(Binder tx 1122: DFS=30)──▶ [SurfaceFlinger]
         ▲
-        └── Hook 5: SdhmsDfsHook (chặn trong SDHMS + ép reset DFS=60 từ system_server)
+        └── Hook 5: SdhmsDfsHook (blocks in SDHMS + proactively resets DFS=60 from system_server)
 ```
 
 ---
 
-## 3. Chi tiết 5 lớp Hook
+## 3. Detailed Breakdown of the 5 Hook Layers
 
 ### Hook 1: `DpSysfsHook` (Kernel DisplayPort Mirror Bypass)
-- **Target:** `com.android.server.desktopmode.Utils` (`writeFile`, `readFile`) và `com.android.server.desktopmode.DisplayPortStateManager` trong `system_server`.
-- **Vấn đề gốc:** Khi DeX bật, Samsung `DesktopModeService` ghi cờ `DEX_ON` (`16`/`0x10` hoặc `17`/`0x11`) vào `/sys/class/dp_sec/dex`. Kernel driver DisplayPort của Exynos chuyển từ `MODE_FILTER_MIRROR` sang `MODE_FILTER_DEX`, lọc bỏ toàn bộ chế độ >60Hz hoặc >1080p60 không nằm trong whitelist DeX.
-- **Cách xử lý:**
-  - `handleWriteFileBefore`: nếu ghi giá trị số có bit `0xF0` (`16`, `17`...) vào `dp_sec/dex`, cắt bit cao (`oldVal & 0x0F` → `0` hoặc `1`) để kernel giữ `MODE_FILTER_MIRROR`, đánh dấu `sSimulatedDexOn = true`. Lệnh `SkipAdapterCheck` và `HMD` không bị đụng tới.
-  - `handleReadFileAfter`: một số luồng kiểm tra đọc lại `/sys/class/dp_sec/dex`. Hook chỉ giả lập `"0" → "1"` khi **cả hai** điều kiện `sSimulatedDexOn == true` **và** `DisplayModeHook.hasActiveExternalDisplay() == true` cùng đúng. Nếu rút cáp (`extActive == false`), không giả lập nữa để tránh kẹt ~20 giây khi ngắt DeX.
+- **Targets:** `com.android.server.desktopmode.Utils` (`writeFile`, `readFile`) and `com.android.server.desktopmode.DisplayPortStateManager` inside `system_server`.
+- **Root cause:** When DeX starts, Samsung's `DesktopModeService` writes the `DEX_ON` flag (`16`/`0x10` or `17`/`0x11`) to `/sys/class/dp_sec/dex`. The Exynos DisplayPort kernel driver switches from `MODE_FILTER_MIRROR` to `MODE_FILTER_DEX`, filtering out any resolution/refresh mode >60Hz or outside Samsung's DeX whitelist.
+- **How it works:**
+  - `handleWriteFileBefore`: if a numeric value with bit `0xF0` set (`16`, `17`, etc.) is written to `dp_sec/dex`, masks off the high bits (`oldVal & 0x0F` → `0` or `1`) so the kernel stays in `MODE_FILTER_MIRROR`, setting `sSimulatedDexOn = true`. `SkipAdapterCheck` and `HMD` writes are left untouched.
+  - `handleReadFileAfter`: several system checks read `/sys/class/dp_sec/dex` back. The hook conditionally spoofs `"0" → "1"` **only when both** `sSimulatedDexOn == true` **and** `DisplayModeHook.hasActiveExternalDisplay() == true` hold. Once the cable is unplugged (`extActive == false`), it stops spoofing so DeX does not hang ~20 seconds while disconnecting.
 
-### Hook 2: `LowRefreshTokenHook` (Chặn khóa ≤60Hz toàn cục)
-- **Target:** `DisplayManagerService`, `$BinderService`, `$LocalService`: `acquireLowRefreshRateToken` (trả về `ILowRefreshRateToken`) và `acquireRefreshRateMaxLimitToken` (trả về `IRefreshRateMaxLimitToken`).
-- **Vấn đề gốc:** Khi vào DeX, `[DMS]HardwareManager` xin `ILowRefreshRateToken` để khóa toàn bộ hệ thống về 60Hz; khi máy ấm lên trong DeX, `SiopLimiterHrr` cũng xin token khóa 60Hz.
-- **Cách xử lý:**
-  - Khi nguồn gọi thuộc DeX/Desktop (`isDexCaller`) **hoặc** đang có màn ngoài active (`DisplayModeHook.hasActiveExternalDisplay()`) và mức trần `<= 60Hz`, hook chặn lời gọi thật và trả về một `Proxy` giả riêng biệt theo **từng interface** lưu trong `ConcurrentHashMap<Class<?>, Object> sDummyTokens` (tránh `ClassCastException` giữa `ILowRefreshRateToken` và `IRefreshRateMaxLimitToken`).
-  - Đồng thời kích hoạt `SdhmsDfsHook.scheduleDfsReset("token:" + tag)` vì `SiopLimiterHrr` thường xuất hiện cùng thời điểm với `DFS=30`.
+### Hook 2: `LowRefreshTokenHook` (Global `<=60Hz` Token Blocking)
+- **Targets:** `DisplayManagerService`, `$BinderService`, `$LocalService`: `acquireLowRefreshRateToken` (returns `ILowRefreshRateToken`) and `acquireRefreshRateMaxLimitToken` (returns `IRefreshRateMaxLimitToken`).
+- **Root cause:** When DeX launches, `[DMS]HardwareManager` acquires an `ILowRefreshRateToken` locking the system to 60Hz; when the device warms up during DeX, `SiopLimiterHrr` also acquires a 60Hz cap token.
+- **How it works:**
+  - Whenever the caller belongs to DeX/Desktop (`isDexCaller`) **or** an external display is active (`DisplayModeHook.hasActiveExternalDisplay()`) and the requested cap is `<= 60Hz`, the hook blocks the real call and returns a dedicated dynamic `Proxy` **per interface**, cached in `ConcurrentHashMap<Class<?>, Object> sDummyTokens` (preventing `ClassCastException` between `ILowRefreshRateToken` and `IRefreshRateMaxLimitToken`).
+  - Also triggers `SdhmsDfsHook.scheduleDfsReset("token:" + tag)` because `SiopLimiterHrr` typically triggers alongside `DFS=30`.
 
-### Hook 3: `DisplayModeHook` (`DisplayModeDirector` & Bảo vệ Display 0)
-- **Target:** `DisplayModeDirector.getDesiredDisplayModeSpecs`, `updateVoteLocked`, `DisplayObserver`, `LogicalDisplay.getDisplayInfoLocked`, `RealInjector.getDisplayInfo`.
-- **Vấn đề gốc:**
-  1. `DisplayModeDirector` mặc định chọn `baseModeId` 60Hz và có vote giới hạn `RefreshRateRange.max = 60.0` cho màn ngoài (`type == TYPE_EXTERNAL`).
-  2. Khi dùng chuột/bàn phím trên DeX mà không chạm màn điện thoại, LTPO trên Display 0 (`samsung lcd`) có thể hạ về 24Hz/60Hz nếu không khóa.
-- **Cách xử lý:**
-  - Theo dõi trạng thái màn hình ngoài chính xác (đồng bộ với `mSupportedModesByDisplay` và `DisplayObserver.onDisplayRemoved`).
-  - Với màn ngoài (`isExternalDisplay(displayId)`): `findHighestModeSameRes` tìm `Display.Mode` cùng độ phân giải có `fps` cao nhất không vượt `Config.getTargetHz()` (mặc định 120Hz), nâng `baseModeId` và mở rộng `primaryRefreshRateRange` / `appRequestRefreshRateRange` lên tối đa 120Hz.
-  - Với Display 0 khi `sExternalDisplayActive`: `protectInternalDisplaySpecs` cố gắng giữ `baseModeId` 120Hz và khóa `primaryRefreshRateRange` ở `[120, 120]`. *(Xem mục 5 về giới hạn native khi cắm màn 75Hz.)*
+### Hook 3: `DisplayModeHook` (`DisplayModeDirector` & Display 0 Protection)
+- **Targets:** `DisplayModeDirector.getDesiredDisplayModeSpecs`, `updateVoteLocked`, `DisplayObserver`, `LogicalDisplay.getDisplayInfoLocked`, `RealInjector.getDisplayInfo`.
+- **Root cause:**
+  1. `DisplayModeDirector` defaults to selecting a 60Hz `baseModeId` and votes `RefreshRateRange.max = 60.0` for external displays (`type == TYPE_EXTERNAL`).
+  2. When using a mouse/keyboard on DeX without touching the phone screen, Display 0 (`samsung lcd`) LTPO can drop to 24Hz/60Hz unless locked.
+- **How it works:**
+  - Tracks exact active external display state (synchronized with `mSupportedModesByDisplay` and `DisplayObserver.onDisplayRemoved`).
+  - For external displays (`isExternalDisplay(displayId)`): `findHighestModeSameRes` locates the highest-fps `Display.Mode` matching the current resolution up to `Config.getTargetHz()` (default 120Hz), upgrades `baseModeId`, and widens `primaryRefreshRateRange` / `appRequestRefreshRateRange` up to 120Hz.
+  - For Display 0 while `sExternalDisplayActive`: `protectInternalDisplaySpecs` attempts to keep Display 0 `baseModeId` at 120Hz and locks `primaryRefreshRateRange` to `[120, 120]`. *(See Section 5 for native SurfaceFlinger limits when connected to 75Hz panels.)*
 
 ### Hook 4: `VirtualDisplaySyncHook` (`Desktop` VirtualDisplay)
-- **Target:** `DisplayManagerService.configureDisplayLocked`, `VirtualDisplayAdapter$VirtualDisplayDevice` (`getDisplayDeviceInfoLocked`, `resizeLocked`, constructor).
-- **Vấn đề gốc:** Màn hình ảo `"Desktop"` của Samsung DeX bị khởi tạo ở `60.0 Hz`, nên dù màn hình HDMI chạy 75Hz hoặc 120Hz, DeX vẫn vẽ ở 60Hz.
-- **Cách xử lý:**
-  - Đọc tần số quét thực của thiết bị màn ngoài trong `configureDisplayLocked` (`sLastExternalHz`).
-  - Khi `isDesktopVirtualDevice` khớp `"Desktop"` (và `Config.isSyncVirtual()` bật): tạo `Display.Mode` mới với `targetHz = Math.min(sLastExternalHz, Config.getTargetHz())` (hoặc `Config.getTargetHz()` nếu bật Test Mode `dex120_force_virtual_120=1`), cập nhật `mMode`, `mRequestedRefreshRate`, `supportedModes`, `modeId`, `defaultModeId` và báo thay đổi thiết bị về adapter.
+- **Targets:** `DisplayManagerService.configureDisplayLocked`, `VirtualDisplayAdapter$VirtualDisplayDevice` (`getDisplayDeviceInfoLocked`, `resizeLocked`, constructor).
+- **Root cause:** Samsung DeX's `"Desktop"` `VirtualDisplay` initializes at `60.0 Hz`, so even if HDMI outputs 75Hz or 120Hz, DeX still renders frames at 60Hz.
+- **How it works:**
+  - Reads the external physical display's actual refresh rate in `configureDisplayLocked` (`sLastExternalHz`).
+  - When `isDesktopVirtualDevice` matches `"Desktop"` (and `Config.isSyncVirtual()` is enabled): creates a new `Display.Mode` at `targetHz = Math.min(sLastExternalHz, Config.getTargetHz())` (or `Config.getTargetHz()` if Test Mode `dex120_force_virtual_120=1` is enabled), updates `mMode`, `mRequestedRefreshRate`, `supportedModes`, `modeId`, `defaultModeId`, and notifies the adapter.
 
-### Hook 5: `SdhmsDfsHook` (Chặn `DFS = 30` trong `com.sec.android.sdhms`)
-- **Phát hiện gốc từ phân tích firmware thật:** Trên One UI 4.1 (`SamsungDeviceHealthManagerService.apk`), khi nhiệt độ máy tăng trong DeX (ví dụ mức `siop_level = 4`, pin ~44°C), `SDHMS` gọi Binder transaction **`1122` (`0x462`)** tới service `SurfaceFlinger` với interface descriptor `"android.ui.ISurfaceComposer"` và tham số `int 30` (`DFS = 30`), bật *Dynamic FPS VSyncThread* và kéo `VSYNC period` toàn hệ thống từ `8.33ms` / `13.33ms` xuống **`33.33ms` (30Hz)** — khiến TestUFO tụt thảm hại xuống 24–45fps!
-- **Cách xử lý 2 lớp:**
-  1. Trong `com.sec.android.sdhms`: hook `BinderProxy.transact`, nếu `code == 1122` và `Parcel` có interface `"android.ui.ISurfaceComposer"` với giá trị `0 < dfs < 60`, chặn transaction không cho gửi xuống `SurfaceFlinger` (luôn phục hồi `dataPosition` trong `finally` để không ảnh hưởng binder khác dùng trùng mã `1122`).
-  2. Trong `system_server`: hàm `scheduleDfsReset` tự động gửi transaction `1122` với `dfs = 60` (`SurfaceFlinger` tắt Dynamic FPS VSyncThread) ở các mốc trễ `+150ms`, `+1000ms`, `+3000ms` khi màn ngoài bật hoặc khi `SiopLimiterHrr` kích hoạt.
-
----
-
-## 4. Giải pháp giữ VSync khi muốn tắt màn điện thoại (`BlackScreenActivity`)
-
-Trên Android 12 (`API 31`), khi bạn bấm nút nguồn để tắt hẳn màn hình chính (`Display 0` chuyển `powerMode=Off`), `SurfaceFlinger` có thể chuyển sang bộ tạo nhịp dự phòng (`SyntheticVSync` 60Hz) tùy điều kiện composer.
-
-`BlackScreenActivity` giải quyết việc này bằng cách giữ Display 0 ở trạng thái `ON` (`FLAG_KEEP_SCREEN_ON`, `preferredRefreshRate=120f`, `screenBrightness=0.001f`) trong khi phủ kín màu đen `#000000` (trên tấm nền AMOLED, pixel đen `#000000` gần như không phát sáng, tiết kiệm pin và tránh burn-in mà vẫn giữ nhịp VSync cao cho DeX).
+### Hook 5: `SdhmsDfsHook` (Blocking `DFS = 30` Inside `com.sec.android.sdhms`)
+- **Finding from real firmware analysis:** On One UI 4.1 (`SamsungDeviceHealthManagerService.apk`), when phone thermals climb during DeX (e.g., `siop_level = 4`, battery ~44°C), `SDHMS` sends Binder transaction **`1122` (`0x462`)** to `SurfaceFlinger` with interface descriptor `"android.ui.ISurfaceComposer"` and argument `int 30` (`DFS = 30`), enabling *Dynamic FPS VSyncThread* and throttling global `VSYNC period` from `8.33ms` / `13.33ms` down to **`33.33ms` (30Hz)** — causing TestUFO to collapse to 24–45fps!
+- **Two-layer mitigation:**
+  1. Inside `com.sec.android.sdhms`: hooks `BinderProxy.transact`; if `code == 1122` and the `Parcel` carries interface `"android.ui.ISurfaceComposer"` with `0 < dfs < 60`, blocks the transaction from reaching `SurfaceFlinger` (always restoring `dataPosition` inside `finally` so unrelated binders reusing transaction code `1122` are unaffected).
+  2. Inside `system_server`: `scheduleDfsReset` sends transaction `1122` with `dfs = 60` (disabling Dynamic FPS VSyncThread in `SurfaceFlinger`) at `+150ms`, `+1000ms`, and `+3000ms` delays when an external display activates or `SiopLimiterHrr` triggers.
 
 ---
 
-## 5. Giới hạn phần cứng & Native không thể né bằng Java Hook
+## 4. Keeping VSync Alive When Turning Off the Phone Screen (`BlackScreenActivity`)
 
-Qua kiểm tra disassembly trực tiếp `/system/bin/surfaceflinger` trên `SM-S901B` (Android 12) và spec SoC Exynos 2200:
+On Android 12 (`API 31`), pressing the power button to turn Display 0 off (`powerMode=Off`) can cause `SurfaceFlinger` to fall back to fallback software `SyntheticVSync` at 60Hz depending on composer state.
 
-1. **Giới hạn riêng khi cắm màn 75Hz (bắt gặp trên VSP `V2203H`):**
-   - Trong `SurfaceFlinger::performSetActiveConfig()`, mã native của Samsung kiểm tra nếu có màn ngoài với `vsync period` lớn hơn màn chính (ví dụ `133` cho 75Hz > `83` cho 120Hz), nó tự động ép Display 0 xuống mode có vsync >= 133 → **`configId=2` (60Hz)** (`desiredActiveMode.configId 0 is change to 2, because other display(vsync period = 133) is connected`).
-   - Đồng thời trên ROM này `/vendor/build.prop` đặt `vendor.hwc.exynos.vsync_mode=0`, khiến khi cả 2 màn cùng bật (60Hz trên điện thoại + 75Hz trên màn ngoài), VSync ứng dụng chọn màn chậm hơn (`16.67ms` = 60Hz).
-   - *Lưu ý:* Với **màn 120Hz thật**, vsync period của màn ngoài (`83`) không lớn hơn 120Hz của Display 0 (`83`), nên logic `performSetActiveConfig` sẽ **không** ép Display 0 về 60Hz.
-2. **Băng thông DisplayPort HBR2 (5.4 Gbps/lane):**
-   - Cáp/hub 2-lane (chia sẻ USB 3.0 Data): tối đa `1080p@120Hz` (~7.1 Gbps chưa mã hóa 8b/10b, sát ngưỡng 8.64 Gbps khả dụng của 2 lane HBR2). Không kéo nổi `1440p@120Hz`.
-   - Cáp USB-C → DisplayPort/HDMI trực tiếp (4-lane HBR2, tối đa 17.28 Gbps): đủ cho `1440p@120Hz` (khoảng 11–13 Gbps tùy CVT/RB).
-3. **Throttling CPU/GPU của `SDHMS`:**
-   - Module chỉ chặn tụt **tần số quét (DFS 30Hz / token 60Hz)** chứ **không** mở khóa giới hạn nhiệt silicon hay tắt giảm xung CPU/GPU của `SDHMS`.
+`BlackScreenActivity` avoids this by keeping Display 0 logically `ON` (`FLAG_KEEP_SCREEN_ON`, `preferredRefreshRate=120f`, `screenBrightness=0.001f`) while painting solid `#000000` black pixels (on AMOLED panels, pure `#000000` pixels draw virtually zero light/power and minimize burn-in while keeping high-refresh VSync active for DeX).
+
+---
+
+## 5. Hardware & Native Limits That Java Hooks Cannot Bypass
+
+Confirmed via direct disassembly of `/system/bin/surfaceflinger` on `SM-S901B` (Android 12) and Exynos 2200 DisplayPort specifications:
+
+1. **Native 75Hz external monitor downgrade (observed on VSP `V2203H`):**
+   - Inside `SurfaceFlinger::performSetActiveConfig()`, Samsung's native code checks whether any connected external display has a larger `vsync period` than the primary panel (e.g., `133` for 75Hz > `83` for 120Hz), and forces Display 0 down to a mode with vsync >= 133 → **`configId=2` (60Hz)** (`desiredActiveMode.configId 0 is change to 2, because other display(vsync period = 133) is connected`).
+   - Additionally, `/vendor/build.prop` sets `vendor.hwc.exynos.vsync_mode=0`, so while both screens are on (60Hz phone + 75Hz external), app VSync follows the slower display (`16.67ms` = 60Hz).
+   - *Note:* With a **native 120Hz external monitor**, the external vsync period (`83`) does not exceed Display 0's `83`, so `performSetActiveConfig` does **not** force Display 0 down to 60Hz.
+2. **DisplayPort HBR2 link bandwidth (5.4 Gbps/lane):**
+   - 2-lane cables/hubs (sharing USB 3.0 data lanes): top out around `1080p@120Hz` (~7.1 Gbps raw before 8b/10b overhead, close to the 8.64 Gbps usable 2-lane HBR2 limit). Insufficient for `1440p@120Hz`.
+   - Direct USB-C → DisplayPort/HDMI cables (4-lane HBR2, up to 17.28 Gbps): sufficient for `1440p@120Hz` (~11–13 Gbps depending on CVT/RB timings).
+3. **`SDHMS` CPU/GPU throttling:**
+   - This module only blocks **display refresh-rate throttling (`DFS 30Hz` / `60Hz` tokens)**; it does **not** override SoC thermal limits or prevent CPU/GPU clock scaling.

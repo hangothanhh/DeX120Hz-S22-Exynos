@@ -1,81 +1,83 @@
-# Khắc phục Sự cố & Câu hỏi Thường gặp (Troubleshooting & FAQ)
+# Troubleshooting & FAQ
 
-Tài liệu tổng hợp các lỗi phổ biến cho người mới khi cài và chạy `DeX 120Hz S22` trên **Galaxy S22 Exynos (`SM-S901B`, Android 12 / One UI 4.1)**.
+**Language:** **English** | [Tiếng Việt](vi/troubleshooting.md)
 
----
-
-## 1. Thẻ `LSPosed: CHƯA BẬT` hoặc hook không chạy
-
-1. **Biểu hiện:** App hiện thẻ đỏ `LSPosed: CHƯA BẬT`, hoặc log chẩn đoán báo `(Chưa có log...)`.
-2. **Nguyên nhân có thể:**
-   - Chưa gạt bật module `DeX 120Hz S22` trong **LSPosed Manager**.
-   - Tick thiếu phạm vi (Scope) `DeX 120Hz S22` hoặc `Hệ thống Android` (`android`).
-   - Vừa cài/cập nhật APK xong nhưng chưa **Soft Reboot**.
-   - **ReZygisk** bị ngừng sau khi Soft Reboot (một số bản ReZygisk cũ trên KernelSU temproot có thể rớt injection sau Soft Reboot).
-3. **Cách kiểm tra:**
-   - Mở **LSPosed Manager** kiểm tra cột trạng thái LSPosed có báo *Activated* không, và vào **Modules → DeX 120Hz S22** xem đã tick đủ 3 mục (`android`, `com.sec.android.sdhms`, `com.dex120.s22`) chưa.
-4. **Cách xử lý:**
-   - Tick đủ cả **3 scope** → **Soft Reboot** 1 lần *(nhớ không bấm Reboot thường nếu đang dùng Temproot)*.
-   - Nếu LSPosed chính nó báo chưa kích hoạt sau Soft Reboot, cần kiểm tra lại bản ReZygisk của bạn có hỗ trợ Soft Reboot trên Android 12 hay không.
-5. **Khi nào cần gửi log:** Sau khi chắc chắn LSPosed *Activated*, tick đủ 3 scope và đã Soft Reboot mà app vẫn báo chưa bật.
+Covers common issues encountered when installing and running `DeX 120Hz S22` on **Samsung Galaxy S22 Exynos (`SM-S901B`, Android 12 / One UI 4.1)**.
 
 ---
 
-## 2. Thẻ `Root: Chưa cấp quyền` hoặc nút bấm báo `Lỗi Root`
+## 1. Red `LSPosed: CHƯA BẬT` Badge or Hooks Do Not Run
 
-1. **Biểu hiện:** Mục Root màu đỏ, `/sys/class/dp_sec/dex` hiện `(cần root)`, bấm công tắc bị bật ngược lại.
-2. **Nguyên nhân có thể:** Chưa cấp quyền `su` cho `com.dex120.s22` trong **KernelSU Manager** (hoặc Magisk), hoặc máy đã Hard Reboot làm mất **Temproot**.
-3. **Cách kiểm tra:** Mở **KernelSU Manager** xem KernelSU còn báo *Working* và mục **Superuser** đã bật `DeX 120Hz S22` chưa.
-4. **Cách xử lý:** Bật quyền Superuser cho `com.dex120.s22` trong KernelSU Manager → quay lại app bấm **Làm mới**.
+1. **Symptoms:** Companion app displays red badge `LSPosed: CHƯA BẬT`, or diagnostic log reads `(Chưa có log...)`.
+2. **Possible causes:**
+   - `DeX 120Hz S22` module switch is OFF inside **LSPosed Manager**.
+   - Forgot to check `DeX 120Hz S22` or `System Framework` (`android`) scope.
+   - Installed/updated APK without performing a **Soft Reboot**.
+   - **ReZygisk** failed or unloaded across Soft Reboot (older ReZygisk builds under KernelSU temproot can drop injection after Soft Reboot).
+3. **How to check:**
+   - Open **LSPosed Manager**, verify LSPosed reports *Activated*, and open **Modules → DeX 120Hz S22** to ensure all 3 scopes (`android`, `com.sec.android.sdhms`, `com.dex120.s22`) are checked.
+4. **Fix:**
+   - Check all **3 scopes** → **Soft Reboot** once *(do NOT perform a normal Reboot if using Temproot)*.
+   - If LSPosed itself shows unactivated after Soft Reboot, verify your ReZygisk version supports Android 12 Soft Reboots.
+5. **When to file an issue:** Only if LSPosed reports *Activated*, all 3 scopes are checked, and Soft Reboot completed yet the badge remains red.
 
 ---
 
-## 3. TestUFO hoặc game trong DeX rớt xuống dưới 60fps (24–45fps)
+## 2. Red `Root: Chưa cấp quyền` Badge or Root Actions Fail
 
-1. **Biểu hiện:** Màn hình ngoài nhận 75Hz/120Hz nhưng chạy `testufo.com` chỉ ra ~24–45fps, cảm giác giật rõ khi máy ấm lên.
-2. **Nguyên nhân có thể:**
-   - Khi S22 nóng tới ngưỡng nhiệt SIOP (`siop_level = 4`, khoảng ~44°C pin), tiến trình `com.sec.android.sdhms` gửi lệnh Binder `1122` (`DFS = 30`) xuống `SurfaceFlinger`, khóa nhịp VSync toàn hệ thống xuống **30Hz (`33.33ms`)**.
-   - Nếu bạn quên tick **`com.sec.android.sdhms`** trong LSPosed scope, **Hook 5 (`SdhmsDfsHook`)** chưa thể chặn trực tiếp trong `sdhms`.
-3. **Cách kiểm tra:** Chạy chẩn đoán → xem phần `2. Settings` có dòng `SurfaceFlinger: DFS = 30` không, hoặc qua ADB:
+1. **Symptoms:** Root badge is red, `/sys/class/dp_sec/dex` reads `(cần root)`, switches revert when tapped.
+2. **Possible causes:** Missing `su` grant for `com.dex120.s22` in **KernelSU Manager** (or Magisk), or device performed a Hard Reboot and lost **Temproot**.
+3. **How to check:** Open **KernelSU Manager** to verify KernelSU is *Working* and **Superuser** permits `DeX 120Hz S22`.
+4. **Fix:** Grant Superuser permission to `com.dex120.s22` → return to app and tap **Làm mới** (Refresh).
+
+---
+
+## 3. TestUFO or DeX Games Drop Below 60fps (24–45fps)
+
+1. **Symptoms:** External monitor locks 75Hz/120Hz, yet `testufo.com` drops to ~24–45fps and stutters badly as the phone warms up.
+2. **Possible causes:**
+   - When S22 hits thermal SIOP level (`siop_level = 4`, ~44°C battery), `com.sec.android.sdhms` fires Binder transaction `1122` (`DFS = 30`) to `SurfaceFlinger`, forcing global VSync down to **30Hz (`33.33ms`)**.
+   - Forgot to check **`com.sec.android.sdhms`** in LSPosed scopes, leaving **Hook 5 (`SdhmsDfsHook`)** inactive inside `sdhms`.
+3. **How to check:** Run diagnostics → inspect section `2. Settings` for `SurfaceFlinger: DFS = 30`, or run via ADB:
    ```bash
    adb shell su -c "logcat -d -s SurfaceFlinger | grep 'DFS =' | tail -n 10"
    ```
-4. **Cách xử lý:**
-   - Tick thêm **`com.sec.android.sdhms`** trong LSPosed (*Hiện ứng dụng hệ thống* để tìm) → **Soft Reboot**.
-   - Tạm thời trong app, nhấn nút **Ép cứng 120Hz** — nút này tự gọi `service call SurfaceFlinger 1122 i32 60` để xóa khóa `DFS=30` ngay lập tức.
-   - Bổ sung tản nhiệt / quạt cho điện thoại nếu dùng DeX nặng hoặc chơi game lâu.
+4. **Fix:**
+   - Check **`com.sec.android.sdhms`** in LSPosed (*enable Show system apps* to locate it) → **Soft Reboot**.
+   - As an immediate workaround in the app, tap **Ép cứng 120Hz** — this executes `service call SurfaceFlinger 1122 i32 60` to clear `DFS=30`.
+   - Use an external cooler/fan during sustained DeX gaming or heavy desktop workloads.
 
 ---
 
-## 4. Màn hình 75Hz báo `OSD 75Hz` nhưng TestUFO & màn phản chiếu (View) kẹt đúng 60fps
+## 4. 75Hz Monitor Shows `OSD 75Hz`, Yet TestUFO & Screen Mirroring Stay at 60fps
 
-1. **Biểu hiện:** Màn hình VSP 75Hz (hoặc màn 75Hz khác) báo 75Hz ở OSD và `Desktop` ở `75.0 Hz`, nhưng khi màn hình điện thoại bật sáng, `TestUFO` giữ đúng `60 fps`.
-2. **Nguyên nhân có thể:**
-   - Disassembly `/system/bin/surfaceflinger` trên `SM-S901B` cho thấy: khi cắm màn ngoài chậm hơn 120Hz (ví dụ `75Hz`), Samsung native `SurfaceFlinger::performSetActiveConfig` ép màn điện thoại từ 120Hz về 60Hz (`desiredActiveMode.configId 0 is change to 2`).
-   - Kết hợp với `/vendor/build.prop` đặt `vendor.hwc.exynos.vsync_mode=0`, khiến `SurfaceFlinger` lấy chu kỳ VSync theo **màn chậm hơn** (`16.67ms` = 60Hz) chừng nào Display 0 còn bật ở 60Hz.
-3. **Cách kiểm tra:**
+1. **Symptoms:** A 75Hz panel (e.g., VSP `V2203H`) displays `75Hz` on OSD and `Desktop` reports `75.0 Hz`, yet while the phone screen is awake, `TestUFO` stays pinned at `60 fps`.
+2. **Root cause:**
+   - Disassembly of `/system/bin/surfaceflinger` on `SM-S901B` shows Samsung's native `SurfaceFlinger::performSetActiveConfig` downgrades Display 0 from 120Hz to 60Hz whenever a slower external display (such as `75Hz`) is connected (`desiredActiveMode.configId 0 is change to 2`).
+   - Combined with `vendor.hwc.exynos.vsync_mode=0` in `/vendor/build.prop`, `SurfaceFlinger` picks the **slower screen's** VSync period (`16.67ms` = 60Hz) whenever Display 0 stays awake at 60Hz.
+3. **How to check:**
    ```bash
    adb shell su -c "dumpsys SurfaceFlinger | grep -E 'VSYNC period|mIdealPeriod|powerMode=|activeMode='"
    ```
-4. **Cách xử lý:**
-   - Kiểm tra với **màn hình điện thoại tắt bằng nút nguồn** xem `mIdealPeriod` có về `13.33` (75Hz) không, hoặc trên màn **120Hz thật** (không bị lệch nhịp 75Hz vs 120Hz) vấn đề ép 60Hz ở `performSetActiveConfig` sẽ không kích hoạt.
-   - Không chạy **Test Mode (`dex120_force_virtual_120`)** trên màn 75Hz (sẽ gây skip frame).
+4. **Fix:**
+   - Test with Display 0 off or AMOLED Black Screen state depending on composer VSync behavior; on a **native 120Hz monitor**, Display 0 and the external monitor share matching 120Hz timing (`83` vs `83`) so the native downgrade in `performSetActiveConfig` never triggers.
+   - Keep **Test Mode (`dex120_force_virtual_120`) OFF** on 75Hz panels (enabling it causes frame skipping).
 
 ---
 
-## 5. Sau khi thoát game hoặc khởi động lại, màn điện thoại bị tụt về 60Hz, bấm ép 120Hz không ăn
+## 5. Phone Screen Gets Stuck at 60Hz After Gaming or Reboot; Force 120Hz Fails to Stick
 
-1. **Biểu hiện:** `settings get system min_refresh_rate` / `peak_refresh_rate` quay về `60`, hoặc kẹt ở `120.1`, hoặc `Cảnh báo 120.1 Hz (SamHelper)`.
-2. **Nguyên nhân có thể:**
-   - **Xung đột với SamHelper (`120.1`):** SamHelper ghi `120.1`, trong khi mode 120Hz thật của panel S22 là `120.00001 Hz` nên `DisplayModeDirector` từ chối khóa 120Hz.
-   - **Xung đột với module KernelSU / app tối ưu game bên thứ ba** (như `ksu_ultimate_gaming_x` nếu file trạng thái bị detect nhầm `DISPLAY_MAX_HZ='60'` hoặc `orig_display.env` lưu `120.1`): app/module đó tự ghi đè `min=60` / `peak=60` vào `settings_system.xml`. Giá trị này được Android lưu xuống đĩa nên **tồn tại cả sau Soft Reboot lẫn Hard Reboot**!
-3. **Cách kiểm tra:**
+1. **Symptoms:** `min_refresh_rate` / `peak_refresh_rate` reverts to `60`, gets stuck at `120.1`, or app warns `120.1 Hz (SamHelper)`.
+2. **Possible causes:**
+   - **SamHelper conflict (`120.1`):** SamHelper writes `120.1`, exceeding S22 panel's exact `120.00001 Hz` mode and causing `DisplayModeDirector` to reject 120Hz.
+   - **Third-party KernelSU / game-booster modules** (such as `ksu_ultimate_gaming_x` misdetecting `DISPLAY_MAX_HZ='60'` or storing `orig_display.env` with `120.1`): overwrite `min=60` / `peak=60` into `settings_system.xml`, persisting across both Soft and Hard Reboots!
+3. **How to check:**
    ```bash
    adb shell "echo min=$(settings get system min_refresh_rate) peak=$(settings get system peak_refresh_rate) sec_rrm=$(settings get secure refresh_rate_mode)"
    ```
-4. **Cách xử lý:**
-   - Tạm tắt hoặc sửa module/app xung đột trước (nếu không nó sẽ ghi đè lại `60` khi mở game).
-   - Vào app **DeX 120Hz S22** bấm **Ép cứng 120Hz** (đặt `secure.refresh_rate_mode=1` và `min/peak=120.0`), hoặc chạy qua ADB:
+4. **Fix:**
+   - Disable or fix the conflicting module/app first so it stops overwriting `60` on game launch.
+   - Open **DeX 120Hz S22** and tap **Ép cứng 120Hz** (writes `secure.refresh_rate_mode=1` and `min/peak=120.0`), or run over ADB:
      ```bash
      adb shell settings put secure refresh_rate_mode 1
      adb shell settings put system min_refresh_rate 120.0
@@ -84,44 +86,44 @@ Tài liệu tổng hợp các lỗi phổ biến cho người mới khi cài và
 
 ---
 
-## 6. Cắm màn hình 120Hz/144Hz nhưng không thấy mode 120Hz trong danh sách
+## 6. 120Hz/144Hz Monitor Plugged In, Only 60Hz Modes Listed
 
-1. **Biểu hiện:** Trong `Supported:` của màn `EXTERNAL` chỉ hiện tới `1920x1080@60` hoặc `2560x1440@60`.
-2. **Nguyên nhân có thể:**
-   - Cáp hoặc Hub USB-C đời cũ chỉ có băng thông **HDMI 1.4** hoặc **2-lane HBR2** (2-lane không đủ cho `1440p@120Hz`, chỉ kéo được `1080p@120Hz`).
-   - Màn hình yêu cầu bật cổng HDMI 2.0/2.1 hoặc tắt chế độ tiết kiệm/tương thích trong menu OSD của chính màn hình.
-   - Hook 1 (`DpSysfsHook`) chưa chạy nên kernel vẫn ở `MODE_FILTER_DEX`.
-3. **Cách kiểm tra:** Kiểm tra `/sys/class/dp_sec/dex` trong app phải là `0` (không phải `16`/`17`), và kiểm tra `dmesg | grep -E "exynos-dp|filter out|best mode"` để xem kernel đọc được EDID nào từ màn hình.
-4. **Cách xử lý:** Đổi sang độ phân giải `1080p` nếu dùng hub USB 3.0 2-lane, hoặc dùng cáp USB-C → DisplayPort/HDMI trực tiếp (4-lane) để thử `1440p@120Hz`.
-
----
-
-## 7. Không thoát được khỏi "Màn đen AMOLED"
-
-- Chạm nhanh liên tiếp **3 lần** vào màn hình (trong vòng 700ms), hoặc bấm nút **Back 2 lần** (trong vòng 1.2 giây). Nếu cần gấp, bấm nút nguồn 2 lần hoặc thao tác qua ADB `adb shell input keyevent KEYCODE_BACK KEYCODE_BACK`.
+1. **Symptoms:** `EXTERNAL` `Supported:` list stops at `1920x1080@60` or `2560x1440@60`.
+2. **Possible causes:**
+   - USB-C hub/cable bandwidth capped at **HDMI 1.4** or **2-lane HBR2** (2-lane is too narrow for `1440p@120Hz` and maxes around `1080p@120Hz`).
+   - Monitor OSD requires enabling HDMI 2.0/2.1 or disabling legacy compatibility/eco mode on that port.
+   - Hook 1 (`DpSysfsHook`) failed to load, leaving kernel DisplayPort in `MODE_FILTER_DEX`.
+3. **How to check:** Confirm `/sys/class/dp_sec/dex` reads `0` (not `16`/`17`), and inspect `dmesg | grep -E "exynos-dp|filter out|best mode"` to check EDID parsing.
+4. **Fix:** Lower external resolution to `1080p` if using a 2-lane USB 3.0 hub, or switch to a direct 4-lane USB-C → DisplayPort/HDMI cable for `1440p@120Hz`.
 
 ---
 
-## 8. Rút cáp HDMI ra nhưng DeX chờ ~20 giây mới tắt hoàn toàn
+## 7. Cannot Exit "AMOLED Black Screen"
 
-- Đây là lỗi đã gặp ở bản hook sớm khi `dp_sec/dex` luôn trả `"1"` dù màn ngoài đã rút. Từ bản `v1.0.0-s22-a12`, `DpSysfsHook` chỉ giả lập `"0" → "1"` khi `DisplayModeHook.hasActiveExternalDisplay() == true`. Nếu vẫn bị, kiểm tra lại đã cập nhật đúng APK mới nhất và đã Soft Reboot sau khi cài chưa.
-
----
-
-## 9. Vấn đề Play Integrity / Ngân hàng / Anti-cheat game
-
-- **Quan trọng:** Không phải mọi lỗi Play Integrity hoặc bị app ngân hàng chặn đều do `DeX 120Hz S22`. Bản thân việc root máy, mở LSPosed hoặc cài module spoof thiết bị khác đã có thể khiến Play Integrity / app phát hiện root từ chối chạy.
-- **DeX 120Hz S22 không chứa tính năng ẩn root, giả mạo chứng thực phần cứng (attestation) hay bypass anti-cheat game.** Nếu nghi xung đột trên một app cụ thể, hãy kiểm tra phạm vi (Scope) LSPosed của `DeX 120Hz S22` — chỉ nên tick đúng 3 scope (`android`, `com.sec.android.sdhms`, `com.dex120.s22`), **không** tick game hay app ngân hàng vào scope của module này.
+- **Triple-tap** rapidly on the screen (within 700ms) or press **Back twice** (within 1.2 seconds). As an emergency fallback, press Power twice or run `adb shell input keyevent KEYCODE_BACK KEYCODE_BACK`.
 
 ---
 
-## 10. Thu thập Diagnostic Report an toàn để báo lỗi
+## 8. DeX Takes ~20 Seconds to Close After Unplugging HDMI
 
-1. Cắm màn hình ngoài và tái hiện lỗi (nếu lỗi xảy ra khi chạy DeX).
-2. Mở app **DeX 120Hz S22** → cuộn xuống mục **5. Chẩn đoán & Thu thập Log**.
-3. Bấm **Chạy chẩn đoán** → chờ vài giây cho đến khi hộp terminal hiện đủ mục `=== 0` tới `=== 5`.
-4. Bấm **Copy Log**. Ứng dụng sẽ chạy qua `RootShell.sanitizeDiagnostics()` để tự ẩn:
-   - Serial (`ro.serialno`, Samsung serial)
-   - IMEI, MAC, IP nội bộ (`10.x`, `172.16-31.x`, `192.168.x`, `127.0.0.1`)
-   - Email, Token GitHub, Mật khẩu / Secret
-5. **Tự kiểm tra lại bằng mắt 1 lần nữa** trước khi dán vào [mẫu Bug Report trên GitHub Issues](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/issues/new?template=bug_report.md).
+- Early prototype hooks returned `"1"` unconditionally for `/sys/class/dp_sec/dex` reads even after unplugging HDMI. Since `v1.0.0-s22-a12`, `DpSysfsHook` only spoofs `"0" → "1"` while `DisplayModeHook.hasActiveExternalDisplay() == true`. Confirm you installed the current APK and performed a Soft Reboot afterward.
+
+---
+
+## 9. Play Integrity / Banking Apps / Game Anti-Cheat Detections
+
+- **Important:** Play Integrity or banking app blocks are usually triggered by Root, Zygisk, LSPosed itself, or spoofing modules — not specifically `DeX 120Hz S22`.
+- **`DeX 120Hz S22` contains zero root-hiding, hardware attestation spoofing, or game anti-cheat bypass features.** Keep LSPosed scopes strictly limited to `android`, `com.sec.android.sdhms`, and `com.dex120.s22` — **never** enable banking apps or games inside this module's scope.
+
+---
+
+## 10. Collecting a Sanitized Diagnostic Report Safely
+
+1. Connect the external display and reproduce the issue.
+2. Open **DeX 120Hz S22** → scroll to **5. Chẩn đoán & Thu thập Log**.
+3. Tap **Chạy chẩn đoán** → wait a few seconds until sections `=== 0` through `=== 5` appear.
+4. Tap **Copy Log**. `RootShell.sanitizeDiagnostics()` automatically redacts:
+   - Serials (`ro.serialno`, Samsung serials)
+   - IMEI, MAC addresses, private/loopback IPv4 (`10.x`, `172.16-31.x`, `192.168.x`, `127.0.0.1`)
+   - Emails, GitHub tokens, Passwords / Secrets
+5. **Review the entire copied log manually before pasting** into the [GitHub Bug Report template](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/issues/new?template=bug_report.md).

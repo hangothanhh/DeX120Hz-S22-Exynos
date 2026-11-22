@@ -1,61 +1,71 @@
 # Changelog
 
-Mọi thay đổi đáng chú ý của dự án **DeX 120Hz S22** (`com.dex120.s22`) đều được ghi lại tại đây theo chuẩn [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+**Language:** **English** | [Tiếng Việt](docs/vi/CHANGELOG.md)
+
+All notable changes to **DeX 120Hz S22** (`com.dex120.s22`) are documented in this file following [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
 ## [Unreleased]
 
+### Changed
+- Promoted **English** to the primary default language across `README.md`, all root governance/audit documents, all 7 guides under `docs/`, all 4 `.github/` issue/PR templates, and release notes; relocated Vietnamese mirrors cleanly to `README.vi.md` and `docs/vi/`.
+- Removed redundant `README.en.md` after promoting it to `README.md`.
+
+### Security
+- Enabled GitHub Actions **`sha_pinning_required: true`** at the repository settings level (`hangothanhh/DeX120Hz-S22-Exynos`).
+- Activated GitHub Repository Ruleset **`Protect main branch`** (`#27848863`: blocks branch deletion and non-fast-forward force-pushes, requires Pull Request reviews/workflow and passing `build-and-verify` status check, with `RepositoryRole` admin bypass).
+
 ---
 
 ## [v1.0.1-s22-a12] - 2026-11-22 (Pre-release)
 
-Phiên bản hoàn thiện tuân thủ giấy phép, bảo mật chuỗi cung ứng, tài liệu song ngữ và CI/CD trên nền `v1.0.0-s22-a12` (không thay đổi logic Xposed hook cốt lõi).
+License compliance, supply-chain security, bilingual documentation, and CI/CD hardening release built on top of `v1.0.0-s22-a12` (no changes to core Xposed hook logic).
 
 ### Added
-- Thêm tài liệu tiếng Anh thân thiện cho người mới tại `README.en.md` và thanh chuyển ngôn ngữ trên `README.md`.
-- Thêm `.gitattributes` chuẩn hóa line ending (`LF` mặc định, `CRLF` cho `*.ps1`, đánh dấu file nhị phân).
-- Thêm bộ hồ sơ kiểm toán & quản trị mã nguồn mở: `AI_CONTRIBUTIONS.md`, `THIRD_PARTY_NOTICES.md`, `LICENSE_AUDIT_REPORT.md`, `SECURITY_AUDIT_REPORT.md` và `SBOM.cdx.json` (CycloneDX `1.5`).
-- Bổ sung mục **Supported Versions**, **APK Signing Policy** trong `SECURITY.md` và **Trademark Disclaimer** trong `NOTICE`, `README.md`, `README.en.md`.
+- Added beginner-friendly English documentation and language switcher bars across repository documentation.
+- Added `.gitattributes` standardizing line endings (`LF` default, `CRLF` for `*.ps1`, binary rules for build outputs).
+- Added compliance and governance deliverables: `AI_CONTRIBUTIONS.md`, `THIRD_PARTY_NOTICES.md`, `LICENSE_AUDIT_REPORT.md`, `SECURITY_AUDIT_REPORT.md`, and `SBOM.cdx.json` (CycloneDX `1.5`).
+- Added **Supported Versions** and **APK Signing Policy** in `SECURITY.md`, plus **Trademark Disclaimers** in `NOTICE`, `README.md`, and `THIRD_PARTY_NOTICES.md`.
 
 ### Changed
-- Chuyển giấy phép mã nguồn mở từ MIT sang **`GNU GPL v3.0` (`GPL-3.0`)** và cập nhật `NOTICE` để tương thích giấy phép đầy đủ với `Kinue72/OnigiriDeX` (`GPL-3.0`), `LSPosed` và `KernelSU`.
-- Cập nhật URL repository sang `hangothanhh/DeX120Hz-S22-Exynos`.
-- Tăng `versionCode` lên `2`, `versionName` lên `1.0.1-s22-a12` trong `AndroidManifest.xml` và `RootShell.java`; bật quyền thực thi (`100755`) cho `build.sh` và `scripts/verify_apk.py`.
-- Loại bỏ trailer `Co-authored-by: Antigravity <antigravity@google.com>` khỏi lịch sử commit sau `0b17242` và cập nhật `CONTRIBUTING.md` / `AI_CONTRIBUTIONS.md` để tránh gán nhầm tài khoản GitHub không xác minh `antigravity-google-bot`.
+- Switched project license from MIT to **`GNU GPL v3.0` (`GPL-3.0`)** and updated `NOTICE` for full license compatibility with `Kinue72/OnigiriDeX` (`GPL-3.0`), `LSPosed`, and `KernelSU`.
+- Updated repository URLs to `hangothanhh/DeX120Hz-S22-Exynos`.
+- Bumped `versionCode` to `2` and `versionName` to `1.0.1-s22-a12` in `AndroidManifest.xml` and `RootShell.java`; set executable mode (`100755`) on `build.sh` and `scripts/verify_apk.py`.
+- Stripped `Co-authored-by: Antigravity <antigravity@google.com>` trailers from post-`0b17242` commit history and updated `CONTRIBUTING.md` / `AI_CONTRIBUTIONS.md` to prevent misattribution to the unverified `antigravity-google-bot` GitHub account.
 
 ### Security
-- Gia cố `.github/workflows/ci.yml`: giới hạn `permissions: contents: read`, ghim toàn bộ GitHub Actions theo commit SHA (`actions/checkout` v7.0.1, `setup-java` v6.3.0, `setup-python` v7.1.0, `upload-artifact` v7.0.2), kiểm tra tồn tại `LICENSE` GPL-3.0, tính hợp lệ của `SBOM.cdx.json` và không để lọt chuỗi token tĩnh trong `tests/SanitizerTest.java`.
-- Xây dựng chuỗi token giả lập trong `tests/SanitizerTest.java` bằng phép ghép chuỗi động thay cho literal tĩnh.
+- Hardened `.github/workflows/ci.yml`: explicit `permissions: contents: read`, commit-SHA pinning across all actions (`actions/checkout` v7.0.1, `setup-java` v6.3.0, `setup-python` v7.1.0, `upload-artifact` v7.0.2), automated `LICENSE` GPL-3.0 verification, `SBOM.cdx.json` schema/JSON check, and static token literal blocking.
+- Constructed the synthetic GitHub token fixture dynamically via string concatenation in `tests/SanitizerTest.java`.
 
 ---
 
 ## [v1.0.0-s22-a12] - 2026-11-22 (Pre-release)
 
-Phiên bản phát hành thử nghiệm đầu tiên nhắm riêng **Samsung Galaxy S22 Exynos (`SM-S901B` / `s5e9925`) chạy Android 12 (`API 31`) / One UI 4.1 với quyền Root + LSPosed**.
+First experimental release strictly targeting **Samsung Galaxy S22 Exynos (`SM-S901B` / `s5e9925`) running Android 12 (`API 31`) / One UI 4.1 with Root + LSPosed**. *(Historical pre-GPL snapshot; superseded by `v1.0.1-s22-a12`.)*
 
 ### Added
-- **5 lớp Xposed/LSPosed hook:**
-  - `DpSysfsHook`: Chặn ghi `0x10`/`0x11` vào `/sys/class/dp_sec/dex` để giữ kernel DisplayPort ở chế độ Mirror, mở khóa danh sách độ phân giải/tần số quét >60Hz; giả lập kết quả đọc `"1"` có điều kiện khi màn hình ngoài đang active.
-  - `LowRefreshTokenHook`: Chặn các token khóa ≤60Hz (`acquireLowRefreshRateToken`, `acquireRefreshRateMaxLimitToken`) từ `[DMS]HardwareManager`, `SiopLimiterHrr` và các caller khi có màn hình ngoài active, cache proxy an toàn theo từng interface (`ILowRefreshRateToken` và `IRefreshRateMaxLimitToken`).
-  - `DisplayModeHook`: Nâng `baseModeId` và `RefreshRateRange` của màn ngoài lên Hz cao nhất (tối đa theo `dex120_target_hz`, mặc định 120Hz), đồng thời bảo vệ Display 0 ở 120Hz khi đang cắm màn ngoài.
-  - `VirtualDisplaySyncHook`: Tự động đồng bộ `VirtualDisplay "Desktop"` theo đúng Hz thực của màn hình ngoài (kèm tùy chọn Test Mode `dex120_force_virtual_120`).
-  - `SdhmsDfsHook`: Chặn giao dịch Binder `SurfaceFlinger` mã `1122` (`DFS = 30`) từ `com.sec.android.sdhms` khi nóng máy, đồng thời tự động gửi lại lệnh `DFS = 60` từ `system_server`.
-- **Ứng dụng điều khiển `DeX 120Hz S22` (`MainActivity`, `BlackScreenActivity`, `RootShell`, `ModuleStatus`):**
-  - Tự kiểm tra trạng thái kích hoạt LSPosed và quyền Root.
-  - Màn đen AMOLED (`#000000`, độ sáng tối thiểu `0.001f`) giữ Display 0 ở trạng thái `ON` để SurfaceFlinger Android 12 không rơi về `SyntheticVSync` 60Hz khi tắt màn hình bằng nút nguồn.
-  - Nút **Ép cứng 120Hz** (đặt `Settings.Secure.refresh_rate_mode=1`, `Settings.System` `min/peak_refresh_rate=120.0`, `low_power=0`, reset `SurfaceFlinger DFS=60`) và cảnh báo giá trị `120.1` của SamHelper.
-  - Công cụ **Chạy chẩn đoán** kèm bộ lọc tự ẩn dữ liệu nhạy cảm (`RootShell.sanitizeDiagnostics`) trước khi người dùng sao chép log (ẩn Serial, IMEI, MAC, IP nội bộ, Email, Token/Password).
-- **Công cụ build, kiểm thử & tài liệu mở:**
-  - Script build độc lập `build.ps1` (Windows) và `build.sh` (Linux/macOS), tự kiểm chứng APK/DEX/SHA-256 và unit test sanitizer (`scripts/verify_apk.py`, `tests/SanitizerTest.java`).
-  - Bộ tài liệu hướng dẫn người mới hoàn chỉnh (`README.md` và thư mục `docs/`), `LICENSE` (MIT), `NOTICE`, `SECURITY.md`, `CONTRIBUTING.md`, và GitHub Issue/PR templates.
+- **5 Xposed/LSPosed hook layers:**
+  - `DpSysfsHook`: Intercepts writes of `0x10`/`0x11` to `/sys/class/dp_sec/dex` to keep the kernel DisplayPort driver in Mirror mode, unlocking >60Hz modes; conditionally spoofs reads as `"1"` only when an external display is active.
+  - `LowRefreshTokenHook`: Blocks `<=60Hz` lock tokens (`acquireLowRefreshRateToken`, `acquireRefreshRateMaxLimitToken`) from `[DMS]HardwareManager`, `SiopLimiterHrr`, and callers while an external display is active, caching safe interface-specific proxies (`ILowRefreshRateToken` and `IRefreshRateMaxLimitToken`).
+  - `DisplayModeHook`: Upgrades external display `baseModeId` and expands `RefreshRateRange` up to `dex120_target_hz` (default 120Hz), while protecting Display 0 at 120Hz during external display sessions.
+  - `VirtualDisplaySyncHook`: Synchronizes `VirtualDisplay "Desktop"` with the external display's active refresh rate (plus optional Test Mode `dex120_force_virtual_120`).
+  - `SdhmsDfsHook`: Intercepts `SurfaceFlinger` Binder transaction `1122` (`DFS = 30`) from `com.sec.android.sdhms` under thermal load, and proactively resets `DFS = 60` from `system_server`.
+- **`DeX 120Hz S22` control app (`MainActivity`, `BlackScreenActivity`, `RootShell`, `ModuleStatus`):**
+  - Automatic detection of LSPosed module activation and Root status.
+  - AMOLED Black Screen (`#000000`, `0.001f` brightness) keeping Display 0 `ON` so Android 12 `SurfaceFlinger` avoids `SyntheticVSync` 60Hz fallback when turning the screen off.
+  - **Force 120Hz** toggle (`Settings.Secure.refresh_rate_mode=1`, `Settings.System` `min/peak_refresh_rate=120.0`, `low_power=0`, `SurfaceFlinger DFS=60` reset) and SamHelper `120.1` warning.
+  - **Run Diagnostics** helper with automatic PII/secret redaction (`RootShell.sanitizeDiagnostics`) before copying logs (redacts Serial, IMEI, MAC, private IPs, Email, Tokens/Passwords).
+- **Standalone build, verification & docs:**
+  - Gradle-free build scripts (`build.ps1` for Windows, `build.sh` for Linux/macOS) and automated APK/DEX/SHA-256 + `SanitizerTest` suite (`scripts/verify_apk.py`, `tests/SanitizerTest.java`).
+  - Initial guides (`docs/`), `NOTICE`, `SECURITY.md`, `CONTRIBUTING.md`, and GitHub Issue/PR templates.
 
 ### Compatibility & Verification Scope
-- **Đã kiểm chứng thực tế (`VERIFIED`):** `SM-S901B` (Exynos 2200), Android 12 / One UI 4.1 (`API 31`, kernel `5.10.66`), KernelSU temproot + ReZygisk + LSPosed, màn hình ngoài **VSP `V2203H` (`1920x1080@75Hz`)** qua USB-C hub (`OSD 75Hz`, `decon[2] bts.fps:75`, `VSync 13.33ms` sau `DFS=60`).
-- **Kiểm thử một phần (`PARTIAL`):** Pipeline phần mềm đã mở khóa tới `120Hz`, nhưng **chưa test vật lý trên màn hình ngoài 120Hz thật**.
-- **Không hỗ trợ (`UNSUPPORTED`):** Android 13/14/15 (One UI 5/6/7), S22 Snapdragon hoặc các model Galaxy khác chưa từng được kiểm thử.
+- **Verified (`VERIFIED`):** `SM-S901B` (Exynos 2200), Android 12 / One UI 4.1 (`API 31`, kernel `5.10.66`), KernelSU temproot + ReZygisk + LSPosed, external monitor **VSP `V2203H` (`1920x1080@75Hz`)** over USB-C hub (`OSD 75Hz`, `decon[2] bts.fps:75`, `VSync 13.33ms` after `DFS=60`).
+- **Partially verified (`PARTIAL`):** Software pipeline unlocked up to `120Hz`, **untested on physical 120Hz hardware**.
+- **Unsupported (`UNSUPPORTED`):** Android 13/14/15 (One UI 5/6/7), Snapdragon S22, or other Galaxy models.
 
 ### Known Issues
-- Trên màn hình ngoài **75Hz**, `/system/bin/surfaceflinger` gốc của Samsung sẽ tự hạ Display 0 (120Hz) xuống 60Hz khi hai màn khác nhịp không tương thích, và với property mặc định `vendor.hwc.exynos.vsync_mode=0`, VSync ứng dụng có thể bị kéo theo 60Hz khi màn điện thoại đang bật. (Tắt màn điện thoại hoặc dùng màn 120Hz khớp nhịp tránh được giới hạn này.)
-- Chưa có màn hình vật lý 120Hz để đo độ ổn định dài hạn, nhiệt độ và băng thông ở `1080p@120Hz` / `1440p@120Hz`.
-- Nếu cài đồng thời ứng dụng hoặc module quản lý tần số quét/game bên thứ ba (ví dụ SamHelper ghi `120.1` hoặc module tự hạ về `60Hz`), có thể ghi đè lên `min/peak_refresh_rate`.
+- On **75Hz external monitors**, Samsung's native `/system/bin/surfaceflinger` forces Display 0 (120Hz) down to 60Hz due to incompatible VSync periods, and with default `vendor.hwc.exynos.vsync_mode=0`, application VSync follows the slower 60Hz display while Display 0 remains on.
+- Long-term stability, thermals, and link bandwidth at `1080p@120Hz` / `1440p@120Hz` have not yet been verified on physical 120Hz monitors.
+- Third-party refresh-rate/gaming apps or modules writing `120.1` (e.g., SamHelper) or `60` into `min/peak_refresh_rate` can override app settings.
