@@ -1,0 +1,40 @@
+NOTICE & THIRD-PARTY ACKNOWLEDGMENTS
+=====================================
+
+Project: DeX 120Hz S22 (com.dex120.s22)
+License: MIT License (see LICENSE)
+
+1. AI CONTRIBUTION & REVIEW DISCLOSURE
+--------------------------------------
+Most of the Java code, shell/PowerShell/Python scripts, CI workflows, and
+documentation in this repository were written or refactored with AI assistance.
+Human verification so far has only been performed on a single Samsung Galaxy S22
+Exynos (SM-S901B, Android 12 / One UI 4.1) device with a 75Hz external monitor
+(VSP V2203H). Do NOT treat any part of this codebase as audited for arbitrary
+devices or other Android / One UI versions without testing it yourself.
+
+Contributors must follow the AI Slop policy in CONTRIBUTING.md: disclose AI
+assistance transparently and never submit unverified AI-generated tweaks.
+
+2. INSPIRATIONS & UPSTREAM ECOSYSTEM CREDITS
+--------------------------------------------
+- OnigiriDeX (https://github.com/Kinue72/OnigiriDeX)
+  Inspiration for Samsung DeX high-refresh-rate exploration and beginner-first,
+  transparent documentation style. DeX120Hz-S22 is an independent LSPosed
+  implementation specifically targeting Galaxy S22 Exynos (Android 12 / One UI
+  4.1) with root access rather than a custom ROM.
+
+- LSPosed / Xposed API (https://github.com/LSPosed/LSPosed)
+  Clean-room compile-only method signature stubs live under
+  `stubs/de/robv/android/xposed/` so the project builds without bundled binary
+  Xposed JARs. These stubs are excluded from `classes.dex` at package time and
+  resolved against the LSPosed framework runtime on the device.
+
+- ReZygisk & KernelSU
+  Root and Zygisk injection runtime used during live testing on SM-S901B.
+
+- Android Open Source Project (AOSP)
+  Standard Android SDK APIs referenced against Android 12 (API 31).
+
+This repository does NOT include Samsung proprietary binaries, private signing
+keys, or personal device attestation artifacts.

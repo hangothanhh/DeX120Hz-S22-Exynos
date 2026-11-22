@@ -1,0 +1,30 @@
+# Build outputs & generated artifacts
+build/
+out/
+dist/
+*.apk
+*.idsig
+*.sha256
+*.dex
+*.class
+*.jar
+*.zip
+
+# Signing keys & secrets (NEVER commit)
+*.keystore
+*.jks
+*.pk8
+*.pem
+keystore.properties
+local.properties
+
+# IDE, OS & tool caches
+.gradle/
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+__pycache__/
+*.pyc
