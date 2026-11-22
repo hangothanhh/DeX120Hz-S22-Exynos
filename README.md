@@ -1,5 +1,7 @@
 # DeX 120Hz S22
 
+**Ngôn ngữ / Language:** **Tiếng Việt** | [English](README.en.md)
+
 Module **LSPosed** và ứng dụng điều khiển đi kèm giúp mở khóa tần số quét cao (trên 60Hz, tối đa 120Hz tùy màn hình và cáp) cho **Samsung DeX** — áp dụng riêng cho **Samsung Galaxy S22 Exynos (`SM-S901B` / `s5e9925`) chạy Android 12 / One UI 4.1 đã root**.
 
 - **Phiên bản hiện tại:** `v1.0.0-s22-a12` (**Pre-release / Experimental**)
