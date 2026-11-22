@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (c) 2026 hangothanhh
+
 package com.dex120.s22.xposed;
 
 import android.content.ContentResolver;
@@ -114,14 +117,14 @@ public final class Config {
             sUnlockModes = Settings.Global.getInt(cr, KEY_UNLOCK_MODES, 1) != 0;
             sSyncVirtual = Settings.Global.getInt(cr, KEY_SYNC_VIRTUAL, 1) != 0;
             sForceVirtual120 = Settings.Global.getInt(cr, KEY_FORCE_VIRTUAL_120, 0) != 0;
-            int hz = Settings.Global.getInt(cr, KEY_TARGET_HZ, 120);
-            if (hz < 60 || hz > 240) {
-                hz = 120;
-            }
-            sTargetHz = hz;
+            sTargetHz = sanitizeTargetHz(Settings.Global.getInt(cr, KEY_TARGET_HZ, 120));
         } catch (Throwable ignored) {
             // Early boot before SettingsProvider is ready: keep safe defaults.
         }
+    }
+
+    public static int sanitizeTargetHz(int hz) {
+        return (hz < 60 || hz > 240) ? 120 : hz;
     }
 
     public static boolean isEnabled() {

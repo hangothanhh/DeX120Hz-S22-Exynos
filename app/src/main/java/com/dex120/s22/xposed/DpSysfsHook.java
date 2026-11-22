@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (c) 2026 hangothanhh
+
 package com.dex120.s22.xposed;
 
 import java.lang.reflect.Method;
@@ -101,8 +104,8 @@ public final class DpSysfsHook {
             Object rawVal = param.args[valIdx];
             if (rawVal instanceof Number) {
                 int oldVal = ((Number) rawVal).intValue();
-                if ((oldVal & 0xF0) != 0) {
-                    int newVal = oldVal & 0x0F;
+                int newVal = maskDexWriteValue(oldVal);
+                if (newVal != oldVal) {
                     param.args[valIdx] = Integer.valueOf(newVal);
                     sSimulatedDexOn = true;
                     Config.log("dp_sec/dex write intercepted (int): " + oldVal
@@ -116,7 +119,7 @@ public final class DpSysfsHook {
             if (rawVal instanceof String) {
                 String strVal = ((String) rawVal).trim();
                 // Never interfere with SkipAdapterCheck or HMD commands.
-                if (strVal.startsWith("SkipAdapterCheck") || strVal.startsWith("HMD")) {
+                if (isPassthroughDpCommand(strVal)) {
                     return;
                 }
                 Integer parsed = parseIntSafe(strVal);
@@ -124,8 +127,8 @@ public final class DpSysfsHook {
                     return;
                 }
                 int oldVal = parsed;
-                if ((oldVal & 0xF0) != 0) {
-                    int newVal = oldVal & 0x0F;
+                int newVal = maskDexWriteValue(oldVal);
+                if (newVal != oldVal) {
                     param.args[valIdx] = Integer.toString(newVal);
                     sSimulatedDexOn = true;
                     Config.log("dp_sec/dex write intercepted (str): " + strVal
@@ -178,7 +181,15 @@ public final class DpSysfsHook {
         }
     }
 
-    private static Integer parseIntSafe(String s) {
+    public static int maskDexWriteValue(int oldVal) {
+        return ((oldVal & 0xF0) != 0) ? (oldVal & 0x0F) : oldVal;
+    }
+
+    public static boolean isPassthroughDpCommand(String strVal) {
+        return strVal != null && (strVal.startsWith("SkipAdapterCheck") || strVal.startsWith("HMD"));
+    }
+
+    public static Integer parseIntSafe(String s) {
         try {
             return Integer.valueOf(Integer.parseInt(s));
         } catch (NumberFormatException ignored) {

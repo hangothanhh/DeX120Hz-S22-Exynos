@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (c) 2026 hangothanhh
+
 package com.dex120.s22.xposed;
 
 import android.util.SparseArray;

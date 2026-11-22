@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (c) 2026 hangothanhh
 """Verify DeX120Hz-S22 APK contents, DEX class definitions, SHA-256, and host unit tests."""
 
 import hashlib
@@ -160,10 +162,68 @@ def run_sanitizer_tests() -> None:
             print(line)
 
 
+def find_android_jar() -> str:
+    candidates: list[Path] = []
+    for env_key in ("ANDROID_HOME", "ANDROID_SDK_ROOT"):
+        val = os.environ.get(env_key)
+        if val:
+            candidates.append(Path(val))
+    candidates.extend([
+        Path(r"C:\Android\Sdk"),
+        Path("/usr/local/lib/android/sdk"),
+        Path.home() / "Android" / "Sdk",
+    ])
+    for sdk_root in candidates:
+        platforms = sdk_root / "platforms"
+        if not platforms.is_dir():
+            continue
+        jars: list[tuple[int, Path]] = []
+        for entry in platforms.iterdir():
+            if entry.is_dir() and entry.name.startswith("android-"):
+                suffix = entry.name[len("android-"):]
+                if suffix.isdigit() and int(suffix) >= 31:
+                    jar = entry / "android.jar"
+                    if jar.is_file():
+                        jars.append((int(suffix), jar))
+        if jars:
+            jars.sort(key=lambda item: item[0], reverse=True)
+            return str(jars[0][1])
+    raise AssertionError("Android SDK android.jar (API >= 31) not found")
+
+
+def run_hook_logic_tests() -> None:
+    javac = find_jdk_tool("javac")
+    java = find_jdk_tool("java")
+    android_jar = find_android_jar()
+
+    app_jar = BUILD_DIR / "app-classes.jar"
+    stubs_jar = BUILD_DIR / "xposed-stubs.jar"
+    test_src = ROOT / "tests/HookLogicTest.java"
+    if not app_jar.is_file() or not stubs_jar.is_file():
+        raise AssertionError("Missing build/app-classes.jar or build/xposed-stubs.jar (run build script first)")
+
+    compile_cp = os.pathsep.join([str(app_jar), str(stubs_jar), android_jar])
+    with tempfile.TemporaryDirectory() as tmp:
+        subprocess.run(
+            [javac, "--release", "11", "-encoding", "UTF-8", "-cp", compile_cp, "-d", tmp, str(test_src)],
+            check=True,
+        )
+        run_cp = os.pathsep.join([tmp, str(app_jar), str(stubs_jar), android_jar])
+        res = subprocess.run(
+            [java, "-cp", run_cp, "HookLogicTest"],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        for line in res.stdout.strip().splitlines():
+            print(line)
+
+
 def main() -> int:
     verify_apk_and_dex()
     verify_sha256()
     run_sanitizer_tests()
+    run_hook_logic_tests()
     print("[PASS] All DeX120Hz-S22 checks succeeded.")
     return 0
 
