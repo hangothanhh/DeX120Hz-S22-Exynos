@@ -36,11 +36,11 @@ Các PR có dấu hiệu copy-paste từ AI hàng loạt, sai tên API thật tr
 ## Quy trình đóng góp từng bước
 
 ### 1. Fork và Clone
-1. Nhấn **Fork** repository `hangothanhh/DeX120Hz-S22` về tài khoản GitHub của bạn (nếu bạn có quyền truy cập).
+1. Nhấn **Fork** repository `hangothanhh/DeX120Hz-S22-Exynos` về tài khoản GitHub của bạn (nếu bạn có quyền truy cập).
 2. Clone bản fork về máy:
    ```bash
-   git clone https://github.com/<your-username>/DeX120Hz-S22.git
-   cd DeX120Hz-S22
+   git clone https://github.com/<your-username>/DeX120Hz-S22-Exynos.git
+   cd DeX120Hz-S22-Exynos
    ```
 
 ### 2. Cài đặt môi trường Build

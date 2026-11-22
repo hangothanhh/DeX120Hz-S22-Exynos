@@ -12,7 +12,7 @@ Các công tắc hook của `DeX 120Hz S22` được lưu trong hệ thống And
 
 **Các bước cập nhật:**
 1. Mở app `DeX 120Hz S22`, xem lại hoặc chụp ảnh các công tắc hiện tại (và nếu cần sao lưu qua ADB: `adb shell "settings list global | grep '^dex120_'"`).
-2. Tải `DeX120Hz-S22.apk` và `.sha256` bản mới từ [Releases](https://github.com/hangothanhh/DeX120Hz-S22/releases) và đọc [CHANGELOG.md](../CHANGELOG.md).
+2. Tải `DeX120Hz-S22.apk` và `.sha256` bản mới từ [Releases](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/releases) và đọc [CHANGELOG.md](../CHANGELOG.md).
 3. Kiểm tra lại **SHA-256** (xem [docs/installation.md](installation.md#bước-2-kiểm-tra-sha-256-bắt-buộc-để-tránh-file-hỏnggiả-mạo)).
 4. Cài đè APK (`adb install -r DeX120Hz-S22.apk` hoặc bấm cài trực tiếp).
 5. Mở **LSPosed Manager** → kiểm tra xem bản mới có thêm scope mới không (tối thiểu tick đủ 3 mục: `Hệ thống Android (android)`, `com.sec.android.sdhms`, `DeX 120Hz S22`).

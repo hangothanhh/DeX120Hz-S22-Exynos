@@ -124,4 +124,4 @@ Tài liệu tổng hợp các lỗi phổ biến cho người mới khi cài và
    - Serial (`ro.serialno`, Samsung serial)
    - IMEI, MAC, IP nội bộ (`10.x`, `172.16-31.x`, `192.168.x`, `127.0.0.1`)
    - Email, Token GitHub, Mật khẩu / Secret
-5. **Tự kiểm tra lại bằng mắt 1 lần nữa** trước khi dán vào [mẫu Bug Report trên GitHub Issues](https://github.com/hangothanhh/DeX120Hz-S22/issues/new?template=bug_report.md).
+5. **Tự kiểm tra lại bằng mắt 1 lần nữa** trước khi dán vào [mẫu Bug Report trên GitHub Issues](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/issues/new?template=bug_report.md).

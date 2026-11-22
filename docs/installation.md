@@ -38,7 +38,7 @@ Tài liệu này giúp bạn tự cài đặt, kích hoạt đúng 3 phạm vi (
 ## 4. Các bước thực hiện
 
 ### Bước 1: Tải đúng file APK
-1. Mở [trang Releases trên GitHub](https://github.com/hangothanhh/DeX120Hz-S22/releases/latest).
+1. Mở [trang Releases trên GitHub](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/releases/latest).
 2. Tải **2 file** sau (không tải `Source code (zip)`):
    - `DeX120Hz-S22.apk`
    - `DeX120Hz-S22.apk.sha256`

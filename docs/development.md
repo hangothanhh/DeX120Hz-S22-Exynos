@@ -34,8 +34,8 @@ Tài liệu này dành cho lập trình viên hoặc người dùng muốn tự 
 ### Bước 1: Clone repository
 *(Dự án không dùng Git submodule.)*
 ```bash
-git clone https://github.com/hangothanhh/DeX120Hz-S22.git
-cd DeX120Hz-S22
+git clone https://github.com/hangothanhh/DeX120Hz-S22-Exynos.git
+cd DeX120Hz-S22-Exynos
 ```
 
 ### Bước 2: Chạy Build

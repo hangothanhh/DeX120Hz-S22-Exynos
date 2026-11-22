@@ -8,7 +8,7 @@ Module **LSPosed** và ứng dụng điều khiển đi kèm giúp mở khóa t�
 - **Gói ứng dụng:** `com.dex120.s22` (`minSdk 31`, `targetSdk 31` — Android 12)
 - **Công nghệ sử dụng:** Java 11, Xposed/LSPosed Hooks (`system_server` + `com.sec.android.sdhms`), Android SDK thuần (`aapt2` + `d8` + `apksigner`, không phụ thuộc Gradle nặng)
 - **Giấy phép:** [GNU GPL v3.0](LICENSE) · [Thông báo bản quyền & AI](NOTICE)
-- **Liên kết dự án:** [Phát hành (Releases)](https://github.com/hangothanhh/DeX120Hz-S22/releases) · [Báo lỗi (Issues)](https://github.com/hangothanhh/DeX120Hz-S22/issues) · [Đóng góp (Contributing)](CONTRIBUTING.md)
+- **Liên kết dự án:** [Phát hành (Releases)](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/releases) · [Báo lỗi (Issues)](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/issues) · [Đóng góp (Contributing)](CONTRIBUTING.md)
 
 ---
 
@@ -33,7 +33,7 @@ Module **LSPosed** và ứng dụng điều khiển đi kèm giúp mở khóa t�
 1. Sao lưu toàn bộ dữ liệu quan trọng ra máy tính hoặc đám mây.
 2. Kiểm tra đúng máy **Galaxy S22 Exynos (`SM-S901B`)**, đang ở **Android 12 / One UI 4.1**.
 3. Đảm bảo đã có quyền **Root** (`KernelSU` hoặc tương đương), **Zygisk** (`ReZygisk`) và **LSPosed** đang hoạt động ổn định.
-4. Tải đúng file `DeX120Hz-S22.apk` từ [trang Releases](https://github.com/hangothanhh/DeX120Hz-S22/releases) (không tải nhầm Source code ZIP).
+4. Tải đúng file `DeX120Hz-S22.apk` từ [trang Releases](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/releases) (không tải nhầm Source code ZIP).
 5. Kiểm tra mã **SHA-256** trước khi cài.
 6. Đọc trước [hướng dẫn khôi phục khi lỗi (Recovery)](docs/recovery.md) để biết cách gỡ/tắt module nếu màn hình hoặc `system_server` gặp trục trặc.
 
@@ -98,7 +98,7 @@ Chi tiết giải thích từng khái niệm và lưu ý Temproot xem tại [doc
 ## Cài đặt nhanh từ A đến Z
 
 ### Bước 1: Tải file APK chính thức
-1. Mở trang [GitHub Releases](https://github.com/hangothanhh/DeX120Hz-S22/releases/latest).
+1. Mở trang [GitHub Releases](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/releases/latest).
 2. Tải về **`DeX120Hz-S22.apk`** và file **`DeX120Hz-S22.apk.sha256`**.
 3. **Không** tải file `Source code (zip)` để cài — đây chỉ là APK ứng dụng + module LSPosed (dự án này **không** dùng file ZIP flash trong KernelSU Manager).
 
@@ -193,16 +193,16 @@ Tóm tắt nhanh các thao tác an toàn — hướng dẫn từng bước đầ
 
 **Trên Windows (PowerShell):**
 ```powershell
-git clone https://github.com/hangothanhh/DeX120Hz-S22.git
-cd DeX120Hz-S22
+git clone https://github.com/hangothanhh/DeX120Hz-S22-Exynos.git
+cd DeX120Hz-S22-Exynos
 powershell -ExecutionPolicy Bypass -File .\build.ps1
 python .\scripts\verify_apk.py
 ```
 
 **Trên Linux / macOS:**
 ```bash
-git clone https://github.com/hangothanhh/DeX120Hz-S22.git
-cd DeX120Hz-S22
+git clone https://github.com/hangothanhh/DeX120Hz-S22-Exynos.git
+cd DeX120Hz-S22-Exynos
 chmod +x ./build.sh
 ./build.sh
 python3 ./scripts/verify_apk.py
@@ -220,7 +220,7 @@ Script ký bằng khóa debug nội bộ (`debug.keystore` tự sinh nếu chưa
 
 ## Hỗ trợ, Đóng góp & Giấy phép
 
-- Gặp lỗi? Vui lòng bấm **Chạy chẩn đoán → Copy Log** trong app (log đã tự ẩn Serial, IMEI, MAC, IP nội bộ và Token — nhưng bạn vẫn nên đọc lướt lại trước khi dán) và mở Issue tại [GitHub Issues](https://github.com/hangothanhh/DeX120Hz-S22/issues/new/choose).
+- Gặp lỗi? Vui lòng bấm **Chạy chẩn đoán → Copy Log** trong app (log đã tự ẩn Serial, IMEI, MAC, IP nội bộ và Token — nhưng bạn vẫn nên đọc lướt lại trước khi dán) và mở Issue tại [GitHub Issues](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/issues/new/choose).
 - Muốn đóng góp? Đọc [CONTRIBUTING.md](CONTRIBUTING.md) và [SECURITY.md](SECURITY.md) trước khi tạo Pull Request.
 - Đồng tác giả hỗ trợ AI (AI Co-author): `Co-authored-by: Antigravity <antigravity@google.com>` (chi tiết tại [NOTICE](NOTICE)).
 - Giấy phép mã nguồn mở: [GNU GPL v3.0](LICENSE) · Ghi công & lưu ý bên thứ ba: [NOTICE](NOTICE).
