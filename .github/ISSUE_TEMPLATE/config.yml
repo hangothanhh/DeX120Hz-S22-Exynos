@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Vulnerability (Private Report)
+    url: https://github.com/hangothanhh/DeX120Hz-S22-Exynos/security/advisories/new
+    about: Privately report security vulnerabilities, exposed secrets, or unsafe root shell behavior without disclosing exploit details publicly.
+  - name: Troubleshooting & Recovery Guides
+    url: https://github.com/hangothanhh/DeX120Hz-S22-Exynos/blob/main/docs/troubleshooting.md
+    about: Check common LSPosed scopes, 75Hz vs 120Hz hardware limits, and bootloop recovery steps before opening an issue.
