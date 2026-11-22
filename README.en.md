@@ -7,7 +7,7 @@ An **LSPosed** module and companion control app that unlocks high-refresh-rate (
 - **Current version:** `v1.0.0-s22-a12` (**Pre-release / Experimental**)
 - **Package name:** `com.dex120.s22` (`minSdk 31`, `targetSdk 31` — Android 12)
 - **Tech stack:** Java 11, Xposed/LSPosed Hooks (`system_server` + `com.sec.android.sdhms`), standalone Android SDK toolchain (`aapt2` + `d8` + `apksigner`, zero Gradle dependency)
-- **License:** [MIT License](LICENSE) · [Credits & AI Notice](NOTICE)
+- **License:** [GNU GPL v3.0](LICENSE) · [Credits & AI Notice](NOTICE)
 - **Project links:** [Releases](https://github.com/hangothanhh/DeX120Hz-S22/releases) · [Issues](https://github.com/hangothanhh/DeX120Hz-S22/issues) · [Contributing](CONTRIBUTING.md)
 
 ---
@@ -211,4 +211,4 @@ By default, builds sign with a local ephemeral/debug keystore (`debug.keystore`,
 - **Found a bug?** Run **Chạy chẩn đoán → Copy Log** in the app (Serial, IMEI, MAC, private IPs, and Tokens are auto-redacted — still review manually before sharing) and open a [GitHub Issue](https://github.com/hangothanhh/DeX120Hz-S22/issues/new/choose).
 - **Want to contribute?** Read [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md) before opening a Pull Request.
 - **AI Co-author:** `Co-authored-by: Antigravity <antigravity@google.com>` (see [NOTICE](NOTICE)).
-- **License:** [MIT License](LICENSE) · Third-party credits & notices: [NOTICE](NOTICE).
+- **License:** [GNU GPL v3.0](LICENSE) · Third-party credits & notices: [NOTICE](NOTICE).

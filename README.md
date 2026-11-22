@@ -7,7 +7,7 @@ Module **LSPosed** và ứng dụng điều khiển đi kèm giúp mở khóa t�
 - **Phiên bản hiện tại:** `v1.0.0-s22-a12` (**Pre-release / Experimental**)
 - **Gói ứng dụng:** `com.dex120.s22` (`minSdk 31`, `targetSdk 31` — Android 12)
 - **Công nghệ sử dụng:** Java 11, Xposed/LSPosed Hooks (`system_server` + `com.sec.android.sdhms`), Android SDK thuần (`aapt2` + `d8` + `apksigner`, không phụ thuộc Gradle nặng)
-- **Giấy phép:** [MIT License](LICENSE) · [Thông báo bản quyền & AI](NOTICE)
+- **Giấy phép:** [GNU GPL v3.0](LICENSE) · [Thông báo bản quyền & AI](NOTICE)
 - **Liên kết dự án:** [Phát hành (Releases)](https://github.com/hangothanhh/DeX120Hz-S22/releases) · [Báo lỗi (Issues)](https://github.com/hangothanhh/DeX120Hz-S22/issues) · [Đóng góp (Contributing)](CONTRIBUTING.md)
 
 ---
@@ -223,4 +223,4 @@ Script ký bằng khóa debug nội bộ (`debug.keystore` tự sinh nếu chưa
 - Gặp lỗi? Vui lòng bấm **Chạy chẩn đoán → Copy Log** trong app (log đã tự ẩn Serial, IMEI, MAC, IP nội bộ và Token — nhưng bạn vẫn nên đọc lướt lại trước khi dán) và mở Issue tại [GitHub Issues](https://github.com/hangothanhh/DeX120Hz-S22/issues/new/choose).
 - Muốn đóng góp? Đọc [CONTRIBUTING.md](CONTRIBUTING.md) và [SECURITY.md](SECURITY.md) trước khi tạo Pull Request.
 - Đồng tác giả hỗ trợ AI (AI Co-author): `Co-authored-by: Antigravity <antigravity@google.com>` (chi tiết tại [NOTICE](NOTICE)).
-- Giấy phép mã nguồn mở: [MIT License](LICENSE) · Ghi công & lưu ý bên thứ ba: [NOTICE](NOTICE).
+- Giấy phép mã nguồn mở: [GNU GPL v3.0](LICENSE) · Ghi công & lưu ý bên thứ ba: [NOTICE](NOTICE).

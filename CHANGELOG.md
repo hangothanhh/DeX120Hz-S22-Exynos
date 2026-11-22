@@ -4,6 +4,17 @@ Mọi thay đổi đáng chú ý của dự án **DeX 120Hz S22** (`com.dex120.s
 
 ---
 
+## [Unreleased]
+
+### Added
+- Thêm tài liệu tiếng Anh thân thiện cho người mới tại `README.en.md` và thanh chuyển ngôn ngữ trên `README.md`.
+- Ghi nhận đồng tác giả AI (`Co-authored-by: Antigravity <antigravity@google.com>`) trong tài liệu và Git commit trailers.
+
+### Changed
+- Chuyển giấy phép mã nguồn mở từ MIT sang **`GNU GPL v3.0` (`GPL-3.0`)** và cập nhật `NOTICE` để đảm bảo tương thích giấy phép đầy đủ với `Kinue72/OnigiriDeX` (`GPL-3.0`), `LSPosed` và `KernelSU`.
+
+---
+
 ## [v1.0.0-s22-a12] - 2026-11-22 (Pre-release)
 
 Phiên bản phát hành thử nghiệm đầu tiên nhắm riêng **Samsung Galaxy S22 Exynos (`SM-S901B` / `s5e9925`) chạy Android 12 (`API 31`) / One UI 4.1 với quyền Root + LSPosed**.

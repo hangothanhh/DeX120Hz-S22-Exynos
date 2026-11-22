@@ -2,7 +2,7 @@ NOTICE & THIRD-PARTY ACKNOWLEDGMENTS
 =====================================
 
 Project: DeX 120Hz S22 (com.dex120.s22)
-License: MIT License (see LICENSE)
+License: GNU General Public License v3.0 (GPL-3.0, see LICENSE)
 
 1. AI CONTRIBUTION & REVIEW DISCLOSURE
 --------------------------------------
@@ -19,11 +19,15 @@ assistance transparently and never submit unverified AI-generated tweaks.
 
 2. INSPIRATIONS & UPSTREAM ECOSYSTEM CREDITS
 --------------------------------------------
-- OnigiriDeX (https://github.com/Kinue72/OnigiriDeX)
-  Inspiration for Samsung DeX high-refresh-rate exploration and beginner-first,
-  transparent documentation style. DeX120Hz-S22 is an independent LSPosed
-  implementation specifically targeting Galaxy S22 Exynos (Android 12 / One UI
-  4.1) with root access rather than a custom ROM.
+- OnigiriDeX (https://github.com/Kinue72/OnigiriDeX, licensed under GPL-3.0)
+  DeX120Hz-S22 studied OnigiriDeX's DeX high-refresh patches
+  (`0005-enable-dex-high-refresh.patch`,
+  `0025-Add-mirroring-high-refresh-rate-toggle.patch`) and beginner-friendly
+  `README.md` structure during design (without copying OnigiriDeX source files
+  directly), and is an independent LSPosed implementation specifically
+  targeting Galaxy S22 Exynos (Android 12 / One UI 4.1) with root access rather
+  than a custom ROM. DeX120Hz-S22 adopts GPL-3.0 for full license compatibility
+  with OnigiriDeX, LSPosed, and KernelSU.
 
 - LSPosed / Xposed API (https://github.com/LSPosed/LSPosed)
   Clean-room compile-only method signature stubs live under
