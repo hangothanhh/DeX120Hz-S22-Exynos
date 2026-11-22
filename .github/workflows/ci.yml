@@ -1,0 +1,60 @@
+name: Build and Verify APK
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Safety check for accidental secrets or binaries
+        run: |
+          if find . -maxdepth 3 \( -name "*.keystore" -o -name "*.jks" -o -name "*.pk8" -o -name "*.pem" \) | grep -q .; then
+            echo "Error: Signing key file found in repository!" >&2
+            exit 1
+          fi
+          bash -n ./build.sh
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Check Android SDK environment
+        run: |
+          echo "ANDROID_HOME=${ANDROID_HOME:-}"
+          echo "ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT:-}"
+          ls -la "${ANDROID_HOME:-/usr/local/lib/android/sdk}/platforms"
+          ls -la "${ANDROID_HOME:-/usr/local/lib/android/sdk}/build-tools"
+
+      - name: Build & sign APK (CI ephemeral debug keystore)
+        env:
+          CI: "true"
+        run: |
+          chmod +x ./build.sh
+          ./build.sh
+
+      - name: Run APK, DEX, SHA-256 and Sanitizer unit tests
+        run: python3 ./scripts/verify_apk.py
+
+      - name: Upload built APK & SHA-256 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DeX120Hz-S22-ci-apk
+          path: |
+            out/DeX120Hz-S22.apk
+            out/DeX120Hz-S22.apk.sha256
+          if-no-files-found: error
