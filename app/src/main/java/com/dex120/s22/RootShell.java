@@ -132,7 +132,7 @@ public final class RootShell {
         StringBuilder sb = new StringBuilder();
 
         sb.append("=== 0. Device & Module Summary ===\n");
-        sb.append("module_version=1.0.1-s22-a12\n");
+        sb.append("module_version=1.0.2-s22-a12\n");
         sb.append("lsposed_active=").append(ModuleStatus.isActive()).append("\n");
         Result summary = exec(
                 "echo android=$(getprop ro.build.version.release) api=$(getprop ro.build.version.sdk); "

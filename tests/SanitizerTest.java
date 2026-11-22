@@ -10,7 +10,7 @@ public final class SanitizerTest {
         String fakeFinePat = "github_pat_" + "11AAAAAA0000bbbbccccdddd";
         String sample = String.join("\n",
                 "=== 0. Device & Module Summary ===",
-                "module_version=1.0.1-s22-a12",
+                "module_version=1.0.2-s22-a12",
                 "[ro.serialno]: [R5AB12XYZ99]",
                 "ro.boot.serialno=R5AB12XYZ99",
                 "raw_serial=R5XY9876543",
