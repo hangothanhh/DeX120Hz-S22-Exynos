@@ -1,35 +1,35 @@
 ---
-name: Báo lỗi (Bug Report)
-about: Báo lỗi chức năng, rớt Hz, crash app hoặc lỗi LSPosed hook trên S22 Android 12
+name: Bug Report
+about: Report functional issues, refresh-rate drops, app crashes, or LSPosed hook bugs on S22 Android 12
 title: "[Bug] "
 labels: bug
 assignees: ''
 ---
 
 > [!IMPORTANT]
-> Dự án chỉ hỗ trợ **Samsung Galaxy S22 Exynos (`SM-S901B`) Android 12 / One UI 4.1 với quyền Root + LSPosed**.
-> Trước khi dán log, hãy dùng nút **Chạy chẩn đoán → Copy Log** trong app và **tự kiểm tra lại** để chắc chắn không còn Serial, IMEI, MAC, IP cá nhân hay Token.
+> Target scope is strictly **Samsung Galaxy S22 Exynos (`SM-S901B`) running Android 12 / One UI 4.1 with Root + LSPosed**. (Reports in English or Vietnamese are both welcome.)
+> Before pasting logs, use **Chạy chẩn đoán (Run Diagnostics) → Copy Log** inside the app and **inspect manually** to guarantee zero Serial, IMEI, MAC, private IP, or Token leakage.
 
-## 1. Thông tin môi trường của bạn
-- **Phiên bản `DeX 120Hz S22`:** (ví dụ: `v1.0.0-s22-a12`)
-- **Model máy:** (ví dụ: `SM-S901B`)
-- **Phiên bản Android / One UI:** (ví dụ: `Android 12 / One UI 4.1`)
-- **Root / Zygisk / LSPosed:** (ví dụ: `KernelSU temproot + ReZygisk + LSPosed ...`)
-- **Màn hình ngoài & cáp/hub đang dùng:** (ví dụ: `Màn hình 1080p 75Hz/120Hz qua hub USB-C`)
-- **Đã tick đủ 3 scope trong LSPosed (`android`, `com.sec.android.sdhms`, `DeX 120Hz S22`) và Soft Reboot chưa?** [Có / Chưa]
+## 1. Environment Details
+- **`DeX 120Hz S22` version:** (e.g., `v1.0.1-s22-a12`)
+- **Device model:** (e.g., `SM-S901B`)
+- **Android / One UI version:** (e.g., `Android 12 / One UI 4.1`)
+- **Root / Zygisk / LSPosed stack:** (e.g., `KernelSU temproot + ReZygisk + LSPosed ...`)
+- **External monitor & USB-C cable/hub:** (e.g., `1080p 75Hz/120Hz monitor via USB-C hub`)
+- **Checked all 3 LSPosed scopes (`android`, `com.sec.android.sdhms`, `DeX 120Hz S22`) and ran Soft Reboot?** [Yes / No]
 
-## 2. Mô tả lỗi
-- **Chuyện gì đã xảy ra?** (ví dụ: app báo `LSPosed: CHƯA BẬT`, hoặc TestUFO kẹt ở 60fps / dưới 60fps)
-- **Kết quả bạn mong đợi là gì?**
+## 2. Problem Description
+- **What happened?** (e.g., app shows `LSPosed: CHƯA BẬT`, or TestUFO stays at 60fps / drops below 60fps)
+- **What did you expect?**
 
-## 3. Các bước tái hiện lỗi
+## 3. Steps to Reproduce
 1. ...
 2. ...
 3. ...
 
-## 4. Log chẩn đoán (đã ẩn danh)
-Dán kết quả từ **Chạy chẩn đoán → Copy Log** vào bên dưới:
+## 4. Sanitized Diagnostic Log
+Paste output from **Chạy chẩn đoán → Copy Log** below:
 
 ```text
-(Dán log đã xóa Serial / IMEI / MAC / IP tại đây)
+(Paste log after verifying Serial / IMEI / MAC / IP / Tokens are redacted)
 ```

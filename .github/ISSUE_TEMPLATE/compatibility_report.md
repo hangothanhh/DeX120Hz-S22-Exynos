@@ -1,33 +1,33 @@
 ---
-name: Báo cáo Tương thích Phần cứng (Compatibility Report)
-about: Chia sẻ kết quả test thực tế với màn hình rời, cáp/hub USB-C hoặc biến thể ROM/S22
-title: "[Compat] <Model màn hình / Cáp hoặc Hub> @ <Độ phân giải & Hz>"
+name: Hardware Compatibility Report
+about: Share real-hardware test results for an external monitor, USB-C cable/hub, or S22 ROM build
+title: "[Compat] <Monitor / Cable or Hub> @ <Resolution & Hz>"
 labels: compatibility
 assignees: ''
 ---
 
 > [!NOTE]
-> Chỉ gửi kết quả bạn đã **chạy thực tế** kèm bằng chứng (`OSD màn hình`, `dumpsys display`, `dmesg` hoặc `TestUFO`). Không gửi suy đoán.
+> Only submit results you **personally verified on real hardware** backed by evidence (`Monitor OSD`, `dumpsys display`, `dmesg`, or `TestUFO`). Do not submit guesses. (English or Vietnamese welcome.)
 
-## 1. Thiết bị & Hệ điều hành
-- **Model máy:** (ví dụ: `SM-S901B`)
-- **Android / One UI:** (ví dụ: `Android 12 / One UI 4.1`)
-- **Root / LSPosed:**
+## 1. Device & OS
+- **Device model:** (e.g., `SM-S901B`)
+- **Android / One UI:** (e.g., `Android 12 / One UI 4.1`)
+- **Root / LSPosed stack:**
 
-## 2. Màn hình & Cáp kết nối
-- **Tên màn hình (theo OSD / `V2203H`...):**
-- **Loại kết nối:** [Cáp USB-C → DP/HDMI trực tiếp (4-lane) / Hub USB 3.0 (2-lane)]
-- **Độ phân giải & Hz tối đa màn hình hỗ trợ:**
-- **Chế độ Test Mode (`dex120_force_virtual_120`):** [Bật / Tắt]
-- **Màn hình điện thoại:** [Mở Màn đen AMOLED / Sáng bình thường / Tắt bằng nút nguồn]
+## 2. Monitor & Connection
+- **Monitor model (per OSD / e.g., `V2203H`):**
+- **Connection type:** [Direct USB-C → DP/HDMI cable (4-lane) / USB 3.0 hub (2-lane)]
+- **Maximum monitor resolution & refresh rate:**
+- **Test Mode (`dex120_force_virtual_120`):** [Enabled / Disabled]
+- **Phone screen state:** [AMOLED Black Screen / Awake normally / Off via power button]
 
-## 3. Kết quả thực tế quan sát được
-- **OSD trên màn hình báo:** (ví dụ: `1920x1080 120Hz` hoặc `75Hz`)
-- **DeX Desktop trong `dumpsys display`:**
-- **TestUFO / app kiểm tra FPS thực tế đạt:**
-- **Trạng thái xếp hạng đề xuất:** [VERIFIED / PARTIAL / UNSUPPORTED]
+## 3. Observed Measurements
+- **Monitor OSD reported:** (e.g., `1920x1080 120Hz` or `75Hz`)
+- **DeX Desktop in `dumpsys display`:**
+- **Actual TestUFO / FPS app measurement:**
+- **Suggested compatibility status:** [VERIFIED / PARTIAL / UNSUPPORTED]
 
-## 4. Bằng chứng / Log đã ẩn danh
+## 4. Sanitized Evidence / Diagnostics
 ```text
-(Dán kết quả 'Chạy chẩn đoán' đã xóa thông tin nhạy cảm tại đây)
+(Paste 'Run Diagnostics' output with sensitive identifiers redacted)
 ```

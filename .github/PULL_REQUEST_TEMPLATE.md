@@ -1,27 +1,27 @@
-## 1. Tóm tắt thay đổi
-- **Nội dung thay đổi:**
-- **Lý do:**
-- **Các file bị chỉnh sửa:**
+## 1. Summary of Changes
+- **What changed:**
+- **Why:**
+- **Modified files:**
 
-## 2. Khai báo sử dụng AI & Chính sách chống AI Slop (Bắt buộc)
-- [ ] Tôi xác nhận đã đọc [CONTRIBUTING.md](../CONTRIBUTING.md) (bao gồm quy định về AI Slop).
-- **Mức độ AI hỗ trợ trong PR này:** [ ] Không dùng AI / [ ] AI hỗ trợ một phần, tôi đã đọc và kiểm tra từng dòng / [ ] AI tạo phần lớn code (vui lòng giải thích kỹ bên dưới).
-- **Tôi hiểu rõ từng hàm/hook mình sửa làm gì** và không thêm tweak chưa kiểm chứng hoặc thông tin tương thích bịa đặt.
+## 2. AI Disclosure & Anti-AI-Slop Checklist (Mandatory)
+- [ ] I confirm I have read [CONTRIBUTING.md](../CONTRIBUTING.md) (including the AI Contribution & Anti-AI-Slop Policy).
+- **AI involvement in this PR:** [ ] None / [ ] Partial AI assistance (reviewed line-by-line by me) / [ ] Mostly AI-generated (explain verification thoroughly below).
+- **I understand every method/hook modified** and have not introduced unverified tweaks or fabricated compatibility claims.
 
-## 3. Kiểm thử đã thực hiện
-- [ ] `build.ps1` hoặc `build.sh` build thành công sạch sẽ.
-- [ ] `apksigner verify --verbose out/DeX120Hz-S22.apk` đạt `Verifies`.
-- [ ] `python scripts/verify_apk.py` (bao gồm `SanitizerTest`) chạy pass 100%.
-- [ ] Đã kiểm thử thực tế trên thiết bị thật (nếu sửa runtime/hook):
-  - **Thiết bị & ROM:** (ví dụ: `SM-S901B, Android 12 / One UI 4.1`)
-  - **Root / LSPosed:**
-  - **Màn hình ngoài / Kịch bản test:**
+## 3. Verification Completed
+- [ ] `build.ps1` or `build.sh` builds cleanly without errors.
+- [ ] `apksigner verify --verbose out/DeX120Hz-S22.apk` reports `Verifies`.
+- [ ] `python scripts/verify_apk.py` (including `SanitizerTest`) passes 100%.
+- [ ] Verified on physical hardware (required if modifying runtime hooks/UI):
+  - **Device & ROM:** (e.g., `SM-S901B, Android 12 / One UI 4.1`)
+  - **Root / LSPosed stack:**
+  - **External monitor / test scenario:**
 
-## 4. Ảnh chụp hoặc Log đã ẩn danh (nếu có)
+## 4. Screenshots or Sanitized Logs (Optional)
 ```text
-(Đảm bảo đã xóa Serial, IMEI, MAC, IP cá nhân và Token)
+(Confirm Serial, IMEI, MAC, private IPs, and Tokens are removed)
 ```
 
-## 5. Đánh giá Tương thích & Khả năng Rollback
-- **Tác động tương thích:** (có đổi scope LSPosed, khóa `Settings.Global` hoặc `minSdk` không?)
-- **Cách rollback nếu lỗi:**
+## 5. Compatibility & Rollback Plan
+- **Compatibility impact:** (any changes to LSPosed scopes, `Settings.Global` keys, or `minSdk`?)
+- **Rollback steps if regression occurs:**

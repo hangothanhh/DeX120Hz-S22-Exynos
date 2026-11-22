@@ -1,20 +1,22 @@
 ---
-name: Đề xuất tính năng (Feature Request)
-about: Đề xuất cải tiến giao diện, hook hoặc tài liệu cho DeX 120Hz S22
+name: Feature Request
+about: Propose UI, hook, build, or documentation improvements for DeX 120Hz S22
 title: "[Feature] "
 labels: enhancement
 assignees: ''
 ---
 
-## 1. Mô tả tính năng / cải tiến muốn đề xuất
-Mô tả rõ vấn đề bạn đang gặp hoặc tính năng mới bạn muốn thêm.
+*(English or Vietnamese proposals are welcome.)*
 
-## 2. Lý do / Bối cảnh sử dụng
-Tại sao thay đổi này cần thiết trên **Galaxy S22 Exynos (Android 12 / One UI 4.1)**?
+## 1. Feature / Improvement Summary
+Clearly describe the problem you are trying to solve or the enhancement you are proposing.
 
-## 3. Giải pháp dự kiến (nếu có)
-- Công tắc / lớp Android hoặc hook nào liên quan?
-- Có cần thêm quyền root hoặc scope LSPosed mới không?
+## 2. Motivation / Use Case
+Why is this needed on **Galaxy S22 Exynos (Android 12 / One UI 4.1)**?
 
-## 4. Rủi ro & Tương thích
-Thay đổi này có thể ảnh hưởng tới độ ổn định của `system_server`, nhiệt độ, hay quy trình rollback không?
+## 3. Proposed Design (Optional)
+- Which toggles, Android classes, or hooks are affected?
+- Does it require any new Root commands or LSPosed scopes?
+
+## 4. Risks & Compatibility Impact
+Could this affect `system_server` stability, thermals, or rollback safety?
