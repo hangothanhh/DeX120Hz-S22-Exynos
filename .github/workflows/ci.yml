@@ -6,30 +6,40 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+
 jobs:
   build-and-verify:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Safety check for accidental secrets or binaries
+      - name: Safety and compliance checks
         run: |
           if find . -maxdepth 3 \( -name "*.keystore" -o -name "*.jks" -o -name "*.pk8" -o -name "*.pem" \) | grep -q .; then
             echo "Error: Signing key file found in repository!" >&2
             exit 1
           fi
           bash -n ./build.sh
+          grep -q "GNU GENERAL PUBLIC LICENSE" LICENSE
+          grep -q "Version 3" LICENSE
+          python3 -m json.tool SBOM.cdx.json > /dev/null
+          if grep -rnE "(ghp|gho|github_pat)_[A-Za-z0-9_]{10,}" app tests scripts build.sh build.ps1; then
+            echo "Error: Static token-like literal found in source or tests!" >&2
+            exit 1
+          fi
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           distribution: temurin
           java-version: '17'
 
       - name: Set up Python 3
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.11'
 
@@ -50,11 +60,12 @@ jobs:
       - name: Run APK, DEX, SHA-256 and Sanitizer unit tests
         run: python3 ./scripts/verify_apk.py
 
-      - name: Upload built APK & SHA-256 artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload built APK, SHA-256, and SBOM artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: DeX120Hz-S22-ci-apk
           path: |
             out/DeX120Hz-S22.apk
             out/DeX120Hz-S22.apk.sha256
+            SBOM.cdx.json
           if-no-files-found: error
