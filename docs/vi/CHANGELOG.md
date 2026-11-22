@@ -13,6 +13,8 @@ Mọi thay đổi đáng chú ý của dự án **DeX 120Hz S22** (`com.dex120.s
 - Thêm bộ unit test thuần Java `tests/HookLogicTest.java` (kiểm tra `DpSysfsHook.maskDexWriteValue`, `isPassthroughDpCommand`, `parseIntSafe`, `Config.sanitizeTargetHz`, reflection helpers và `ModuleStatus`) cùng các case mở rộng trong `tests/SanitizerTest.java`, tích hợp trực tiếp vào `scripts/verify_apk.py`.
 - Bổ sung `CODE_OF_CONDUCT.md`, `.github/CODEOWNERS`, `.github/ISSUE_TEMPLATE/config.yml`, `.github/dependabot.yml`, thanh badges trên `README*.md`, và điều khoản Inbound = Outbound (`GPL-3.0-only`) trong `CONTRIBUTING.md`.
 - Thêm workflow `.github/workflows/codeql.yml` (quét CodeQL SAST cho `java-kotlin` và `actions`, ghim commit SHA `github/codeql-action` v4).
+- Thêm workflow `.github/workflows/release.yml` (`Release and Attest APK`: ký APK phát hành bằng release keystore PKCS12 RSA-4096 riêng ngoài repo qua GitHub Secrets và tạo chứng thực SLSA Build Provenance bằng `actions/attest-build-provenance` v4.2.2).
+- Kích hoạt ký commit/tag cục bộ bằng SSH Ed25519 (`gpg.format=ssh`, `commit.gpgsign=true`, `tag.gpgsign=true`).
 
 ### Changed
 - Chuyển ngôn ngữ mặc định (primary language) sang **tiếng Anh** cho `README.md`, toàn bộ tài liệu gốc, 7 hướng dẫn trong `docs/`, 4 mẫu `.github/` và ghi chú phát hành; lưu bản dịch tiếng Việt đầy đủ tại `README.vi.md` và `docs/vi/`.

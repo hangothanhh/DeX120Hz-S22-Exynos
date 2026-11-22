@@ -52,7 +52,7 @@ Báo cáo kiểm toán bảo mật, quyền riêng tư, chuỗi cung ứng phầ
 
 | Mức độ | Hạng mục | Mô tả & Cách xử lý hiện tại |
 | :--- | :--- | :--- |
-| **MEDIUM** | Ký APK bằng `debug.keystore` | Phù hợp cho bản `Pre-release / Experimental` mã nguồn mở; người dùng cuối phải kiểm tra `SHA-256` kèm theo Release hoặc tự build. Nếu sau này phát hành bản `Stable` diện rộng, cần tạo release keystore riêng và bảo vệ tuyệt đối ngoài repo. |
+| **INFO** | Đã cấu hình Release Keystore riêng & SLSA Build Provenance | Khóa PKCS12 riêng (`dex120-release`, RSA-4096, public cert SHA-256 `07:3F:BF:73:65:90:0B:03:1F:5D:2D:6C:8A:1C:1A:9A:29:FE:28:7F:F0:6C:17:41:91:DB:FF:EE:8C:07:34:B1`) được lưu độc lập ngoài repo + mã hóa trong GitHub Secrets cho `.github/workflows/release.yml` + `actions/attest-build-provenance`; commit cục bộ ký bằng SSH Ed25519 (`commit.gpgsign=true`). Bản `v1.0.1-s22-a12` cũ giữ nguyên chữ ký debug. |
 | **INFO** | Chưa tái test `v1.0.1-s22-a12` trên máy thật | Máy test `SM-S901B` đã được bán. Các hook Xposed giống hoàn toàn bản đã test `75Hz` trước đó; `v1.0.1-s22-a12` và bộ test thuần Java (`HookLogicTest`) được xác nhận qua build host, `apksigner`, `verify_apk.py`, `SanitizerTest` và Ubuntu CI. |
 | **INFO** | Kiến trúc đặc quyền `Root` + `system_server` | Đặc tính cố hữu của module LSPosed can thiệp display mode; đã được cảnh báo rõ đầu `README.md`, `README.vi.md`, `SECURITY.md` và kèm hướng dẫn khôi phục `docs/recovery.md`. |
 

@@ -53,7 +53,7 @@ Security, privacy, software supply-chain audit (Phase 4), GitHub ownership/acces
 
 | Severity | Item | Honest Assessment & Mitigation |
 | :--- | :--- | :--- |
-| **MEDIUM** | APK signed with `debug.keystore` | Appropriate for open-source `Pre-release / Experimental` builds; users should verify the published `SHA-256` checksum or build from source. If later promoted to a broad `Stable` release, the owner should generate a dedicated offline release keystore outside the repo. |
+| **INFO** | Release keystore & SLSA Build Provenance configured | Dedicated PKCS12 release keystore (`dex120-release`, RSA-4096, public SHA-256 `07:3F:BF:73:65:90:0B:03:1F:5D:2D:6C:8A:1C:1A:9A:29:FE:28:7F:F0:6C:17:41:91:DB:FF:EE:8C:07:34:B1`) stored outside repo and encrypted in GitHub Secrets for `.github/workflows/release.yml` + `actions/attest-build-provenance`. Local commits use Ed25519 SSH signing (`commit.gpgsign=true`). Historical `v1.0.1-s22-a12` used debug signing. |
 | **INFO** | `v1.0.1-s22-a12` not re-tested on device | The `SM-S901B` test phone has been sold. Runtime Xposed hooks are identical to the previously live-verified 75Hz build; `v1.0.1-s22-a12` and later pure-Java helper tests (`HookLogicTest`) are verified via host build, `apksigner`, `verify_apk.py`, `SanitizerTest`, and Ubuntu CI only. |
 | **INFO** | Privileged `Root` + `system_server` architecture | Inherent to LSPosed display-mode hooking; prominently warned in `README.md`, `SECURITY.md`, and `docs/recovery.md`. |
 

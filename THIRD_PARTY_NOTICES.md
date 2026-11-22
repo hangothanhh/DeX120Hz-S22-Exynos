@@ -51,6 +51,7 @@ This document inventories all upstream inspirations, compile-only API stubs, bui
 | `actions/setup-python` | `v7.1.0` | `6d4fd22b20465ccc0f7354476588e8df7c9ca0e0` | `MIT` |
 | `actions/upload-artifact` | `v7.0.2` | `cf430e030ddbb5b0abf93d22962f4752f3646cd9` | `MIT` |
 | `github/codeql-action` | `v4` | `1bd86f2fdb4b86187fa4059f16f31a3202acc9ea` | `MIT` |
+| `actions/attest-build-provenance` | `v4.2.2` | `4d101475d8b20a2381f78447822ac1eab6504dd8` | `MIT` |
 
 ---
 

@@ -1,0 +1,99 @@
+name: Release and Attest APK
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-sign-attest:
+    name: Build, Sign & Attest APK
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Python 3
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.11'
+
+      - name: Prepare dedicated release keystore
+        env:
+          DEX120_KEYSTORE_B64: ${{ secrets.DEX120_KEYSTORE_B64 }}
+        run: |
+          if [ -z "$DEX120_KEYSTORE_B64" ]; then
+            echo "Error: DEX120_KEYSTORE_B64 repository secret is empty!" >&2
+            exit 1
+          fi
+          KS_OUT="$RUNNER_TEMP/dex120-release.p12"
+          printf '%s' "$DEX120_KEYSTORE_B64" | base64 -d > "$KS_OUT"
+          chmod 600 "$KS_OUT"
+
+      - name: Build & sign APK with dedicated release keystore
+        env:
+          CI: "true"
+          DEX120_KEYSTORE: ${{ runner.temp }}/dex120-release.p12
+          DEX120_KEYSTORE_PASS: ${{ secrets.DEX120_KEYSTORE_PASS }}
+          DEX120_KEY_ALIAS: ${{ secrets.DEX120_KEY_ALIAS }}
+          DEX120_KEY_PASS: ${{ secrets.DEX120_KEY_PASS }}
+        run: |
+          if [ -z "$DEX120_KEYSTORE_PASS" ] || [ -z "$DEX120_KEY_ALIAS" ] || [ -z "$DEX120_KEY_PASS" ]; then
+            echo "Error: Release keystore credentials are missing!" >&2
+            exit 1
+          fi
+          chmod +x ./build.sh
+          ./build.sh
+
+      - name: Clean up ephemeral keystore copy
+        if: always()
+        run: rm -f "$RUNNER_TEMP/dex120-release.p12"
+
+      - name: Verify signed APK, DEX, SHA-256 & unit tests
+        run: python3 ./scripts/verify_apk.py
+
+      - name: Generate SLSA Build Provenance Attestation
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: |
+            out/DeX120Hz-S22.apk
+            out/DeX120Hz-S22.apk.sha256
+            SBOM.cdx.json
+
+      - name: Upload release-signed APK, SHA-256 & SBOM artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: DeX120Hz-S22-release-apk
+          path: |
+            out/DeX120Hz-S22.apk
+            out/DeX120Hz-S22.apk.sha256
+            SBOM.cdx.json
+          if-no-files-found: error
+
+      - name: Publish GitHub Pre-release for tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            out/DeX120Hz-S22.apk \
+            out/DeX120Hz-S22.apk.sha256 \
+            SBOM.cdx.json \
+            --prerelease \
+            --verify-tag \
+            --generate-notes

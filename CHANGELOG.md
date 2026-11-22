@@ -13,6 +13,8 @@ All notable changes to **DeX 120Hz S22** (`com.dex120.s22`) are documented in th
 - Added pure-Java unit test suite `tests/HookLogicTest.java` (covering `DpSysfsHook.maskDexWriteValue`, `DpSysfsHook.isPassthroughDpCommand`, `DpSysfsHook.parseIntSafe`, `Config.sanitizeTargetHz`, reflection helpers, and `ModuleStatus`) and expanded `tests/SanitizerTest.java`, wired into `scripts/verify_apk.py`.
 - Added community health and governance files: `CODE_OF_CONDUCT.md`, `.github/CODEOWNERS`, `.github/ISSUE_TEMPLATE/config.yml`, `.github/dependabot.yml`, repository status badges in `README*.md`, and an Inbound = Outbound `GPL-3.0-only` contributor clause in `CONTRIBUTING.md`.
 - Added `.github/workflows/codeql.yml` (CodeQL SAST scanning for `java-kotlin` and `actions` using SHA-pinned `github/codeql-action` v4).
+- Added `.github/workflows/release.yml` (`Release and Attest APK`: signs tag/manual release APKs with a dedicated off-repo RSA-4096 PKCS12 keystore stored in GitHub Secrets and generates SLSA Build Provenance Attestations via SHA-pinned `actions/attest-build-provenance` v4.2.2).
+- Enabled local Ed25519 SSH commit/tag signing (`gpg.format=ssh`, `commit.gpgsign=true`, `tag.gpgsign=true`).
 
 ### Changed
 - Promoted **English** to the primary default language across `README.md`, all root governance/audit documents, all 7 guides under `docs/`, all 4 `.github/` issue/PR templates, and release notes; relocated Vietnamese mirrors cleanly to `README.vi.md` and `docs/vi/`.

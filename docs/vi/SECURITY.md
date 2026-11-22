@@ -20,9 +20,21 @@ Do đặc quyền `system` (UID `1000`) và `root`, mọi lỗ hổng trong code
 | `v1.0.1-s22-a12` (`Pre-release`) | `GNU GPL v3.0` | Đang duy trì (Experimental) | Build & unit test đã xác minh trên host Windows + Ubuntu CI; máy test `SM-S901B` đã bán nên chưa test lại trực tiếp trên máy thật. |
 | `v1.0.0-s22-a12` (`b10d6e9`) | `MIT` (snapshot cũ) | Ngừng hỗ trợ / Đã thay thế | Snapshot lịch sử trước khi chuyển giấy phép sang `GPL-3.0`; giữ nguyên tag để bảo toàn lịch sử Git. |
 
-## Chính sách ký APK (APK Signing Policy)
+## Chính sách ký APK & Chứng thực nguồn gốc Build (SLSA Provenance)
 
-Các bản `Pre-release` hiện tại được ký bằng khóa debug cục bộ/tạm thời (`debug.keystore` tự sinh qua `build.ps1` hoặc `build.sh`, luôn nằm trong `.gitignore` và **không bao giờ** commit lên Git). Vì đây là bản thử nghiệm, người dùng nên đối chiếu mã băm `SHA-256` kèm trong GitHub Release/CI Artifact hoặc tự biên dịch trực tiếp từ mã nguồn.
+- **Khóa ký Release riêng ngoài Repository (dành cho các bản phát hành từ tag qua `.github/workflows/release.yml`):**
+  - Khóa PKCS12 (`dex120-release`) được lưu độc lập ngoài repository và mã hóa an toàn trong GitHub Repository Secrets (`DEX120_KEYSTORE_B64`, `DEX120_KEYSTORE_PASS`, `DEX120_KEY_ALIAS`, `DEX120_KEY_PASS`).
+  - **Dấu vân tay chứng thư công khai SHA-256 (`dex120-release`):**
+    ```text
+    07:3F:BF:73:65:90:0B:03:1F:5D:2D:6C:8A:1C:1A:9A:29:FE:28:7F:F0:6C:17:41:91:DB:FF:EE:8C:07:34:B1
+    ```
+  - **SLSA Build Provenance Attestation:** Các bản build từ workflow `Release and Attest APK` (`release.yml`) tự động sinh chứng thực SLSA có thể kiểm tra bằng lệnh:
+    ```bash
+    gh attestation verify DeX120Hz-S22.apk -R hangothanhh/DeX120Hz-S22-Exynos
+    ```
+- **Khóa Debug (`v1.0.1-s22-a12` & Build phát triển trên CI/Local):**
+  - Bản `v1.0.1-s22-a12` và các lượt push CI thông thường sử dụng `debug.keystore` tạm thời (luôn nằm trong `.gitignore` và **không bao giờ** commit lên Git).
+  - **Lưu ý nâng cấp:** Vì Android yêu cầu chữ ký khớp khi cài đè, khi chuyển từ `v1.0.1-s22-a12` (ký debug) lên các bản tag phát hành mới ký bằng `dex120-release`, người dùng cần gỡ bản cũ trước khi cài bản mới, đồng thời luôn đối chiếu mã băm `SHA-256` hoặc tự biên dịch từ mã nguồn.
 
 ## Những dữ liệu TUYỆT ĐỐI KHÔNG đưa lên Repository / Issues / PR
 
