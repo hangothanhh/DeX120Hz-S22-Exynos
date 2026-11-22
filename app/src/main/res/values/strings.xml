@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DeX 120Hz S22</string>
+    <string name="xposed_description">Mở khóa DeX 120Hz cho S22 Exynos (Android 12 One UI 4.1) + Màn đen AMOLED giữ VSync</string>
+</resources>
