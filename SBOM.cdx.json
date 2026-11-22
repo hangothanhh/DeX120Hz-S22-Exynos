@@ -1,0 +1,191 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:d3b9a841-6b4d-4c8d-a2f5-10105901b002",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-11-22T23:50:00+07:00",
+    "component": {
+      "type": "application",
+      "bom-ref": "com.dex120.s22@1.0.1-s22-a12",
+      "group": "com.dex120",
+      "name": "DeX120Hz-S22",
+      "version": "1.0.1-s22-a12",
+      "description": "Experimental LSPosed module and companion control app for high-refresh-rate Samsung DeX on rooted Samsung Galaxy S22 Exynos (SM-S901B, Android 12 / One UI 4.1). Contains zero bundled third-party runtime libraries.",
+      "licenses": [
+        {
+          "license": {
+            "id": "GPL-3.0-only",
+            "url": "https://www.gnu.org/licenses/gpl-3.0.txt"
+          }
+        }
+      ],
+      "purl": "pkg:generic/com.dex120.s22@1.0.1-s22-a12"
+    },
+    "properties": [
+      {
+        "name": "dex120:bundled-runtime-dependencies",
+        "value": "0"
+      },
+      {
+        "name": "dex120:target-device",
+        "value": "Samsung Galaxy S22 Exynos (SM-S901B, Android 12 / API 31 / One UI 4.1)"
+      },
+      {
+        "name": "dex120:on-device-retest-v1.0.1",
+        "value": "NOT_VERIFIED (test device sold; prior 75Hz runtime verified on SM-S901B)"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "lsposed-xposed-api-stubs@compile-only",
+      "name": "xposed-clean-room-stubs",
+      "version": "clean-room-compile-only",
+      "scope": "excluded",
+      "description": "Clean-room compile-only Xposed method signature stubs in stubs/de/robv/android/xposed/; stripped before d8 DEX packaging and resolved at runtime by LSPosed.",
+      "licenses": [
+        {
+          "license": {
+            "id": "GPL-3.0-only"
+          }
+        }
+      ]
+    },
+    {
+      "type": "framework",
+      "bom-ref": "android-sdk-platform@34",
+      "name": "android-sdk-platform",
+      "version": "34",
+      "scope": "excluded",
+      "description": "Android SDK Platform compile-time framework JAR (compile-only, provided on device by Android 12 runtime).",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "android-build-tools@34.0.0",
+      "name": "android-sdk-build-tools",
+      "version": "34.0.0",
+      "scope": "excluded",
+      "description": "Android SDK Build Tools (aapt2, d8, zipalign, apksigner) used at build time only.",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "platform",
+      "bom-ref": "openjdk@17",
+      "name": "openjdk",
+      "version": "17",
+      "scope": "excluded",
+      "description": "JDK 17 toolchain used for javac (--release 11), keytool, and SanitizerTest unit tests.",
+      "licenses": [
+        {
+          "license": {
+            "id": "GPL-2.0-with-classpath-exception"
+          }
+        }
+      ]
+    },
+    {
+      "type": "platform",
+      "bom-ref": "python@3.11",
+      "name": "python",
+      "version": "3.11",
+      "scope": "excluded",
+      "description": "Python 3 interpreter used for scripts/verify_apk.py verification only.",
+      "licenses": [
+        {
+          "license": {
+            "id": "PSF-2.0"
+          }
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "group": "actions",
+      "name": "checkout",
+      "version": "v7.0.1",
+      "scope": "excluded",
+      "description": "GitHub Actions workflow step pinned by commit SHA.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:github/actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1"
+    },
+    {
+      "type": "application",
+      "bom-ref": "actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880",
+      "group": "actions",
+      "name": "setup-java",
+      "version": "v6.3.0",
+      "scope": "excluded",
+      "description": "GitHub Actions workflow step pinned by commit SHA.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:github/actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880"
+    },
+    {
+      "type": "application",
+      "bom-ref": "actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+      "group": "actions",
+      "name": "setup-python",
+      "version": "v7.1.0",
+      "scope": "excluded",
+      "description": "GitHub Actions workflow step pinned by commit SHA.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:github/actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0"
+    },
+    {
+      "type": "application",
+      "bom-ref": "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+      "group": "actions",
+      "name": "upload-artifact",
+      "version": "v7.0.2",
+      "scope": "excluded",
+      "description": "GitHub Actions workflow step pinned by commit SHA.",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "purl": "pkg:github/actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9"
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "com.dex120.s22@1.0.1-s22-a12",
+      "dependsOn": []
+    }
+  ]
+}

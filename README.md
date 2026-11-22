@@ -4,10 +4,10 @@
 
 Module **LSPosed** và ứng dụng điều khiển đi kèm giúp mở khóa tần số quét cao (trên 60Hz, tối đa 120Hz tùy màn hình và cáp) cho **Samsung DeX** — áp dụng riêng cho **Samsung Galaxy S22 Exynos (`SM-S901B` / `s5e9925`) chạy Android 12 / One UI 4.1 đã root**.
 
-- **Phiên bản hiện tại:** `v1.0.0-s22-a12` (**Pre-release / Experimental**)
+- **Phiên bản hiện tại:** `v1.0.1-s22-a12` (**Pre-release / Experimental**)
 - **Gói ứng dụng:** `com.dex120.s22` (`minSdk 31`, `targetSdk 31` — Android 12)
 - **Công nghệ sử dụng:** Java 11, Xposed/LSPosed Hooks (`system_server` + `com.sec.android.sdhms`), Android SDK thuần (`aapt2` + `d8` + `apksigner`, không phụ thuộc Gradle nặng)
-- **Giấy phép:** [GNU GPL v3.0](LICENSE) · [Thông báo bản quyền & AI](NOTICE)
+- **Giấy phép & Tuân thủ:** [GNU GPL v3.0](LICENSE) · [NOTICE](NOTICE) · [Minh bạch AI](AI_CONTRIBUTIONS.md) · [Bên thứ ba](THIRD_PARTY_NOTICES.md)
 - **Liên kết dự án:** [Phát hành (Releases)](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/releases) · [Báo lỗi (Issues)](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/issues) · [Đóng góp (Contributing)](CONTRIBUTING.md)
 
 ---
@@ -16,7 +16,7 @@ Module **LSPosed** và ứng dụng điều khiển đi kèm giúp mở khóa t�
 
 > [!CAUTION]
 > **Minh bạch về đóng góp của AI & cảnh báo AI Slop:**
-> Phần lớn mã nguồn Java, script build/kiểm thử và bộ tài liệu này **được tạo hoặc hỗ trợ viết bởi AI** (`Co-authored-by: Antigravity <antigravity@google.com>`), và mới được con người kiểm thử thực tế một phần trên **duy nhất 1 thiết bị Samsung Galaxy S22 Exynos (`SM-S901B`) chạy Android 12 / One UI 4.1 với màn hình ngoài VSP 75Hz (`V2203H`)**.
+> Phần lớn mã nguồn Java, script build/kiểm thử và bộ tài liệu này **được tạo hoặc hỗ trợ viết bởi Google Antigravity** (chi tiết phạm vi & tình trạng kiểm thử tại [AI_CONTRIBUTIONS.md](AI_CONTRIBUTIONS.md)), và mới được con người kiểm thử thực tế trước đây trên **duy nhất 1 thiết bị Samsung Galaxy S22 Exynos (`SM-S901B`) chạy Android 12 / One UI 4.1 với màn hình ngoài VSP 75Hz (`V2203H`)** (thiết bị test đã được bán; bản `v1.0.1-s22-a12` chỉ mới kiểm chứng build/unit test trên host & CI).
 > Người duy trì không thể kiểm toán thủ công toàn bộ từng nhánh mã nguồn cho mọi cấu hình ROM/màn hình khác nhau. Nếu bạn muốn đóng góp code, hãy đọc kỹ [quy định chống AI Slop](CONTRIBUTING.md#quy-định-về-ai-và-chống-ai-slop) trước khi gửi Pull Request.
 
 > [!WARNING]
@@ -222,5 +222,6 @@ Script ký bằng khóa debug nội bộ (`debug.keystore` tự sinh nếu chưa
 
 - Gặp lỗi? Vui lòng bấm **Chạy chẩn đoán → Copy Log** trong app (log đã tự ẩn Serial, IMEI, MAC, IP nội bộ và Token — nhưng bạn vẫn nên đọc lướt lại trước khi dán) và mở Issue tại [GitHub Issues](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/issues/new/choose).
 - Muốn đóng góp? Đọc [CONTRIBUTING.md](CONTRIBUTING.md) và [SECURITY.md](SECURITY.md) trước khi tạo Pull Request.
-- Đồng tác giả hỗ trợ AI (AI Co-author): `Co-authored-by: Antigravity <antigravity@google.com>` (chi tiết tại [NOTICE](NOTICE)).
+- Minh bạch AI & hồ sơ tuân thủ: [AI_CONTRIBUTIONS.md](AI_CONTRIBUTIONS.md) · [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) · [LICENSE_AUDIT_REPORT.md](LICENSE_AUDIT_REPORT.md) · [SECURITY_AUDIT_REPORT.md](SECURITY_AUDIT_REPORT.md) · [SBOM (CycloneDX)](SBOM.cdx.json).
 - Giấy phép mã nguồn mở: [GNU GPL v3.0](LICENSE) · Ghi công & lưu ý bên thứ ba: [NOTICE](NOTICE).
+- **Tuyên bố nhãn hiệu:** Samsung, Galaxy S22, Samsung DeX, One UI, Exynos là nhãn hiệu của Samsung Electronics Co., Ltd.; Android, Google, Antigravity là nhãn hiệu của Google LLC. Dự án này độc lập và không liên kết hay được bảo trợ bởi các đơn vị trên.

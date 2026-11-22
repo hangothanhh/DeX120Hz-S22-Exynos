@@ -4,10 +4,10 @@
 
 An **LSPosed** module and companion control app that unlocks high-refresh-rate (>60Hz, up to 120Hz depending on monitor and cable) output for **Samsung DeX** — specifically built for a rooted **Samsung Galaxy S22 Exynos (`SM-S901B` / `s5e9925`) running Android 12 / One UI 4.1**.
 
-- **Current version:** `v1.0.0-s22-a12` (**Pre-release / Experimental**)
+- **Current version:** `v1.0.1-s22-a12` (**Pre-release / Experimental**)
 - **Package name:** `com.dex120.s22` (`minSdk 31`, `targetSdk 31` — Android 12)
 - **Tech stack:** Java 11, Xposed/LSPosed Hooks (`system_server` + `com.sec.android.sdhms`), standalone Android SDK toolchain (`aapt2` + `d8` + `apksigner`, zero Gradle dependency)
-- **License:** [GNU GPL v3.0](LICENSE) · [Credits & AI Notice](NOTICE)
+- **License & Compliance:** [GNU GPL v3.0](LICENSE) · [NOTICE](NOTICE) · [AI Disclosure](AI_CONTRIBUTIONS.md) · [Third-Party Notices](THIRD_PARTY_NOTICES.md)
 - **Project links:** [Releases](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/releases) · [Issues](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/issues) · [Contributing](CONTRIBUTING.md)
 
 ---
@@ -16,7 +16,7 @@ An **LSPosed** module and companion control app that unlocks high-refresh-rate (
 
 > [!CAUTION]
 > **AI Contribution Transparency & AI Slop Warning:**
-> Most of the Java code, build/verification scripts, and documentation in this repository were **written or assisted by AI** (`Co-authored-by: Antigravity <antigravity@google.com>`), and have only been partially verified by a human on a **single Samsung Galaxy S22 Exynos (`SM-S901B`) device running Android 12 / One UI 4.1 with a 75Hz external monitor (VSP `V2203H`)**.
+> Most of the Java code, build/verification scripts, and documentation in this repository were **written or assisted by Google Antigravity** (see [AI_CONTRIBUTIONS.md](AI_CONTRIBUTIONS.md)), and live 75Hz verification was previously performed by a human on a **single Samsung Galaxy S22 Exynos (`SM-S901B`) device running Android 12 / One UI 4.1 with a 75Hz external monitor (VSP `V2203H`)** (that test device has since been sold; `v1.0.1-s22-a12` is host & CI verified only).
 > The maintainer cannot manually audit every execution path across all firmware revisions or monitor models. If you plan to contribute code, read the [AI contribution & anti-AI-slop rules](CONTRIBUTING.md#quy-định-về-ai-và-chống-ai-slop) before opening a Pull Request.
 
 > [!WARNING]
@@ -210,5 +210,6 @@ By default, builds sign with a local ephemeral/debug keystore (`debug.keystore`,
 
 - **Found a bug?** Run **Chạy chẩn đoán → Copy Log** in the app (Serial, IMEI, MAC, private IPs, and Tokens are auto-redacted — still review manually before sharing) and open a [GitHub Issue](https://github.com/hangothanhh/DeX120Hz-S22-Exynos/issues/new/choose).
 - **Want to contribute?** Read [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md) before opening a Pull Request.
-- **AI Co-author:** `Co-authored-by: Antigravity <antigravity@google.com>` (see [NOTICE](NOTICE)).
+- **AI Transparency & Compliance:** [AI_CONTRIBUTIONS.md](AI_CONTRIBUTIONS.md) · [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) · [LICENSE_AUDIT_REPORT.md](LICENSE_AUDIT_REPORT.md) · [SECURITY_AUDIT_REPORT.md](SECURITY_AUDIT_REPORT.md) · [SBOM (CycloneDX)](SBOM.cdx.json).
 - **License:** [GNU GPL v3.0](LICENSE) · Third-party credits & notices: [NOTICE](NOTICE).
+- **Trademark Disclaimer:** Samsung, Galaxy S22, Samsung DeX, One UI, and Exynos are trademarks of Samsung Electronics Co., Ltd.; Android, Google, and Antigravity are trademarks of Google LLC. This project is independent and not affiliated with or endorsed by either company.

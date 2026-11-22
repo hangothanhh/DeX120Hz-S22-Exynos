@@ -7,12 +7,23 @@ License: GNU General Public License v3.0 (GPL-3.0, see LICENSE)
 1. AI CONTRIBUTION & REVIEW DISCLOSURE
 --------------------------------------
 Most of the Java code, shell/PowerShell/Python scripts, CI workflows, and
-documentation in this repository were written or refactored with AI assistance.
-Co-authored-by: Antigravity <antigravity@google.com>
-Human verification so far has only been performed on a single Samsung Galaxy S22
-Exynos (SM-S901B, Android 12 / One UI 4.1) device with a 75Hz external monitor
-(VSP V2203H). Do NOT treat any part of this codebase as audited for arbitrary
-devices or other Android / One UI versions without testing it yourself.
+documentation in this repository were written or refactored with assistance
+from Google Antigravity under human review and direction by the repository
+owner (`hangothanhh`).
+
+Identity & Git Attribution Status: ANTIGRAVITY_IDENTITY_UNVERIFIED.
+No `Co-authored-by` trailer is attached to commits because no verified
+official Git author email exists for Google Antigravity (`antigravity@google.com`
+maps on GitHub to an unverified regular user account `antigravity-google-bot`,
+and `gemini-code-assist[bot]` is an unrelated GitHub App). Full scope and
+verification boundaries are documented in `AI_CONTRIBUTIONS.md`.
+
+Human verification of 75Hz Samsung DeX output was previously performed on a
+single Samsung Galaxy S22 Exynos (SM-S901B, Android 12 / One UI 4.1) device
+with an external monitor (VSP V2203H). That test device has since been sold;
+`v1.0.1-s22-a12` builds are verified via host toolchain, unit tests, and CI
+only. Do NOT treat any part of this codebase as audited for arbitrary devices or
+other Android / One UI versions without testing it yourself.
 
 Contributors must follow the AI Slop policy in CONTRIBUTING.md: disclose AI
 assistance transparently and never submit unverified AI-generated tweaks.
@@ -41,5 +52,17 @@ assistance transparently and never submit unverified AI-generated tweaks.
 - Android Open Source Project (AOSP)
   Standard Android SDK APIs referenced against Android 12 (API 31).
 
+See `THIRD_PARTY_NOTICES.md` and `SBOM.cdx.json` for the complete build-time,
+CI, and upstream runtime dependency inventory.
+
 This repository does NOT include Samsung proprietary binaries, private signing
 keys, or personal device attestation artifacts.
+
+3. TRADEMARK DISCLAIMER
+-----------------------
+"Samsung", "Galaxy", "Galaxy S22", "Samsung DeX", "One UI", and "Exynos" are
+trademarks or registered trademarks of Samsung Electronics Co., Ltd.
+"Android", "Google", and "Antigravity" are trademarks of Google LLC.
+All other product names are the property of their respective owners.
+This project is an independent open-source effort and is not affiliated with,
+sponsored by, or endorsed by Samsung Electronics Co., Ltd. or Google LLC.

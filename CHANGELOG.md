@@ -6,12 +6,27 @@ Mọi thay đổi đáng chú ý của dự án **DeX 120Hz S22** (`com.dex120.s
 
 ## [Unreleased]
 
+---
+
+## [v1.0.1-s22-a12] - 2026-11-22 (Pre-release)
+
+Phiên bản hoàn thiện tuân thủ giấy phép, bảo mật chuỗi cung ứng, tài liệu song ngữ và CI/CD trên nền `v1.0.0-s22-a12` (không thay đổi logic Xposed hook cốt lõi).
+
 ### Added
 - Thêm tài liệu tiếng Anh thân thiện cho người mới tại `README.en.md` và thanh chuyển ngôn ngữ trên `README.md`.
-- Ghi nhận đồng tác giả AI (`Co-authored-by: Antigravity <antigravity@google.com>`) trong tài liệu và Git commit trailers.
+- Thêm `.gitattributes` chuẩn hóa line ending (`LF` mặc định, `CRLF` cho `*.ps1`, đánh dấu file nhị phân).
+- Thêm bộ hồ sơ kiểm toán & quản trị mã nguồn mở: `AI_CONTRIBUTIONS.md`, `THIRD_PARTY_NOTICES.md`, `LICENSE_AUDIT_REPORT.md`, `SECURITY_AUDIT_REPORT.md` và `SBOM.cdx.json` (CycloneDX `1.5`).
+- Bổ sung mục **Supported Versions**, **APK Signing Policy** trong `SECURITY.md` và **Trademark Disclaimer** trong `NOTICE`, `README.md`, `README.en.md`.
 
 ### Changed
-- Chuyển giấy phép mã nguồn mở từ MIT sang **`GNU GPL v3.0` (`GPL-3.0`)** và cập nhật `NOTICE` để đảm bảo tương thích giấy phép đầy đủ với `Kinue72/OnigiriDeX` (`GPL-3.0`), `LSPosed` và `KernelSU`.
+- Chuyển giấy phép mã nguồn mở từ MIT sang **`GNU GPL v3.0` (`GPL-3.0`)** và cập nhật `NOTICE` để tương thích giấy phép đầy đủ với `Kinue72/OnigiriDeX` (`GPL-3.0`), `LSPosed` và `KernelSU`.
+- Cập nhật URL repository sang `hangothanhh/DeX120Hz-S22-Exynos`.
+- Tăng `versionCode` lên `2`, `versionName` lên `1.0.1-s22-a12` trong `AndroidManifest.xml` và `RootShell.java`; bật quyền thực thi (`100755`) cho `build.sh` và `scripts/verify_apk.py`.
+- Loại bỏ trailer `Co-authored-by: Antigravity <antigravity@google.com>` khỏi lịch sử commit sau `0b17242` và cập nhật `CONTRIBUTING.md` / `AI_CONTRIBUTIONS.md` để tránh gán nhầm tài khoản GitHub không xác minh `antigravity-google-bot`.
+
+### Security
+- Gia cố `.github/workflows/ci.yml`: giới hạn `permissions: contents: read`, ghim toàn bộ GitHub Actions theo commit SHA (`actions/checkout` v7.0.1, `setup-java` v6.3.0, `setup-python` v7.1.0, `upload-artifact` v7.0.2), kiểm tra tồn tại `LICENSE` GPL-3.0, tính hợp lệ của `SBOM.cdx.json` và không để lọt chuỗi token tĩnh trong `tests/SanitizerTest.java`.
+- Xây dựng chuỗi token giả lập trong `tests/SanitizerTest.java` bằng phép ghép chuỗi động thay cho literal tĩnh.
 
 ---
 

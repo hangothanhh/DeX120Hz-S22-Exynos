@@ -11,6 +11,17 @@
 
 Do đặc quyền `system` (UID `1000`) và `root`, mọi lỗ hổng trong code hook hoặc script đều có thể ảnh hưởng trực tiếp tới tính ổn định và bảo mật của thiết bị. Hãy kiểm tra kỹ mã nguồn trước khi cài đặt.
 
+## Phiên bản được hỗ trợ (Supported Versions)
+
+| Phiên bản | Giấy phép | Trạng thái hỗ trợ | Ghi chú kiểm chứng |
+| :--- | :--- | :--- | :--- |
+| `v1.0.1-s22-a12` (`Pre-release`) | `GNU GPL v3.0` | Đang duy trì (Experimental) | Build & unit test đã xác minh trên host Windows + Ubuntu CI; máy test `SM-S901B` đã bán nên chưa test lại trực tiếp trên máy thật. |
+| `v1.0.0-s22-a12` (`b10d6e9`) | `MIT` (snapshot cũ) | Ngừng hỗ trợ / Đã thay thế | Snapshot lịch sử trước khi chuyển giấy phép sang `GPL-3.0`; giữ nguyên tag để bảo toàn lịch sử Git. |
+
+## Chính sách ký APK (APK Signing Policy)
+
+Các bản `Pre-release` hiện tại được ký bằng khóa debug cục bộ/tạm thời (`debug.keystore` tự sinh qua `build.ps1` hoặc `build.sh`, luôn nằm trong `.gitignore` và **không bao giờ** commit lên Git). Vì đây là bản thử nghiệm, người dùng nên đối chiếu mã băm `SHA-256` kèm trong GitHub Release/CI Artifact hoặc tự biên dịch trực tiếp từ mã nguồn.
+
 ## Những dữ liệu TUYỆT ĐỐI KHÔNG đưa lên Repository / Issues / PR
 
 Người dùng và cộng tác viên tuyệt đối không commit hoặc dán công khai:
@@ -38,12 +49,12 @@ Hàm `RootShell.sanitizeDiagnostics(String raw)` trong ứng dụng tự động
 
 ## Minh bạch về đóng góp của AI
 
-Phần lớn mã nguồn và bộ lọc bảo mật trong dự án được viết với sự hỗ trợ của AI và mới được kiểm thử cục bộ trên một máy `SM-S901B` cùng bộ unit test `tests/SanitizerTest.java`. Không mặc định coi đây là phần mềm đã qua kiểm toán bảo mật chuyên sâu bởi con người.
+Phần lớn mã nguồn, script và bộ lọc bảo mật trong dự án được viết với sự hỗ trợ của Google Antigravity dưới sự điều phối và kiểm duyệt của chủ dự án (`hangothanhh`). Trước đây hành vi thực tế 75Hz đã được kiểm chứng trên một máy `SM-S901B` + màn hình VSP `V2203H`; hiện máy test đã được bán nên bản `v1.0.1-s22-a12` chỉ mới kiểm chứng build trên host Windows, unit test `tests/SanitizerTest.java` và Ubuntu CI. Không mặc định coi đây là phần mềm đã qua kiểm toán bảo mật chuyên sâu bởi bên thứ ba. Xem chi tiết tại [AI_CONTRIBUTIONS.md](AI_CONTRIBUTIONS.md) và [SECURITY_AUDIT_REPORT.md](SECURITY_AUDIT_REPORT.md).
 
 ## Báo cáo lỗ hổng bảo mật
 
 Vì đây là dự án thử nghiệm cho thiết bị cụ thể và không thu thập dữ liệu máy chủ từ xa:
 
-- Nếu phát hiện lỗ hổng trong repository công khai/riêng tư của chủ dự án hoặc script build (ví dụ rò rỉ khóa, lỗi thực thi lệnh shell không an toàn trong `RootShell` hoặc lỗi injection trong `build.ps1`/`build.sh`):
+- Nếu phát hiện lỗ hổng trong repository công khai của chủ dự án hoặc script build (ví dụ rò rỉ khóa, lỗi thực thi lệnh shell không an toàn trong `RootShell` hoặc lỗi injection trong `build.ps1`/`build.sh`):
   - Vui lòng liên hệ trực tiếp chủ repository (`hangothanhh`) qua GitHub Security Advisory (nếu bật) hoặc mở Issue **không kèm payload khai thác chi tiết / dữ liệu riêng tư**.
   - Không gửi kèm tệp khóa riêng hoặc thông tin máy thật của người khác khi báo cáo.

@@ -89,11 +89,8 @@ Sử dụng chuẩn [Conventional Commits](https://www.conventionalcommits.org/)
 - `ci: validate shell syntax in workflow` — thay đổi GitHub Actions CI
 - `chore: update gitignore patterns` — việc bảo trì repo, build script
 
-Với các commit có AI hỗ trợ, thêm dòng trailer ở cuối commit message (cách dòng tiêu đề một dòng trống), ví dụ:
-
-```text
-Co-authored-by: Antigravity <antigravity@google.com>
-```
+> [!NOTE]
+> **Quy định ghi nhận AI trong commit:** KHÔNG gắn trailer `Co-authored-by` với email chưa được xác minh hoặc trỏ nhầm tới tài khoản/bot không liên quan (như `antigravity-google-bot` hoặc `gemini-code-assist[bot]`). Hãy khai báo trung thực sự hỗ trợ của AI trong mẫu Pull Request và cập nhật [AI_CONTRIBUTIONS.md](AI_CONTRIBUTIONS.md) / [NOTICE](NOTICE) khi cần.
 
 ### 7. Tạo Pull Request
 Điền đầy đủ tất cả các mục trong `.github/PULL_REQUEST_TEMPLATE.md`, bao gồm thiết bị test thật (model, phiên bản Android/One UI, kernel, LSPosed/Root stack), log đã ẩn danh và đánh giá khả năng rollback.
